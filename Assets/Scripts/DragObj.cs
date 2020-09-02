@@ -1,0 +1,82 @@
+﻿using System.Collections.Generic;
+using System.Data;
+using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
+
+public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
+{
+    public Transform parentTransform;
+    [SerializeField] GameObject TowerPrefab;
+
+    GameObject copyObj;
+    Tilemap tilemap;
+    List<int> towePosiIndexs;
+
+    //オブジェクトを持ち始める
+    public void OnBeginDrag(PointerEventData data)
+    {
+        Debug.Log("OnBeginDrag");
+        copyObj = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity, transform.parent);
+        copyObj.GetComponent<CanvasGroup>().blocksRaycasts = false;
+        copyObj.transform.SetParent(transform.parent);
+
+        towePosiIndexs = LevelManager.Instance.GetIndexs(TILE.SET_TOWER);
+        GameObject overTileObj = GameObject.FindGameObjectWithTag("OverTile");
+        tilemap = overTileObj.GetComponent <Tilemap>();
+        TileMapCon.SetToerMap(ref tilemap, LevelManager.Instance._mapDate, towePosiIndexs);
+
+        Time.timeScale = 0.3f;
+    }
+
+    public void OnDrag(PointerEventData data)
+    {
+        Vector3 TargetPos = Camera.main.ScreenToWorldPoint(data.position);
+        TargetPos.z = -1;
+        copyObj.transform.position = TargetPos;
+    }
+
+    public void OnEndDrag(PointerEventData data)
+    {
+        Time.timeScale = 1f;
+
+        Vector3 posi = Vector3Int.FloorToInt(copyObj.transform.position);
+        posi = new Vector3(posi.x + 0.5f, posi.y + 0.5f, 0);
+        tilemap.ClearAllTiles();
+
+        Destroy(copyObj);
+        copyObj = Instantiate(TowerPrefab, gameObject.transform.position, Quaternion.identity, transform.parent);
+        DropArea dropArea = parentTransform.GetComponent<DropArea>();
+        Debug.Log(parentTransform);
+
+        if (dropArea == null)
+        {
+            Debug.Log("DropAreaが見つかりません");
+            Destroy(copyObj);
+            return;
+        }
+
+        int setPosiIndex = int.MaxValue;
+        foreach (var item in towePosiIndexs)
+        {
+            if (LevelManager.Instance._mapDate.mapDates[item].posi + new Vector3(0.5f, 0.5f, 0) == posi)
+            {
+                Debug.Log("一致しました");
+                setPosiIndex = item;
+                break;
+            }
+        }
+        if (setPosiIndex == int.MaxValue)
+        {
+            Debug.Log("一致しませんでした");
+            Destroy(copyObj);
+            return;
+        }
+
+        copyObj.transform.SetParent(parentTransform);
+        copyObj.GetComponent<CanvasGroup>().blocksRaycasts = true;
+        LevelManager.Instance._mapDate.mapDates[setPosiIndex].tower = true;
+        copyObj.transform.position = LevelManager.Instance._mapDate.mapDates[setPosiIndex].posi + new Vector3(0.5f, 0.5f, 0);
+    }
+}
