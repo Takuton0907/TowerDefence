@@ -4,17 +4,15 @@ using UnityEngine;
 
 public class AttackTowe : TowerMonoBehaviur
 {
-    EnemyManager enemyManager;
     [SerializeField] int _attackPowe = 10;
     [SerializeField] float _attackInterval = 2;
+    [SerializeField] float _attckArea = 2;
 
     EnemyCon _attackEnemy;
 
     private void Awake()
     {
-        enemyManager = GameObject.Find("EnemyManager").GetComponent<EnemyManager>();
-        if (enemyManager == null) return;
-        StartCoroutine(Attack(enemyManager.instanceEnemys, _attackInterval, _attackPowe));
+        StartCoroutine(Attack(EnemyManager.Instance.instanceEnemys, _attackInterval, _attackPowe));
     }
 
     //攻撃
@@ -29,13 +27,26 @@ public class AttackTowe : TowerMonoBehaviur
             if (_attackEnemy == null)
             {
                 count = 0;
-                int minCount = int.MaxValue;
+                int maxCount = 0;
+                List<int> enemyIndexs = new List<int>();
+
+                yield return null;
                 for (int i = 0; i < enemy.Count; i++)
                 {
-                    if (enemy[i]._root.Count <= minCount)
+                    if ((enemy[i].transform.position - transform.position).magnitude <= _attckArea)
                     {
-                        minCount = enemy[i]._root.Count;
-                        count = i;
+                        enemyIndexs.Add(i);
+                    }
+                }
+
+                if (enemyIndexs.Count <= 0) continue;
+
+                foreach (var item in enemyIndexs)
+                {
+                    if (enemy[item].count >= maxCount)
+                    {
+                        maxCount = enemy[item].count;
+                        count = item;
                     }
                 }
 

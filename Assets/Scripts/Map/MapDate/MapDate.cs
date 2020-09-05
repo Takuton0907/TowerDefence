@@ -7,7 +7,7 @@ using System;
 public class MapDate : ScriptableObject
 {
     public TileBase load;
-    public TileBase wall;
+    public TileBase[] wall = new TileBase[2];
     public TileBase setTowet;
     public TileBase start;
     public TileBase goal;

@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 {
     [SerializeField] Transform _enemyParentObj = null;
     [SerializeField] GameObject[] _enemyObj = null;
@@ -40,5 +40,10 @@ public class EnemyManager : MonoBehaviour
     public List<EnemyCon> GetEnemys()
     {
         return instanceEnemys;
+    }
+
+    public void DestroyEnemy(EnemyCon desEnemy)
+    {
+        instanceEnemys.Remove(desEnemy);
     }
 }

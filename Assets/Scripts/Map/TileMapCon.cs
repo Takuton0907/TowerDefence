@@ -97,7 +97,14 @@ public static class TileMapCon
         {
             if (mapDate.mapDates[i].tileBaseNum == (int)TILE.WALL)
             {
-                tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.wall);
+                if (Probability(50))
+                {
+                    tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.wall[0]);
+                }
+                else
+                {
+                    tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.wall[1]);
+                }
             }
             else if (mapDate.mapDates[i].tileBaseNum == (int)TILE.LOAD)
             {
@@ -128,6 +135,29 @@ public static class TileMapCon
             {
                 tilemap.SetTile(mapDate.mapDates[item].posi, mapDate.load);
             }
+        }
+    }
+
+    /// <summary>
+    /// 確率判定
+    /// </summary>
+    /// <param name="fPercent">確率 (0~100)</param>
+    /// <returns>当選結果 [true]当選</returns>
+    public static bool Probability(float fPercent)
+    {
+        float fProbabilityRate = UnityEngine.Random.value * 100.0f;
+
+        if (fPercent == 100.0f && fProbabilityRate == fPercent)
+        {
+            return true;
+        }
+        else if (fProbabilityRate < fPercent)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 }
