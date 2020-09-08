@@ -31,12 +31,12 @@ public class EnemyCon : MonoBehaviour
             if (count == _root.Count)
             {
                 EnemyManager.Instance.DestroyEnemy(gameObject.GetComponent<EnemyCon>());
+                LevelManager.Instance.Damage();
                 Destroy(gameObject);
                 return;
             }
             _moveDirection = NextMove(transform.position);
         }
-        //transform.position += _moveDirection * _speed;
 
         _rig2d.velocity = _moveDirection * _speed;
 
@@ -49,7 +49,6 @@ public class EnemyCon : MonoBehaviour
     public void Damage(int damage)
     {
         HP = HP - damage;
-        Debug.Log(HP);
     }
 
     //敵の次の動き
