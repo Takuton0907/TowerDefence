@@ -14,9 +14,18 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     Tilemap tilemap;
     List<int> towePosiIndexs;
 
+    [SerializeField] int _cost = 10;
+
     //オブジェクトを持ち始める
     public void OnBeginDrag(PointerEventData data)
     {
+        if (data == null) return;
+        if (LevelManager.Instance._cost < this._cost)
+        {
+            Debug.Log("コストが足りません");
+            return;
+        }
+
         Debug.Log("OnBeginDrag");
         copyObj = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity, transform.parent);
         copyObj.GetComponent<CanvasGroup>().blocksRaycasts = false;
@@ -32,6 +41,10 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     public void OnDrag(PointerEventData data)
     {
+        if (data == null) return;
+        if (copyObj == null) return;
+        if (LevelManager.Instance._cost < this._cost) return;
+
         Vector3 TargetPos = Camera.main.ScreenToWorldPoint(data.position);
         TargetPos.z = -1;
         copyObj.transform.position = TargetPos;
@@ -39,6 +52,11 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     public void OnEndDrag(PointerEventData data)
     {
+        if (data == null) return;
+        if (copyObj == null) return;
+        if (LevelManager.Instance._cost < this._cost) return;
+
+
         Time.timeScale = 1f;
 
         Vector3 posi = Vector3Int.FloorToInt(copyObj.transform.position);
@@ -78,5 +96,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         copyObj.GetComponent<CanvasGroup>().blocksRaycasts = true;
         LevelManager.Instance._mapDate.mapDates[setPosiIndex].tower = true;
         copyObj.transform.position = LevelManager.Instance._mapDate.mapDates[setPosiIndex].posi + new Vector3(0.5f, 0.5f, 0);
+
+        LevelManager.Instance.UseCost((uint)-_cost);
     }
 }

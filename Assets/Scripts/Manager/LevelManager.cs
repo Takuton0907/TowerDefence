@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
+using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class LevelManager : SingletonMonoBehaviour<LevelManager>
@@ -22,19 +22,30 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public int m_life { private set; get; } = 5;
     //EnemySpownのコルーチンのメンバ変数
     private Coroutine _spown;
-    //現在使用できるコスト
-    [SerializeField] uint _cost = 50;
+
+    [Header("CostParam")]
+
     //持てるコストの最大値
-    [SerializeField] uint _maxCost = 100;
+    [SerializeField]
+    uint _maxCost = 100;
+    //現在使用できるコスト
+    [SerializeField]
+    public uint _cost { set; get; } = 50; //Private setにしてインスペクターからいじりたい
     //costの回復するまでの時間
-    [SerializeField] float _interval = 5;
+    [SerializeField] 
+    float _interval = 5;
     private float _time;
     //一定時間で回復するCostの量
-    [SerializeField] uint _heelCost = 5;
+    [SerializeField] 
+    uint _heelCost = 5;
+    //コストを表示するスライダー
+    [SerializeField]
+    Slider _costSlider;
 
     private new void Awake()
     {
         _mapDate.MapDateReset();
+        UseCost(0);
     }
 
     private void Update()
@@ -52,7 +63,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                     UseCost(_heelCost);
                     _time = 0;
                 }
-                _interval += Time.deltaTime;
+                _time += Time.deltaTime;
                 if (m_life <= 0)
                 {
                     GameOver();
@@ -71,10 +82,12 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public void UseCost(uint value)
     {
         _cost += value;
-        if (_cost > _maxCost)
-        {
-            _cost = _maxCost;
-        }
+        //if (_cost > _maxCost)
+        //{
+        //    _cost = _maxCost;
+        //}
+
+        _costSlider.value = (float)_cost / _maxCost;
     }
     //リトライボタンを押したと時の処理
     public void ClickToRePlay()
