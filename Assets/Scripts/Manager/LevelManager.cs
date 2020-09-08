@@ -5,9 +5,32 @@ using Debug = UnityEngine.Debug;
 
 public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
+    private enum LEVEL_STATE
+    {
+        Init,
+        Play,
+        Clear,
+        GameOver,
+    }
+    //ゲームのState
+    LEVEL_STATE levelState = LEVEL_STATE.Init;
+    //マップのデータ
     public MapDate _mapDate;
+    //そのステージのEnemyManager
     public EnemyManager _enemyManager;
-    [SerializeField] Tilemap map;
+    //守るべきライフ
+    public int m_life { private set; get; } = 5;
+    //EnemySpownのコルーチンのメンバ変数
+    private Coroutine _spown;
+    //現在使用できるコスト
+    [SerializeField] uint _cost = 50;
+    //持てるコストの最大値
+    [SerializeField] uint _maxCost = 100;
+    //costの回復するまでの時間
+    [SerializeField] float _interval = 5;
+    private float _time;
+    //一定時間で回復するCostの量
+    [SerializeField] uint _heelCost = 5;
 
     private new void Awake()
     {
@@ -16,22 +39,67 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     private void Update()
     {
-        //クリックした位置のタイルのPositionの取得
-        if (Input.GetMouseButtonDown(0))
+        switch (levelState)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            case LEVEL_STATE.Init:
+                _spown = StartCoroutine(_enemyManager.EnemySpawn());
+                levelState = LEVEL_STATE.Play;
+                break;
+            case LEVEL_STATE.Play:
 
-            RaycastHit2D hit2d = Physics2D.Raycast(ray.origin, ray.direction);
-
-            if (hit2d.collider != null)
-            {
-                Vector3Int posi = Vector3Int.RoundToInt(ray.origin);
-                posi.z = 0;
-                Debug.Log(posi);
-            }
+                if (_time > _interval)
+                {
+                    UseCost(_heelCost);
+                    _time = 0;
+                }
+                _interval += Time.deltaTime;
+                if (m_life <= 0)
+                {
+                    GameOver();
+                }
+                break;
+            case LEVEL_STATE.Clear:
+                break;
+            case LEVEL_STATE.GameOver:
+                break;
+            default:
+                break;
         }
     }
 
+    //コストの使用
+    public void UseCost(uint value)
+    {
+        _cost += value;
+        if (_cost > _maxCost)
+        {
+            _cost = _maxCost;
+        }
+    }
+    //リトライボタンを押したと時の処理
+    public void ClickToRePlay()
+    {
+        levelState = LEVEL_STATE.Init;
+    }
+    //ゲームオーバー後の処理
+    private void GameOver()
+    {
+        StopCoroutine(_spown);
+        levelState = LEVEL_STATE.GameOver;
+        Debug.Log("GameOver");
+    }
+    //ステージクリア後の処理
+    public void StageClear()
+    {
+        StopCoroutine(_spown);
+        levelState = LEVEL_STATE.Clear;
+        Debug.Log("GameClear");
+    }
+    //敵がタワーにたどり着いたときに呼び出す
+    public void Damage()
+    {
+        m_life--;
+    }
     // 指定したTiteStatasのオブジェクト取得
     public List<int> GetIndexs(TILE tileStatas)
     {
@@ -71,7 +139,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         }
         return vs;
     }
-
     //敵が進む道を検索
     public List<MAP_DATE> Sarch()
     {

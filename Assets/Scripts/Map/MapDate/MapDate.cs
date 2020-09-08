@@ -6,6 +6,7 @@ using System;
 [CreateAssetMenu(menuName = "MyGame/Create ParameterTable", fileName = "ParameterTable")]
 public class MapDate : ScriptableObject
 {
+    public TileBase overTile;
     public TileBase load;
     public TileBase[] wall = new TileBase[2];
     public TileBase setTowet;
@@ -56,16 +57,17 @@ public class MapDate : ScriptableObject
     }
 
     //敵のスタート位置の取得
-    public Vector3 GetStart()
+    public List<Vector3> GetStart()
     {
+        List<Vector3> startPositions = new List<Vector3>();
         foreach (var item in mapDates)
         {
             if (item.tileBaseNum == (int)TILE.START)
             {
-                return item.posi;
+                startPositions.Add(item.posi);
             }
         }
-        return new Vector3(1000, 1000, 1000);
+        return startPositions;
     }
     
     //マップデータのスタートのIndex獲得
@@ -130,6 +132,7 @@ public class MapDate : ScriptableObject
 
         return dates;
     }
+
     //次に進めるTileのIndexの取得
     public List<int> GetNextTilesIndex(int StartMapDateIndex)
     {

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Text;
+using UnityEditor.Tilemaps;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
@@ -91,8 +92,8 @@ public static class TileMapCon
 
     public static void SetMap(ref Tilemap tilemap, MapDate mapDate)
     {
-        tilemap.ClearAllTiles();
-
+        tilemap.ClearAllTiles();        
+        
         for (int i = 0; i < mapDate.mapDates.Count; i++)
         {
             if (mapDate.mapDates[i].tileBaseNum == (int)TILE.WALL)
@@ -127,13 +128,15 @@ public static class TileMapCon
 
     public static void SetToerMap(ref Tilemap tilemap, MapDate mapDate, List<int> indexs)
     {
-        tilemap.ClearAllTiles();
-        
+        tilemap.ClearAllTiles();        
+
+
+
         foreach (var item in indexs)
         {
             if (mapDate.mapDates[item].tower == false)
             {
-                tilemap.SetTile(mapDate.mapDates[item].posi, mapDate.load);
+                tilemap.SetTile(mapDate.mapDates[item].posi, mapDate.overTile);
             }
         }
     }
