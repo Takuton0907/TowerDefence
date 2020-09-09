@@ -13,7 +13,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         GameOver,
     }
 
-    private enum POSE
+    public enum POSE
     {
         Pose,
         InPlay,
@@ -29,8 +29,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public EnemyManager _enemyManager;
     //守るべきライフ
     public int m_life { private set; get; } = 5;
-    //EnemySpownのコルーチンのメンバ変数
-    private Coroutine _spown;
 
     [Header("CostParam")]
 
@@ -43,6 +41,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //costの回復するまでの時間
     [SerializeField] 
     float _interval = 5;
+    //回復するスピードを変化させる
+    float _intervalRate = 1;
     private float _time;
     //一定時間で回復するCostの量
     [SerializeField] 
@@ -54,6 +54,16 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //コストが回復することを示すスライダー
     [SerializeField]
     Slider _heelCostSlider;
+
+    [Header("Button")]
+
+    [SerializeField]
+    Button _playButton;
+
+    [SerializeField]
+    Sprite _playSprite;
+    [SerializeField]
+    Sprite _stopSprite;
 
     private new void Awake()
     {
@@ -71,7 +81,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         switch (levelState)
         {
             case LEVEL_STATE.Init:
-                _spown = StartCoroutine(_enemyManager.EnemySpawn());
+                _enemyManager.EnemyManagerInit();
+                //_spown = StartCoroutine(_enemyManager.EnemySpawnUpdate());
                 levelState = LEVEL_STATE.Play;
                 break;
             case LEVEL_STATE.Play:
@@ -87,7 +98,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                             _time = 0;
                         }
                         _heelCostSlider.value = _time;
-                        _time += Time.deltaTime;
+                        _time += Time.deltaTime * _intervalRate;
                         if (m_life <= 0)
                         {
                             GameOver();
@@ -96,6 +107,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                         {
                             item.EnemyUpdate();
                         }
+
+                        _enemyManager.EnemySpawnUpdate();
                         break;
                 }
                 break;
@@ -108,6 +121,38 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         }
     }
 
+    //Pose中にするための関数
+    public void OnClickStateChange()
+    {
+        switch (_poseState)
+        {
+            case POSE.Pose:
+                _playButton.image.sprite = _stopSprite;
+                _poseState = POSE.InPlay;
+                break;
+            case POSE.InPlay:
+                _playButton.image.sprite = _playSprite;
+                _poseState = POSE.Pose;
+                break;
+        }
+    }
+    //全体のスピード変更
+    public void OnclickSpeedChange()
+    {
+        _enemyManager.EnemySpeedChange(false);
+        _intervalRate = _enemyManager.instanceEnemys[0]._speedRate;
+    }
+    //タワーを持った時にスピ―ドを変化させる
+    public void DragSpeedChange()
+    {
+        _enemyManager.EnemySpeedChange(true);
+        _intervalRate = _enemyManager.instanceEnemys[0]._speedRate;
+    }
+    public void DragSpeedChange(float value)
+    {
+        _enemyManager.EnemySpeedChange(value);
+        _intervalRate = _enemyManager.instanceEnemys[0]._speedRate;
+    }
     //コストの使用
     public void UseCost(uint value)
     {
@@ -129,7 +174,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     {
         Time.timeScale = 1;
 
-        StopCoroutine(_spown);
         levelState = LEVEL_STATE.GameOver;
         Debug.Log("GameOver");
     }
@@ -138,7 +182,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     {
         Time.timeScale = 1;
 
-        StopCoroutine(_spown);
         levelState = LEVEL_STATE.Clear;
         Debug.Log("GameClear");
     }

@@ -12,7 +12,7 @@ public class AttackTowe : TowerMonoBehaviur
 
     private void Awake()
     {
-        StartCoroutine(Attack(EnemyManager.Instance.instanceEnemys, _attackInterval, _attackPowe));
+        StartCoroutine(Attack(LevelManager.Instance._enemyManager.instanceEnemys, _attackInterval, _attackPowe));
     }
 
     //攻撃

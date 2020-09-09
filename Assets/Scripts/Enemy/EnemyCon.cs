@@ -9,6 +9,9 @@ public class EnemyCon : MonoBehaviour
 
     public int HP = 10;
     [SerializeField] float _speed = 1;
+
+    public float _speedRate = 1;
+
     Rigidbody2D _rig2d;
 
     public List<MAP_DATE> _root = new List<MAP_DATE>();
@@ -43,13 +46,13 @@ public class EnemyCon : MonoBehaviour
         }
 
         //_rig2d.velocity = _moveDirection * _speed;
-        transform.position += _moveDirection * _speed;
+        transform.position += _moveDirection * _speed * _speedRate;
     }
 
     private IEnumerator Des()
     {
         yield return null;
-        EnemyManager.Instance.DestroyEnemy(gameObject.GetComponent<EnemyCon>());
+        LevelManager.Instance._enemyManager.DestroyEnemy(gameObject.GetComponent<EnemyCon>());
         Destroy(gameObject);
     }
 

@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
+public class EnemyManager : MonoBehaviour
 {
     [SerializeField] Transform _enemyParentObj = null;
 
@@ -14,7 +14,16 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
 
     [SerializeField] TextAsset _stageText;
 
+    [SerializeField] float _speedRateUP = 2;
+    [SerializeField] float _speedRateDown = 0.3f;
+
     public List<EnemyCon> instanceEnemys = new List<EnemyCon>();
+
+    int _count;
+
+    string[,] _stageTexts;
+
+    float _time;
 
     //敵のインスタンス
     private void EnemyInstance(int enemyNum, int spawnNumber)
@@ -25,30 +34,74 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
         instanceEnemys.Add(enemyCon);
         obj.transform.localScale = localSize;
     }
-    //エネミーを出す
-    public IEnumerator EnemySpawn()
-    {
-        string[,] stageTexts = LoadText.SetTexts(_stageText.text);
 
-        int count = 0;
-        while (true)
+    public void EnemyManagerInit()
+    {
+        _stageTexts = LoadText.SetTexts(_stageText.text);
+
+        _count = 1;
+    }
+    
+    public void EnemySpeedChange(bool toDrag)
+    {
+        float speedRate = instanceEnemys[0]._speedRate;
+
+        if (speedRate == _speedRateUP || speedRate == _speedRateDown)
         {
-            count++;
-            if (count >= stageTexts.GetLength(0))
+            foreach (var item in instanceEnemys)
             {
-                break;
+                item._speedRate = 1;
             }
-            yield return null;
-            if (_enemyObj.Length <= 0 || LevelManager.Instance._mapDate.GetStart().Count <= 0) continue;
-            EnemyInstance(int.Parse(stageTexts[count, 0]), int.Parse(stageTexts[count, 1]));
-            yield return new WaitForSeconds(int.Parse(stageTexts[count, 2]));
-            //Debug.Log(count);
+        }
+        else
+        {
+            if (toDrag)
+            {
+                foreach (var item in instanceEnemys)
+                {
+                    item._speedRate = _speedRateDown;
+                }
+            }
+            else
+            {
+                foreach (var item in instanceEnemys)
+                {
+                    item._speedRate = _speedRateUP;
+                }
+            }
+        }
+    }
+    public void EnemySpeedChange(float value)
+    {
+        foreach (var item in instanceEnemys)
+        {
+            item._speedRate = value;
+        }
+    }
+    //エネミーを出す
+    public void EnemySpawnUpdate()
+    {
+        if (_count >= _stageTexts.GetLength(0))
+        {
+            if (instanceEnemys.Count <= 0)
+            {
+                //ステージクリア
+                LevelManager.Instance.StageClear();
+            }
+            return;
         }
 
-        yield return new WaitWhile(() => instanceEnemys.Count > 0);
+        if (_time > int.Parse(_stageTexts[_count, 2]))
+        {    
+            if (_enemyObj.Length <= 0 || LevelManager.Instance._mapDate.GetStart().Count <= 0) return;
 
-        //ステージクリア
-        LevelManager.Instance.StageClear();
+            EnemyInstance(int.Parse(_stageTexts[_count, 0]), int.Parse(_stageTexts[_count, 1]));
+
+            _count++;
+
+            _time = 0;
+        }
+        _time += Time.deltaTime;
     }
     //今現在インスタンスされている敵の取得
     public List<EnemyCon> GetEnemys()

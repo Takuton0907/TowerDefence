@@ -16,6 +16,8 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     [SerializeField] int _cost = 10;
 
+    float _lastSpeedRate;
+
     //オブジェクトを持ち始める
     public void OnBeginDrag(PointerEventData data)
     {
@@ -36,7 +38,8 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         tilemap = overTileObj.GetComponent <Tilemap>();
         TileMapCon.SetToerMap(ref tilemap, LevelManager.Instance._mapDate, towePosiIndexs);
 
-        Time.timeScale = 0.3f;
+        _lastSpeedRate = LevelManager.Instance._enemyManager.instanceEnemys[0]._speedRate;
+        LevelManager.Instance.DragSpeedChange();
     }
 
     public void OnDrag(PointerEventData data)
@@ -56,8 +59,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         if (copyObj == null) return;
         if (LevelManager.Instance._cost < this._cost) return;
 
-
-        Time.timeScale = 1f;
+        LevelManager.Instance.DragSpeedChange(_lastSpeedRate);
 
         Vector3 posi = Vector3Int.FloorToInt(copyObj.transform.position);
         posi = new Vector3(posi.x + 0.5f, posi.y + 0.5f, 0);
