@@ -12,8 +12,17 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         Clear,
         GameOver,
     }
+
+    private enum POSE
+    {
+        Pose,
+        InPlay,
+    }
+
     //ゲームのState
     LEVEL_STATE levelState = LEVEL_STATE.Init;
+    //現在pose中かのState
+    POSE _poseState = POSE.InPlay;
     //マップのデータ
     public MapDate _mapDate;
     //そのステージのEnemyManager
@@ -41,11 +50,20 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //コストを表示するスライダー
     [SerializeField]
     Slider _costSlider;
+    private Text _costText;
+    //コストが回復することを示すスライダー
+    [SerializeField]
+    Slider _heelCostSlider;
 
     private new void Awake()
     {
         _mapDate.MapDateReset();
+
+        _costText = _costSlider.GetComponentInChildren<Text>();
+
         UseCost(0);
+
+        _heelCostSlider.maxValue = _interval;
     }
 
     private void Update()
@@ -57,16 +75,28 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 levelState = LEVEL_STATE.Play;
                 break;
             case LEVEL_STATE.Play:
-
-                if (_time > _interval)
+                switch (_poseState)
                 {
-                    UseCost(_heelCost);
-                    _time = 0;
-                }
-                _time += Time.deltaTime;
-                if (m_life <= 0)
-                {
-                    GameOver();
+                    case POSE.Pose:
+                        break;
+                    case POSE.InPlay:
+                        //コストの回復
+                        if (_time > _interval)
+                        {
+                            UseCost(_heelCost);
+                            _time = 0;
+                        }
+                        _heelCostSlider.value = _time;
+                        _time += Time.deltaTime;
+                        if (m_life <= 0)
+                        {
+                            GameOver();
+                        }
+                        foreach (var item in _enemyManager.instanceEnemys)
+                        {
+                            item.EnemyUpdate();
+                        }
+                        break;
                 }
                 break;
             case LEVEL_STATE.Clear:
@@ -86,7 +116,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         //{
         //    _cost = _maxCost;
         //}
-
+        _costText.text = $"{_cost} / {_maxCost}";
         _costSlider.value = (float)_cost / _maxCost;
     }
     //リトライボタンを押したと時の処理
@@ -97,6 +127,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //ゲームオーバー後の処理
     private void GameOver()
     {
+        Time.timeScale = 1;
+
         StopCoroutine(_spown);
         levelState = LEVEL_STATE.GameOver;
         Debug.Log("GameOver");
@@ -104,6 +136,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //ステージクリア後の処理
     public void StageClear()
     {
+        Time.timeScale = 1;
+
         StopCoroutine(_spown);
         levelState = LEVEL_STATE.Clear;
         Debug.Log("GameClear");
