@@ -14,7 +14,7 @@ public class EnemyCon : MonoBehaviour
     private Vector3 _moveDirection = new Vector3();
     public int count = 0;
 
-    private void Awake()
+    public void EnemyAwake()
     {
         _root = LevelManager.Instance.Sarch();
         Debug.Log(_root.Count);
@@ -23,7 +23,7 @@ public class EnemyCon : MonoBehaviour
         _rig2d = GetComponent<Rigidbody2D>();
     }
 
-    private void Update()
+    public void EnemyUpdate()
     {
         
         if ((transform.position - _next).magnitude < 0.15f)
@@ -38,17 +38,18 @@ public class EnemyCon : MonoBehaviour
             _moveDirection = NextMove(transform.position);
         }
 
-        _rig2d.velocity = _moveDirection * _speed;
-
-        if (HP <= 0)
-        {
-            Destroy(gameObject);
-        }
+        //_rig2d.velocity = _moveDirection * _speed;
+        transform.position += _moveDirection * _speed;
     }
 
     public void Damage(int damage)
     {
         HP = HP - damage;
+
+        if (HP <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     //敵の次の動き

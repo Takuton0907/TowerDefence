@@ -20,7 +20,9 @@ public class EnemyManager : SingletonMonoBehaviour<EnemyManager>
     private void EnemyInstance(int enemyNum, int spawnNumber)
     {
         GameObject obj = Instantiate(_enemyObj[enemyNum], LevelManager.Instance._mapDate.GetStart()[spawnNumber] + new Vector3(0.5f, 0.5f, 0) ,Quaternion.identity , _enemyParentObj);
-        instanceEnemys.Add(obj.GetComponent<EnemyCon>());
+        EnemyCon enemyCon = obj.GetComponent<EnemyCon>();
+        enemyCon.EnemyAwake();
+        instanceEnemys.Add(enemyCon);
         obj.transform.localScale = localSize;
     }
     //エネミーを出す

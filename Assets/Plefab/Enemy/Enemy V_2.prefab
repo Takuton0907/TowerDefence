@@ -96,8 +96,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 10
-  _speed: 1
+  _speed: 0.01
   _root: []
+  count: 0
 --- !u!50 &8268349722977555671
 Rigidbody2D:
   serializedVersion: 4
