@@ -39,13 +39,13 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     public uint _cost { set; get; } = 50; //Private setにしてインスペクターからいじりたい
     //costの回復するまでの時間
-    [SerializeField] 
+    [SerializeField]
     float _interval = 5;
     //回復するスピードを変化させる
-    float _intervalRate = 1;
+    float _totalRate = 1;
     private float _time;
     //一定時間で回復するCostの量
-    [SerializeField] 
+    [SerializeField]
     uint _heelCost = 5;
     //コストを表示するスライダー
     [SerializeField]
@@ -56,10 +56,14 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     Slider _heelCostSlider;
 
     [Header("Button")]
-
+    //スピードを変えるボタン群
     [SerializeField]
     Button _playButton;
-
+    [SerializeField]
+    Button _upSpeedButton;
+    //_upSpeedButtonのImageのメンバー変数
+    Image _upButtonImage;
+    //ボタンの変更する画像
     [SerializeField]
     Sprite _playSprite;
     [SerializeField]
@@ -74,6 +78,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         UseCost(0);
 
         _heelCostSlider.maxValue = _interval;
+
+        _upButtonImage = _upSpeedButton.GetComponent<Image>();
     }
 
     private void Update()
@@ -97,8 +103,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                             UseCost(_heelCost);
                             _time = 0;
                         }
+                        _time += Time.deltaTime * _totalRate;
                         _heelCostSlider.value = _time;
-                        _time += Time.deltaTime * _intervalRate;
                         if (m_life <= 0)
                         {
                             GameOver();
@@ -108,7 +114,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                             item.EnemyUpdate();
                         }
 
-                        _enemyManager.EnemySpawnUpdate();
+                        _enemyManager.EnemySpawnUpdate(_totalRate);
                         break;
                 }
                 break;
@@ -139,19 +145,56 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //全体のスピード変更
     public void OnclickSpeedChange()
     {
-        _enemyManager.EnemySpeedChange(false);
-        _intervalRate = _enemyManager.instanceEnemys[0]._speedRate;
+        if (_enemyManager.instanceEnemys.Count > 0)
+        {
+            _enemyManager.EnemySpeedChange(false);
+            //if (_upSpeedButton.colors.normalColor == _upButtonImage.color)
+            //{
+            //    _upButtonImage.color = _upSpeedButton.colors.pressedColor;
+            //}
+            //else
+            //{
+            //    _upButtonImage.color = _upSpeedButton.colors.normalColor;
+
+            //}
+            _totalRate = _enemyManager.instanceEnemys[0]._speedRate;
+        }
+        else
+        {
+            if (_totalRate == 1)
+            {
+                _totalRate = _enemyManager._speedRateUP;
+            }
+            else
+            {
+                _totalRate = 1;
+            }
+        }
     }
     //タワーを持った時にスピ―ドを変化させる
     public void DragSpeedChange()
     {
-        _enemyManager.EnemySpeedChange(true);
-        _intervalRate = _enemyManager.instanceEnemys[0]._speedRate;
+        if (_enemyManager.instanceEnemys.Count > 0)
+        {
+            _enemyManager.EnemySpeedChange(true);
+            _totalRate = _enemyManager.instanceEnemys[0]._speedRate;
+        }
+        else
+        {
+            if (_totalRate == 1)
+            {
+                _totalRate = _enemyManager._speedRateDown;
+            }
+            else
+            {
+                _totalRate = 1;
+            }
+        }
     }
     public void DragSpeedChange(float value)
     {
         _enemyManager.EnemySpeedChange(value);
-        _intervalRate = _enemyManager.instanceEnemys[0]._speedRate;
+        _totalRate = _enemyManager.instanceEnemys[0]._speedRate;
     }
     //コストの使用
     public void UseCost(uint value)

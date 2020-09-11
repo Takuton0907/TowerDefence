@@ -14,8 +14,8 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField] TextAsset _stageText;
 
-    [SerializeField] float _speedRateUP = 2;
-    [SerializeField] float _speedRateDown = 0.3f;
+    public float _speedRateUP = 2;
+    public float _speedRateDown = 0.3f;
 
     public List<EnemyCon> instanceEnemys = new List<EnemyCon>();
 
@@ -26,11 +26,12 @@ public class EnemyManager : MonoBehaviour
     float _time;
 
     //敵のインスタンス
-    private void EnemyInstance(int enemyNum, int spawnNumber)
+    private void EnemyInstance(int enemyNum, int spawnNumber, float rate)
     {
         GameObject obj = Instantiate(_enemyObj[enemyNum], LevelManager.Instance._mapDate.GetStart()[spawnNumber] + new Vector3(0.5f, 0.5f, 0) ,Quaternion.identity , _enemyParentObj);
         EnemyCon enemyCon = obj.GetComponent<EnemyCon>();
         enemyCon.EnemyAwake();
+        enemyCon._speedRate = rate;
         instanceEnemys.Add(enemyCon);
         obj.transform.localScale = localSize;
     }
@@ -79,7 +80,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
     //エネミーを出す
-    public void EnemySpawnUpdate()
+    public void EnemySpawnUpdate(float rate)
     {
         if (_count >= _stageTexts.GetLength(0))
         {
@@ -95,13 +96,13 @@ public class EnemyManager : MonoBehaviour
         {    
             if (_enemyObj.Length <= 0 || LevelManager.Instance._mapDate.GetStart().Count <= 0) return;
 
-            EnemyInstance(int.Parse(_stageTexts[_count, 0]), int.Parse(_stageTexts[_count, 1]));
+            EnemyInstance(int.Parse(_stageTexts[_count, 0]), int.Parse(_stageTexts[_count, 1]), rate);
 
             _count++;
 
             _time = 0;
         }
-        _time += Time.deltaTime;
+        _time += Time.deltaTime * rate;
     }
     //今現在インスタンスされている敵の取得
     public List<EnemyCon> GetEnemys()
