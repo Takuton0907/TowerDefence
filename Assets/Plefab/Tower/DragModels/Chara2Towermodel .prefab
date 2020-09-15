@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1187783115717482981}
   - component: {fileID: 1187783115717482978}
   m_Layer: 0
-  m_Name: TowerModel
+  m_Name: 'Chara2Towermodel '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1187783115717482977}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 6.5, y: 3.5, z: 0}
-  m_LocalScale: {x: 4, y: 4, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -73,7 +73,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: -7411657495074126208, guid: a63207c7a5128ef40ade73050b6c2d66,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -109,9 +110,9 @@ CircleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0, y: 0.15}
   serializedVersion: 2
-  m_Radius: 0.1
+  m_Radius: 0.15
 --- !u!114 &1187783115717482978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -125,5 +126,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 0}
-  TowerPrefab: {fileID: 3785575235828458608, guid: 390a3e14ecee2864c9e2a1f3063a51b5,
+  TowerPrefab: {fileID: 6748482523060929388, guid: 96fadc1bc1d12e34ebac02fe4ef17dbe,
     type: 3}
+  _cost: 10

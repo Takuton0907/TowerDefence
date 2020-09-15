@@ -21,12 +21,16 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     //ゲームのState
     LEVEL_STATE levelState = LEVEL_STATE.Init;
+
     //現在pose中かのState
     POSE _poseState = POSE.InPlay;
+
     //マップのデータ
     public MapDate _mapDate;
+
     //そのステージのEnemyManager
     public EnemyManager _enemyManager;
+
     //守るべきライフ
     public int m_life { private set; get; } = 5;
 
@@ -35,15 +39,19 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //持てるコストの最大値
     [SerializeField]
     uint _maxCost = 100;
+
     //現在使用できるコスト
     [SerializeField]
     public uint _cost { set; get; } = 50; //Private setにしてインスペクターからいじりたい
+
     //costの回復するまでの時間
     [SerializeField]
     float _interval = 5;
+
     //回復するスピードを変化させる
-    float _totalRate = 1;
+    public float _totalRate = 1;
     private float _time;
+
     //一定時間で回復するCostの量
     [SerializeField]
     uint _heelCost = 5;
@@ -51,6 +59,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     Slider _costSlider;
     private Text _costText;
+
     //コストが回復することを示すスライダー
     [SerializeField]
     Slider _heelCostSlider;

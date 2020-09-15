@@ -46,7 +46,7 @@ public class EnemyCon : MonoBehaviour
         }
 
         //_rig2d.velocity = _moveDirection * _speed;
-        transform.position += _moveDirection * _speed * _speedRate;
+        transform.position += _moveDirection * _speed * _speedRate * Time.deltaTime;
     }
 
     private IEnumerator Des()

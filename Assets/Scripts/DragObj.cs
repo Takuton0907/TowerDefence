@@ -38,7 +38,10 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         tilemap = overTileObj.GetComponent <Tilemap>();
         TileMapCon.SetToerMap(ref tilemap, LevelManager.Instance._mapDate, towePosiIndexs);
 
-        _lastSpeedRate = LevelManager.Instance._enemyManager.instanceEnemys[0]._speedRate;
+        if (LevelManager.Instance._enemyManager.instanceEnemys.Count != 0)
+        {
+            _lastSpeedRate = LevelManager.Instance._enemyManager.instanceEnemys[0]._speedRate;
+        }
         LevelManager.Instance.DragSpeedChange();
     }
 
@@ -59,7 +62,14 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         if (copyObj == null) return;
         if (LevelManager.Instance._cost < this._cost) return;
 
-        LevelManager.Instance.DragSpeedChange(_lastSpeedRate);
+        if (_lastSpeedRate == 0)
+        {
+            LevelManager.Instance.DragSpeedChange();
+        }
+        else
+        {
+            LevelManager.Instance.DragSpeedChange(_lastSpeedRate);
+        }
 
         Vector3 posi = Vector3Int.FloorToInt(copyObj.transform.position);
         posi = new Vector3(posi.x + 0.5f, posi.y + 0.5f, 0);
