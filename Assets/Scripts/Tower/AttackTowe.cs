@@ -6,13 +6,21 @@ public class AttackTowe : TowerMonoBehaviur
 {
     [SerializeField] int _attackPowe = 10;
     [SerializeField] float _attackInterval = 2;
-    [SerializeField] float _attckArea = 2;
 
     EnemyCon _attackEnemy;
 
     private void Awake()
     {
+        base.Init();
+
         StartCoroutine(Attack(LevelManager.Instance._enemyManager.instanceEnemys, _attackInterval, _attackPowe));
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+
+        Gizmos.DrawWireSphere(this.transform.position, this._area);
     }
 
     //攻撃
@@ -33,7 +41,7 @@ public class AttackTowe : TowerMonoBehaviur
                 yield return null;
                 for (int i = 0; i < enemy.Count; i++)
                 {
-                    if ((enemy[i].transform.position - transform.position).magnitude <= _attckArea)
+                    if ((enemy[i].transform.position - transform.position).magnitude <= _area)
                     {
                         enemyIndexs.Add(i);
                     }

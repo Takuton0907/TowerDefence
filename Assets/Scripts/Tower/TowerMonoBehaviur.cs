@@ -1,17 +1,20 @@
 ﻿using UnityEngine;
 
-public class TowerMonoBehaviur : MonoBehaviour
+public abstract class TowerMonoBehaviur : MonoBehaviour
 {
-    private Canvas myCanvas;
+    protected Canvas myCanvas;
+
     public Transform parentTransform;
 
-    private void Start()
+    public float _area = 2;
+
+    virtual public void Init()
     {
         myCanvas = GetComponentInChildren<Canvas>();
         myCanvas.gameObject.SetActive(false);
     }
 
-    public void OnClickOpenCanvas()
+    virtual public void OnClickOpenCanvas()
     {
         myCanvas.gameObject.SetActive(true);
     }

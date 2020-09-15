@@ -216,9 +216,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 0}
-  _attackPowe: 10
+  _area: 2
+  _attackPowe: 4
   _attackInterval: 2
-  _attckArea: 2
 --- !u!225 &4159467519294968239
 CanvasGroup:
   m_ObjectHideFlags: 0

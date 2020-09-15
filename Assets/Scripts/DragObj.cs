@@ -43,6 +43,12 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
             _lastSpeedRate = LevelManager.Instance._enemyManager.instanceEnemys[0]._speedRate;
         }
         LevelManager.Instance.DragSpeedChange();
+
+        copyObj.transform.GetChild(0).gameObject.SetActive(true);
+
+        float rect = TowerPrefab.GetComponent<TowerMonoBehaviur>()._area * 0.7f;
+
+        copyObj.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(rect, rect);
     }
 
     public void OnDrag(PointerEventData data)
@@ -58,6 +64,8 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     public void OnEndDrag(PointerEventData data)
     {
+        copyObj.transform.GetChild(0).gameObject.SetActive(false);
+
         if (data == null) return;
         if (copyObj == null) return;
         if (LevelManager.Instance._cost < this._cost) return;
