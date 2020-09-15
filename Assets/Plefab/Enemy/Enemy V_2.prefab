@@ -96,7 +96,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   HP: 10
-  _speed: 0.01
+  _speed: 0.05
+  _speedRate: 1
   _root: []
   count: 0
 --- !u!50 &8268349722977555671

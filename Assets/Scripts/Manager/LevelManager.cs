@@ -61,13 +61,18 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     Button _playButton;
     [SerializeField]
     Button _upSpeedButton;
-    //_upSpeedButtonのImageのメンバー変数
-    Image _upButtonImage;
-    //ボタンの変更する画像
+
+    //Playボタンの変更する画像
     [SerializeField]
     Sprite _playSprite;
     [SerializeField]
     Sprite _stopSprite;
+
+    //ボタンの変更する画像
+    [SerializeField]
+    Sprite _upSprite;
+    [SerializeField]
+    Sprite _nomalSprite;
 
     private new void Awake()
     {
@@ -78,8 +83,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         UseCost(0);
 
         _heelCostSlider.maxValue = _interval;
-
-        _upButtonImage = _upSpeedButton.GetComponent<Image>();
     }
 
     private void Update()
@@ -148,15 +151,14 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         if (_enemyManager.instanceEnemys.Count > 0)
         {
             _enemyManager.EnemySpeedChange(false);
-            //if (_upSpeedButton.colors.normalColor == _upButtonImage.color)
-            //{
-            //    _upButtonImage.color = _upSpeedButton.colors.pressedColor;
-            //}
-            //else
-            //{
-            //    _upButtonImage.color = _upSpeedButton.colors.normalColor;
-
-            //}
+            if (_upSpeedButton.image.sprite == _upSprite)
+            {
+                _upSpeedButton.image.sprite = _nomalSprite;
+            }
+            else
+            {
+                _upSpeedButton.image.sprite = _upSprite;
+            }
             _totalRate = _enemyManager.instanceEnemys[0]._speedRate;
         }
         else
