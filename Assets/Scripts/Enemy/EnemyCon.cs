@@ -14,6 +14,8 @@ public class EnemyCon : MonoBehaviour
 
     Rigidbody2D _rig2d;
 
+    Animator _animator;
+
     public List<MAP_DATE> _root = new List<MAP_DATE>();
 
     private Vector3 _next;
@@ -22,11 +24,13 @@ public class EnemyCon : MonoBehaviour
 
     public void EnemyAwake()
     {
+        _rig2d = GetComponent<Rigidbody2D>();
+        _animator = GetComponent<Animator>();
+
         _root = LevelManager.Instance.Sarch();
         Debug.Log(_root.Count);
         _root.Reverse();
         _moveDirection = NextMove(transform.position);
-        _rig2d = GetComponent<Rigidbody2D>();
     }
 
     public void EnemyUpdate()
@@ -43,6 +47,8 @@ public class EnemyCon : MonoBehaviour
                 return;
             }
             _moveDirection = NextMove(transform.position);
+            _animator.SetFloat("Hori", _moveDirection.x);
+            _animator.SetFloat("Var", _moveDirection.y);
         }
 
         //_rig2d.velocity = _moveDirection * _speed;

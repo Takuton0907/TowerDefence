@@ -1508,18 +1508,29 @@ PrefabInstance:
     - target: {fileID: 5727759108193980218, guid: 6e128681a4274104eacbc2ea3a3c6f45,
         type: 3}
       propertyPath: localSize.x
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5727759108193980218, guid: 6e128681a4274104eacbc2ea3a3c6f45,
         type: 3}
       propertyPath: localSize.y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5727759108193980218, guid: 6e128681a4274104eacbc2ea3a3c6f45,
         type: 3}
       propertyPath: _stageText
       value: 
       objectReference: {fileID: 4900000, guid: 6e83e0158cc21914a99bde249e7e5a0f, type: 3}
+    - target: {fileID: 5727759108193980218, guid: 6e128681a4274104eacbc2ea3a3c6f45,
+        type: 3}
+      propertyPath: _enemyObj.Array.data[0]
+      value: 
+      objectReference: {fileID: 3496203710633920905, guid: a9f64b1fa11042e488be4d41e151f753,
+        type: 3}
+    - target: {fileID: 5727759108193980218, guid: 6e128681a4274104eacbc2ea3a3c6f45,
+        type: 3}
+      propertyPath: localSize.z
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 9016295744498373360, guid: 6e128681a4274104eacbc2ea3a3c6f45,
         type: 3}
       propertyPath: m_Name

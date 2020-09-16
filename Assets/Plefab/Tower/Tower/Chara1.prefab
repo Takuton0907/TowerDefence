@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 8006993532880977498}
   - component: {fileID: 8006993532880977497}
   - component: {fileID: 8006993532880977496}
+  - component: {fileID: -22718775691393880}
   - component: {fileID: 2687342998413022580}
   - component: {fileID: 4159467519294968239}
   m_Layer: 0
@@ -194,7 +195,7 @@ Animator:
   m_GameObject: {fileID: 8006993532880977479}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 45c3cf9031b9002478383e4ae73c5409, type: 2}
+  m_Controller: {fileID: 22100000, guid: ae460f63389e480459717a625dde8dce, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -203,6 +204,21 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!111 &-22718775691393880
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8006993532880977479}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations: []
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!114 &2687342998413022580
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -230,4 +246,4 @@ CanvasGroup:
   m_Alpha: 1
   m_Interactable: 1
   m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
+  m_IgnoreParentGroups: 1

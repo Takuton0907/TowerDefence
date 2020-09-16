@@ -8,21 +8,33 @@ public class AttackTowe : TowerMonoBehaviur
     [SerializeField] float _attackInterval = 2;
 
     EnemyCon _attackEnemy;
+    Animator _animator;
+
+    [Header("AnimationUse")]
+    bool _animatoinUse = true;
+    Animation _animation;
+
+    LineRenderer lineRenderer;
 
     private void Awake()
     {
         base.Init();
 
+        _animator = GetComponent<Animator>();
+
+        if (_animatoinUse) _animation = GetComponent<Animation>();
+        else lineRenderer = GetComponent<LineRenderer>();
+
         StartCoroutine(Attack(LevelManager.Instance._enemyManager.instanceEnemys, _attackInterval, _attackPowe));
     }
-
+#if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
 
         Gizmos.DrawWireSphere(this.transform.position, this._area);
     }
-
+#endif
     //攻撃
     IEnumerator Attack(List<EnemyCon> enemy, float interval, int damage)
     {
@@ -63,6 +75,16 @@ public class AttackTowe : TowerMonoBehaviur
 
 
             enemy[count].Damage(damage);
+
+            if (_animation != null) _animation.Play();
+            //else lineRenderer.
+
+
+            Vector3 distance = (enemy[count].gameObject.transform.position - transform.position).normalized;
+
+            _animator.SetFloat("Hori", distance.x);
+            _animator.SetFloat("Var", distance.y);
+
             if (enemy[count].HP <= 0)
             {
                 enemy.RemoveAt(count);
