@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
-using System.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
-using UnityEngine.UIElements;
 
 public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
@@ -117,6 +115,6 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         LevelManager.Instance._mapDate.mapDates[setPosiIndex].tower = true;
         copyObj.transform.position = LevelManager.Instance._mapDate.mapDates[setPosiIndex].posi + new Vector3(0.5f, 0.5f, 0);
 
-        LevelManager.Instance.UseCost((uint)-_cost);
+        LevelManager.Instance.SetTower((uint)-_cost, copyObj.GetComponent<TowerMonoBehaviur>());
     }
 }

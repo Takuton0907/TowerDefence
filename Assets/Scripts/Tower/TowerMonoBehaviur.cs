@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class TowerMonoBehaviur : MonoBehaviour
 {
@@ -18,4 +20,7 @@ public abstract class TowerMonoBehaviur : MonoBehaviour
     {
         myCanvas.gameObject.SetActive(true);
     }
+
+    public virtual void Action(float speed) {}
+    public virtual void Action(List<EnemyCon> enemy, float speed) { }
 }

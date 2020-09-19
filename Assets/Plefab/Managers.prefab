@@ -46,6 +46,19 @@ MonoBehaviour:
   toDontDestroy: 0
   _mapDate: {fileID: 11400000, guid: fb1def638f29bf949958b26d10f48a9d, type: 2}
   _enemyManager: {fileID: 5727759108193980218}
+  _towerManager: {fileID: 0}
+  _maxCost: 100
+  _interval: 5
+  _totalRate: 1
+  _heelCost: 5
+  _costSlider: {fileID: 0}
+  _heelCostSlider: {fileID: 0}
+  _playButton: {fileID: 0}
+  _upSpeedButton: {fileID: 0}
+  _playSprite: {fileID: 0}
+  _stopSprite: {fileID: 0}
+  _upSprite: {fileID: 0}
+  _nomalSprite: {fileID: 0}
 --- !u!1 &5727759108193980216
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,7 +106,55 @@ MonoBehaviour:
   _enemyObj:
   - {fileID: 4222034404708507673, guid: 1a2a1c20a901d7a468dc75cbb6b2d7db, type: 3}
   localSize: {x: 1, y: 1, z: 1}
+  _stageText: {fileID: 0}
+  _speedRateUP: 2
+  _speedRateDown: 0.3
   instanceEnemys: []
+--- !u!1 &7410621309226265154
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2628120849045769835}
+  - component: {fileID: 4225180913117162379}
+  m_Layer: 0
+  m_Name: TowerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2628120849045769835
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7410621309226265154}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2.369693, y: 2.1518476, z: -0.15796873}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 683208132477481360}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4225180913117162379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7410621309226265154}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6ee94b0cdca46b46b6ecdb08dc37d25, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  instanceTowers: []
+  _speedRate: 1
 --- !u!1 &9016295744498373360
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,6 +184,7 @@ Transform:
   m_Children:
   - {fileID: 5727759108193980217}
   - {fileID: 5727759106989547826}
+  - {fileID: 2628120849045769835}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -219,6 +219,7 @@ MonoBehaviour:
   _area: 4
   _attackPowe: 10
   _attackInterval: 2
+  _attackaAnimObj: {fileID: 100006, guid: f1fca55934f274a4b9c8fd316d61e964, type: 3}
 --- !u!225 &6748482523060929389
 CanvasGroup:
   m_ObjectHideFlags: 0

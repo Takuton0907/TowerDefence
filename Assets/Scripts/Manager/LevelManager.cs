@@ -31,6 +31,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //そのステージのEnemyManager
     public EnemyManager _enemyManager;
 
+    //そのステージのTowerManager
+    public TowerManager _towerManager;
+
     //守るべきライフ
     public int m_life { private set; get; } = 5;
 
@@ -55,6 +58,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //一定時間で回復するCostの量
     [SerializeField]
     uint _heelCost = 5;
+
     //コストを表示するスライダー
     [SerializeField]
     Slider _costSlider;
@@ -65,6 +69,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     Slider _heelCostSlider;
 
     [Header("Button")]
+
     //スピードを変えるボタン群
     [SerializeField]
     Button _playButton;
@@ -127,6 +132,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                         }
 
                         _enemyManager.EnemySpawnUpdate(_totalRate);
+
+                        _towerManager.TowerUpdate(_totalRate);
                         break;
                 }
                 break;
@@ -208,7 +215,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _totalRate = _enemyManager.instanceEnemys[0]._speedRate;
     }
     //コストの使用
-    public void UseCost(uint value)
+    void UseCost(uint value)
     {
         _cost += value;
         //if (_cost > _maxCost)
@@ -217,6 +224,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         //}
         _costText.text = $"{_cost} / {_maxCost}";
         _costSlider.value = (float)_cost / _maxCost;
+    }
+    public void SetTower(uint value, TowerMonoBehaviur tower)
+    {
+        _towerManager.SetTower(tower);
+        UseCost(value);
     }
     //リトライボタンを押したと時の処理
     public void ClickToRePlay()
