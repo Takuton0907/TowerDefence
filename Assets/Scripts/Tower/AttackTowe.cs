@@ -87,7 +87,6 @@ public class AttackTowe : TowerMonoBehaviur
         GameObject animObj = Instantiate(_attackaAnimObj, transform.position, Quaternion.identity);
         TowerAnimBase towerAnimBase = animObj.GetComponent<TowerAnimBase>();
         towerAnimBase.SetAnimDirection(enemy[count].transform.position);
-        towerAnimBase.particleSystem = animObj.GetComponentsInChildren<ParticleSystem>();
         _anims.Add(towerAnimBase);
 
         enemy[count].Damage(_attackPowe);
