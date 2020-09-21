@@ -6,6 +6,8 @@ public abstract class TowerMonoBehaviur : MonoBehaviour
 {
     protected Canvas myCanvas;
 
+    protected Animator _animator;
+
     protected List<TowerAnimBase> _anims = new List<TowerAnimBase>();
 
     public Transform parentTransform;
@@ -16,6 +18,7 @@ public abstract class TowerMonoBehaviur : MonoBehaviour
     {
         myCanvas = GetComponentInChildren<Canvas>();
         myCanvas.gameObject.SetActive(false);
+        _animator = GetComponent<Animator>();
     }
 
     virtual public void OnClickOpenCanvas()
@@ -23,7 +26,7 @@ public abstract class TowerMonoBehaviur : MonoBehaviour
         myCanvas.gameObject.SetActive(true);
     }
 
-    public virtual void RemoveAnim(TowerAnimBase towerAnimBase) { _anims.Remove(towerAnimBase); }
-    public virtual void Action(float speed) {}
+    public virtual void RemoveAnim(TowerAnimBase towerAnimBase) => _anims.Remove(towerAnimBase); 
+    public virtual void Action(float speed) { }
     public virtual void Action(List<EnemyCon> enemy, float speed) { }
 }

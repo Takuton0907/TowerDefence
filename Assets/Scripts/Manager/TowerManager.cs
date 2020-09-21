@@ -19,6 +19,7 @@ public class TowerManager : MonoBehaviour
         foreach (var item in instanceTowers)
         {
             item.Action(LevelManager.Instance._enemyManager.instanceEnemys, rate);
+            item.Action(rate);
         }
     }
 

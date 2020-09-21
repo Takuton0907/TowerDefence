@@ -1,34 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Net.Mail;
-using System.Runtime.InteropServices.WindowsRuntime;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class AttackTowe : TowerMonoBehaviur
 {
+    public enum PowerState
+    {
+        NOMAL,
+        UP,
+        DOWN,
+    }
+
+    public PowerState _powerState = PowerState.NOMAL;
+
     [SerializeField] int _attackPowe = 10;
+    [SerializeField] int _attackBuff = 2;
+    [SerializeField] int _attackDeBuff= -2;
     [SerializeField] float _attackInterval = 2;
 
     EnemyCon _attackEnemy;
-    Animator _animator;
-
-    [Header("AnimationUse")]
-    bool _animatoinUse = true;
 
     [SerializeField] GameObject _attackaAnimObj;
-
-    //List<TowerAnimBase> _anims = new List<TowerAnimBase>();
 
     float _time = 0;
 
     int count = 0;
 
-    private void Awake()
-    {
-        base.Init();
-
-        _animator = GetComponent<Animator>();
-    }
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
@@ -37,6 +33,7 @@ public class AttackTowe : TowerMonoBehaviur
         Gizmos.DrawWireSphere(this.transform.position, this._area);
     }
 #endif
+
     //攻撃
     public override void Action(List<EnemyCon> enemy, float speed)
     {
@@ -57,7 +54,7 @@ public class AttackTowe : TowerMonoBehaviur
 
         if (enemy.Count <= 0) return;
 
-        if (_attackEnemy == null)
+        if (_attackEnemy == null || (_attackEnemy.transform.position - transform.position).magnitude >= _area)
         {
             count = 0;
             int maxCount = 0;
@@ -90,7 +87,18 @@ public class AttackTowe : TowerMonoBehaviur
         towerAnimBase.SetAnimDirection(enemy[count].transform.position, this);
         _anims.Add(towerAnimBase);
 
-        enemy[count].Damage(_attackPowe);
+        switch (_powerState)
+        {
+            case PowerState.NOMAL:
+                enemy[count].Damage(_attackPowe);
+                break;
+            case PowerState.UP:
+                enemy[count].Damage(_attackPowe + _attackBuff);
+                break;
+            case PowerState.DOWN:
+                enemy[count].Damage(_attackPowe + _attackDeBuff);
+                break;
+        }
 
         Vector3 distance = (enemy[count].gameObject.transform.position - transform.position).normalized;
 

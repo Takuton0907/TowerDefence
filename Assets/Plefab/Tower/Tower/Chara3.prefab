@@ -109,8 +109,8 @@ GameObject:
   - component: {fileID: 7383899480457270595}
   - component: {fileID: 7383899480457270592}
   - component: {fileID: 7383899480457270593}
-  - component: {fileID: 7383899480457270598}
   - component: {fileID: 7383899480457270599}
+  - component: {fileID: -6234619886321267071}
   m_Layer: 0
   m_Name: Chara3
   m_TagString: Untagged
@@ -203,23 +203,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &7383899480457270598
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7383899480457270596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 00a4e00479ae2f548bdec8d6727079d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  parentTransform: {fileID: 0}
-  _area: 1
-  _attackPowe: 8
-  _attackInterval: 2
-  _attackaAnimObj: {fileID: 100006, guid: f1fca55934f274a4b9c8fd316d61e964, type: 3}
 --- !u!225 &7383899480457270599
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -232,3 +215,20 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
+--- !u!114 &-6234619886321267071
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7383899480457270596}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3f3b65a1cb8a5004aac3b9312713c467, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  parentTransform: {fileID: 0}
+  _area: 2
+  _attackBaff: 1.3
+  _effectObj: {fileID: 3700030413073489953, guid: 2403834c788b538429e81b97e019feab,
+    type: 3}
