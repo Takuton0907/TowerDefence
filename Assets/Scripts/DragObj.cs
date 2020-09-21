@@ -33,13 +33,14 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
         towePosiIndexs = LevelManager.Instance.GetIndexs(TILE.SET_TOWER);
         GameObject overTileObj = GameObject.FindGameObjectWithTag("OverTile");
-        tilemap = overTileObj.GetComponent <Tilemap>();
+        tilemap = overTileObj.GetComponent<Tilemap>();
         TileMapCon.SetToerMap(ref tilemap, LevelManager.Instance._mapDate, towePosiIndexs);
 
         if (LevelManager.Instance._enemyManager.instanceEnemys.Count != 0)
         {
             _lastSpeedRate = LevelManager.Instance._enemyManager.instanceEnemys[0]._speedRate;
         }
+
         LevelManager.Instance.DragSpeedChange();
 
         copyObj.transform.GetChild(0).gameObject.SetActive(true);
@@ -64,9 +65,21 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     {
         copyObj.transform.GetChild(0).gameObject.SetActive(false);
 
-        if (data == null) return;
-        if (copyObj == null) return;
-        if (LevelManager.Instance._cost < this._cost) return;
+        if (data == null)
+        {
+            Destroy(copyObj);
+            return;
+        }
+        if (copyObj == null)
+        {
+            Destroy(copyObj);
+            return;
+        }
+        if (LevelManager.Instance._cost < this._cost)
+        {
+            Destroy(copyObj);
+            return;
+        }
 
         if (_lastSpeedRate == 0)
         {
@@ -79,6 +92,22 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
         Vector3 posi = Vector3Int.FloorToInt(copyObj.transform.position);
         posi = new Vector3(posi.x + 0.5f, posi.y + 0.5f, 0);
+
+        foreach (var item in LevelManager.Instance._mapDate.mapDates)
+        {
+            if (item.posi == posi)
+            {
+                if (item.tower == true)
+                {
+
+                    Destroy(copyObj);
+                    return;
+                }
+                break;
+            }
+        }
+
+
         tilemap.ClearAllTiles();
 
         Destroy(copyObj);

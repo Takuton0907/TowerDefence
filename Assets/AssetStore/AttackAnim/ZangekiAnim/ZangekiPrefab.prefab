@@ -148,5 +148,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _animTargetPosi: {x: 0, y: 0, z: 0}
   _animSpeed: 0
-  particleSystem: []
-  animations: []
+  _animationTime: 0.5

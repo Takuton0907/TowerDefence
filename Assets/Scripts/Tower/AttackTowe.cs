@@ -17,7 +17,7 @@ public class AttackTowe : TowerMonoBehaviur
 
     [SerializeField] GameObject _attackaAnimObj;
 
-    List<TowerAnimBase> _anims = new List<TowerAnimBase>();
+    //List<TowerAnimBase> _anims = new List<TowerAnimBase>();
 
     float _time = 0;
 
@@ -47,6 +47,7 @@ public class AttackTowe : TowerMonoBehaviur
             foreach (var item in _anims)
             {
                 item.AnimUpdate(speed);
+                item.Deth();
             }
         }
 
@@ -86,7 +87,7 @@ public class AttackTowe : TowerMonoBehaviur
 
         GameObject animObj = Instantiate(_attackaAnimObj, transform.position, Quaternion.identity);
         TowerAnimBase towerAnimBase = animObj.GetComponent<TowerAnimBase>();
-        towerAnimBase.SetAnimDirection(enemy[count].transform.position);
+        towerAnimBase.SetAnimDirection(enemy[count].transform.position, this);
         _anims.Add(towerAnimBase);
 
         enemy[count].Damage(_attackPowe);
