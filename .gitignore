@@ -65,6 +65,3 @@ crashlytics-build.properties
 *.meta
 #But not source file with postfix. which is everything but a folder
 !*.*.meta
-Assets/40+ Simple Icons - Free/
-Assets/simple UI & icons/
-Assets/AssetStore/
