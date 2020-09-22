@@ -130,10 +130,9 @@ public static class TileMapCon
     {
         tilemap.ClearAllTiles();        
 
-
-
         foreach (var item in indexs)
         {
+            //Debug.Log(mapDate.mapDates[item].tower);
             if (mapDate.mapDates[item].tower == false)
             {
                 tilemap.SetTile(mapDate.mapDates[item].posi, mapDate.overTile);

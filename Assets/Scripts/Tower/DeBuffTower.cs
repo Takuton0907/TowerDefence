@@ -1,20 +1,18 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class DeBuffTower : TowerMonoBehaviur
 {
     [SerializeField] GameObject _effectObj;
 
-    int _count = 0;
-
-    float _time = 0;
-
     public override void Init()
     {
         base.Init();
 
-        Instantiate(_effectObj, transform.position, Quaternion.identity);
+        GameObject effect = Instantiate(_effectObj, transform.position, Quaternion.identity, gameObject.transform);
+        effect.transform.localScale = new Vector3(_area / 10 + 1, _area / 10 + 1, effect.transform.localScale.z);
     }
 
 #if UNITY_EDITOR

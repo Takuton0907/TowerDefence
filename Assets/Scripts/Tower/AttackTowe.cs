@@ -84,7 +84,7 @@ public class AttackTowe : TowerMonoBehaviur
             _attackEnemy = enemy[count];
         }
 
-        GameObject animObj = Instantiate(_attackaAnimObj, transform.position, Quaternion.identity);
+        GameObject animObj = Instantiate(_attackaAnimObj, transform.position, Quaternion.identity, gameObject.transform);
         TowerAnimBase towerAnimBase = animObj.GetComponent<TowerAnimBase>();
         towerAnimBase.SetAnimDirection(enemy[count].transform.position, this);
         _anims.Add(towerAnimBase);

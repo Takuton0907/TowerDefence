@@ -373,4 +373,21 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             item.states = TILE_STATAS.Opne;
         }
     }
+    //タワーの削除
+    public void OnClickRemoveChara(TowerMonoBehaviur tower)
+    {
+        List<int> indexs = GetIndexs(TILE.SET_TOWER);
+        foreach (var item in indexs)
+        {
+            Vector3 posi = tower.transform.position;
+            posi -= new Vector3(0.5f, 0.5f, 0);
+            //Debug.Log($"_mapDate.mapDates[item].posi = {_mapDate.mapDates[item].posi} towerPosi = {posi}");
+            if (_mapDate.mapDates[item].posi == posi)
+            {
+                _mapDate.mapDates[item].tower = false;
+                break;
+            }
+        }
+        _towerManager.instanceTowers.Remove(tower);
+    }
 }

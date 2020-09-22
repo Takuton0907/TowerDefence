@@ -4,7 +4,7 @@ using UnityEngine;
 
 public abstract class TowerMonoBehaviur : MonoBehaviour
 {
-    protected Canvas myCanvas;
+    [SerializeField] protected GameObject _UIObject;
 
     protected Animator _animator;
 
@@ -16,16 +16,19 @@ public abstract class TowerMonoBehaviur : MonoBehaviour
 
     virtual public void Init()
     {
-        myCanvas = GetComponentInChildren<Canvas>();
-        myCanvas.gameObject.SetActive(false);
+        _UIObject.SetActive(false);
         _animator = GetComponent<Animator>();
     }
 
     virtual public void OnClickOpenCanvas()
     {
-        myCanvas.gameObject.SetActive(true);
+        _UIObject.SetActive(true);
     }
-
+    public virtual void OnClickRemoveTower()
+    {
+        LevelManager.Instance.OnClickRemoveChara(this);
+        Destroy(gameObject);
+    }
     public virtual void RemoveAnim(TowerAnimBase towerAnimBase) => _anims.Remove(towerAnimBase); 
     public virtual void Action(float speed) { }
     public virtual void Action(List<EnemyCon> enemy, float speed) { }

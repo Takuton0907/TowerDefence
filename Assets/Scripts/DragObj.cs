@@ -95,12 +95,15 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
         foreach (var item in LevelManager.Instance._mapDate.mapDates)
         {
-            if (item.posi == posi)
+            //Debug.Log($"item.posi = {item.posi} posi = {posi}");
+            if (item.posi == posi - new Vector3(0.5f, 0.5f, 0))
             {
                 if (item.tower == true)
                 {
 
                     Destroy(copyObj);
+
+                    tilemap.ClearAllTiles();
                     return;
                 }
                 break;

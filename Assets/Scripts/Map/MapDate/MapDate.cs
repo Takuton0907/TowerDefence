@@ -182,5 +182,5 @@ public class MAP_DATE
     public int H;                                   //スタート位置からの移動コスト
     public int S;                                   //合計コスト
     public MAP_DATE parentDate;                     //移動してきた経路
-    public bool tower = false;
+    public bool tower = false;                      //towerが設置してあるか
 }
