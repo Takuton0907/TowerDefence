@@ -12,7 +12,7 @@ public class DeBuffTower : TowerMonoBehaviur
         base.Init();
 
         GameObject effect = Instantiate(_effectObj, transform.position, Quaternion.identity, gameObject.transform);
-        effect.transform.localScale = new Vector3(_area / 10 + 1, _area / 10 + 1, effect.transform.localScale.z);
+        effect.transform.GetChild(0).localScale = new Vector3(_area / 10, _area / 10, _area / 10);
     }
 
 #if UNITY_EDITOR
