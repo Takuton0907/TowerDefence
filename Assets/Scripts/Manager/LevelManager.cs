@@ -105,7 +105,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         {
             case LEVEL_STATE.Init:
                 _enemyManager.EnemyManagerInit();
-                //_spown = StartCoroutine(_enemyManager.EnemySpawnUpdate());
                 levelState = LEVEL_STATE.Play;
                 break;
             case LEVEL_STATE.Play:

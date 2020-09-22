@@ -5,12 +5,25 @@ using UnityEngine;
 
 public class EnemyCon : MonoBehaviour
 {
+    public enum EnemySpeedState
+    {
+        NOMAL,
+        UP,
+        DOWN,
+    }
+    public EnemySpeedState _enemySpeed = EnemySpeedState.NOMAL;
+
     private bool _active = true;
 
     public int HP = 10;
+
     [SerializeField] float _speed = 1;
 
+    [SerializeField] float _downSpeed = 0.1f;
+
     public float _speedRate = 1;
+
+    [SerializeField] GameObject _animObj;
 
     Rigidbody2D _rig2d;
 
@@ -52,6 +65,33 @@ public class EnemyCon : MonoBehaviour
         }
 
         //_rig2d.velocity = _moveDirection * _speed;
+
+        switch (_enemySpeed)
+        {
+            case EnemySpeedState.NOMAL:
+                if (_animObj.activeSelf == true)
+                {
+                    _animObj.SetActive(false);
+                }
+                transform.position += _moveDirection * _speed * _speedRate * Time.deltaTime;
+                break;
+            case EnemySpeedState.DOWN:
+                if (_animObj.activeSelf == false)
+                {
+                    _animObj.SetActive(true);
+                }
+                transform.position += _moveDirection * _speed * _speedRate * Time.deltaTime * _downSpeed;
+
+                _enemySpeed = EnemySpeedState.NOMAL;
+                break;
+            default:
+                if (_animObj.activeSelf == true)
+                {
+                    _animObj.SetActive(false);
+                }
+                transform.position += _moveDirection * _speed * _speedRate * Time.deltaTime;
+                break;
+        }
         transform.position += _moveDirection * _speed * _speedRate * Time.deltaTime;
     }
 

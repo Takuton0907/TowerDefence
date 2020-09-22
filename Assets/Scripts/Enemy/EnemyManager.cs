@@ -89,7 +89,7 @@ public class EnemyManager : MonoBehaviour
             return;
         }
 
-        if (_time > int.Parse(_stageTexts[_count, 2]))
+        if (_time > float.Parse(_stageTexts[_count, 2]))
         {    
             if (_enemyObj.Length <= 0 || LevelManager.Instance._mapDate.GetStart().Count <= 0) return;
 

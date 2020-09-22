@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1187783115717482981}
   - component: {fileID: 1187783115717482978}
   m_Layer: 0
-  m_Name: 'Chara2Towermodel '
+  m_Name: 'Chara4Towermodel '
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31,7 +31,7 @@ Transform:
   m_LocalPosition: {x: 6.5, y: 3.5, z: 0}
   m_LocalScale: {x: 120, y: 120, z: 120}
   m_Children:
-  - {fileID: 7587770412160455253}
+  - {fileID: 7754962757606299775}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -72,9 +72,9 @@ SpriteRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -1365232871
-  m_SortingLayer: 2
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: -7411657495074126208, guid: a63207c7a5128ef40ade73050b6c2d66,
+  m_Sprite: {fileID: 6296825273973849312, guid: 86bc87249f6afe44e9cfeb1dc93914f1,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -127,10 +127,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 0}
-  TowerPrefab: {fileID: 6748482523060929388, guid: 96fadc1bc1d12e34ebac02fe4ef17dbe,
+  TowerPrefab: {fileID: 1411082712938735301, guid: a9c2f4076b64c104aba8d912b3f15539,
     type: 3}
   _cost: 10
---- !u!1 &5000892594940415156
+--- !u!1 &5643363571435687216
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -138,23 +138,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7587770412160455253}
-  - component: {fileID: 466041132335575590}
-  - component: {fileID: 5710509235440773100}
+  - component: {fileID: 7754962757606299775}
+  - component: {fileID: 1846170091769627556}
+  - component: {fileID: 5809838180172683584}
   m_Layer: 5
-  m_Name: Image (1)
+  m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &7587770412160455253
+  m_IsActive: 0
+--- !u!224 &7754962757606299775
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5000892594940415156}
+  m_GameObject: {fileID: 5643363571435687216}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -167,21 +167,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 2, y: 2}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!222 &466041132335575590
+--- !u!222 &1846170091769627556
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5000892594940415156}
+  m_GameObject: {fileID: 5643363571435687216}
   m_CullTransparentMesh: 0
---- !u!114 &5710509235440773100
+--- !u!114 &5809838180172683584
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5000892594940415156}
+  m_GameObject: {fileID: 5643363571435687216}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}

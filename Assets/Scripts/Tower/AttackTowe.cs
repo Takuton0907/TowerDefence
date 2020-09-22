@@ -21,6 +21,8 @@ public class AttackTowe : TowerMonoBehaviur
 
     [SerializeField] GameObject _attackaAnimObj;
 
+    [SerializeField] GameObject _buffAnimObj;
+
     float _time = 0;
 
     int count = 0;
@@ -90,9 +92,17 @@ public class AttackTowe : TowerMonoBehaviur
         switch (_powerState)
         {
             case PowerState.NOMAL:
+                if (_buffAnimObj.activeSelf == true)
+                {
+                    _buffAnimObj.SetActive(false);
+                }
                 enemy[count].Damage(_attackPowe);
                 break;
             case PowerState.UP:
+                if (_buffAnimObj.activeSelf == false)
+                {
+                    _buffAnimObj.SetActive(true);
+                }
                 enemy[count].Damage(_attackPowe + _attackBuff);
                 break;
             case PowerState.DOWN:

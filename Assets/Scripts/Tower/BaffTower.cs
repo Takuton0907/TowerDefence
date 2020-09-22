@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class BaffTower : TowerMonoBehaviur
 {
-    [SerializeField] float _attackBaff = 1.3f;
-
     [SerializeField] GameObject _effectObj;
 
     int _count = 0;
