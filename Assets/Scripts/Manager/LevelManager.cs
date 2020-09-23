@@ -68,6 +68,12 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     Slider _heelCostSlider;
 
+    //タワーを置ける最大数
+    [SerializeField] int _maxTowerCount = 5;
+
+    //現在のタワー数を表示するテキスト
+    [SerializeField] Text _towerCostText;
+
     [Header("Button")]
 
     //スピードを変えるボタン群
@@ -389,5 +395,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             }
         }
         _towerManager.instanceTowers.Remove(tower);
+    }
+
+    public bool HasTowerCount()
+    {
+        return _towerManager.instanceTowers.Count < _maxTowerCount ? true: false ;
     }
 }

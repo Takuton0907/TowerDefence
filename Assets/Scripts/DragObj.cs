@@ -19,6 +19,8 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     //オブジェクトを持ち始める
     public void OnBeginDrag(PointerEventData data)
     {
+        if (!LevelManager.Instance.HasTowerCount()) return;
+
         if (data == null) return;
         if (LevelManager.Instance._cost < this._cost)
         {
@@ -52,6 +54,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     public void OnDrag(PointerEventData data)
     {
+        if (!LevelManager.Instance.HasTowerCount()) return;
         if (data == null) return;
         if (copyObj == null) return;
         if (LevelManager.Instance._cost < this._cost) return;
@@ -63,6 +66,8 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     public void OnEndDrag(PointerEventData data)
     {
+        if (!LevelManager.Instance.HasTowerCount()) return;
+
         copyObj.transform.GetChild(0).gameObject.SetActive(false);
 
         if (data == null)
