@@ -6,6 +6,7 @@ using UnityEngine.Tilemaps;
 public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     public Transform parentTransform;
+
     [SerializeField] GameObject TowerPrefab;
 
     GameObject copyObj;
@@ -31,7 +32,6 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         Debug.Log("OnBeginDrag");
         copyObj = Instantiate(gameObject, gameObject.transform.position, Quaternion.identity, transform.parent);
         copyObj.GetComponent<CanvasGroup>().blocksRaycasts = false;
-        copyObj.transform.SetParent(transform.parent);
 
         towePosiIndexs = LevelManager.Instance.GetIndexs(TILE.SET_TOWER);
         GameObject overTileObj = GameObject.FindGameObjectWithTag("OverTile");
@@ -49,7 +49,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
         float rect = TowerPrefab.GetComponent<TowerMonoBehaviur>()._area * 0.7f;
 
-        copyObj.GetComponentInChildren<RectTransform>().sizeDelta = new Vector2(rect, rect);
+        copyObj.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(rect, rect);
     }
 
     public void OnDrag(PointerEventData data)

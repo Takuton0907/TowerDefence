@@ -82,7 +82,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   parentTransform: {fileID: 0}
-  TowerPrefab: {fileID: 6053120952385819620, guid: 6966e0f48c9cf4b4ea3d18fd451be169,
+  TowerPrefab: {fileID: 8006993532880977479, guid: 199e70f0c39b1174c8dba0feaff69b32,
     type: 3}
   _cost: 10
 --- !u!222 &6641561462476266285
