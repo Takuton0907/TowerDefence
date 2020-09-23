@@ -82,6 +82,14 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     [Header("Button")]
 
+    //キャラを退却させるボタン
+    [SerializeField]
+    Button _removeButton;
+
+    //背面に見えないように設置するボタン
+    [SerializeField]
+    Button _backgroundButton;
+
     //スピードを変えるボタン群
     [SerializeField]
     Button _playButton;
@@ -411,7 +419,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 break;
             }
         }
+        TowerTextUpdate();
         _towerManager.instanceTowers.Remove(tower);
+        Destroy(tower.gameObject);
     }
     //タワーが置けるかの判定
     public bool HasTowerCount()
@@ -427,5 +437,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public void LifeUpdate()
     {
         _lifeText.text = $"{m_life} / {_maxLife}";
+    }
+    //Removeボタンの操作
+    public void RemoveButoonMove()
+    {
+        _removeButton.transform.parent = _backgroundButton.transform;
+        Debug.Log("OKOKOKOKOK");
     }
 }
