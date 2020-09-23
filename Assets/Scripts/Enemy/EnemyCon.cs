@@ -99,6 +99,7 @@ public class EnemyCon : MonoBehaviour
     {
         yield return null;
         LevelManager.Instance._enemyManager.DestroyEnemy(gameObject.GetComponent<EnemyCon>());
+
         Destroy(gameObject);
     }
 
@@ -108,6 +109,7 @@ public class EnemyCon : MonoBehaviour
 
         if (HP <= 0)
         {
+            LevelManager.Instance.UseCost();
             Destroy(gameObject);
         }
     }

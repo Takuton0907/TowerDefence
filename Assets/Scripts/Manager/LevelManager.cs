@@ -36,6 +36,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     //守るべきライフ
     public int m_life { private set; get; } = 5;
+    int _maxLife;
+
+    [SerializeField]
+    Text _lifeText;
 
     [Header("CostParam")]
 
@@ -69,10 +73,12 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     Slider _heelCostSlider;
 
     //タワーを置ける最大数
-    [SerializeField] int _maxTowerCount = 5;
+    [SerializeField] 
+    int _maxTowerCount = 5;
 
     //現在のタワー数を表示するテキスト
-    [SerializeField] Text _towerCostText;
+    [SerializeField] 
+    Text _towerCostText;
 
     [Header("Button")]
 
@@ -105,6 +111,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _heelCostSlider.maxValue = _interval;
 
         TowerTextUpdate();
+
+        _maxLife = m_life;
     }
 
     private void Update()
@@ -222,6 +230,12 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _totalRate = _enemyManager.instanceEnemys[0]._speedRate;
     }
     //コストの使用
+    public void UseCost()
+    {
+        _cost += _heelCost;
+        _costText.text = $"{_cost} / {_maxCost}";
+        _costSlider.value = (float)_cost / _maxCost;
+    }
     void UseCost(uint value)
     {
         _cost += value;
@@ -262,6 +276,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public void Damage()
     {
         m_life--;
+        LifeUpdate();
     }
     // 指定したTiteStatasのオブジェクト取得
     public List<int> GetIndexs(TILE tileStatas)
@@ -406,6 +421,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //タワーのテキスト更新
     public void TowerTextUpdate()
     {
-        _towerCostText.text = $"{_towerManager.instanceTowers.Count} / {_maxTowerCount}";
+        _towerCostText.text = $"残り配置可能数 : {_maxTowerCount - _towerManager.instanceTowers.Count}";
+    }
+    //ライフの更新
+    public void LifeUpdate()
+    {
+        _lifeText.text = $"{m_life} / {_maxLife}";
     }
 }
