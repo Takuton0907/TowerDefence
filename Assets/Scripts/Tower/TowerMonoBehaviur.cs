@@ -27,6 +27,7 @@ public abstract class TowerMonoBehaviur : MonoBehaviour
     public virtual void OnClickRemoveTower()
     {
         LevelManager.Instance.OnClickRemoveChara(this);
+        LevelManager.Instance.TowerTextUpdate();
         Destroy(gameObject);
     }
     public virtual void RemoveAnim(TowerAnimBase towerAnimBase) => _anims.Remove(towerAnimBase); 

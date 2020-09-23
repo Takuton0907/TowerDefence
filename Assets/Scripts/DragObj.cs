@@ -68,8 +68,6 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
     {
         if (!LevelManager.Instance.HasTowerCount()) return;
 
-        copyObj.transform.GetChild(0).gameObject.SetActive(false);
-
         if (data == null)
         {
             Destroy(copyObj);
@@ -84,6 +82,11 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         {
             Destroy(copyObj);
             return;
+        }
+
+        for (int i = 0; i < copyObj.transform.childCount; i++)
+        {
+            copyObj.transform.GetChild(i).gameObject.SetActive(false);
         }
 
         if (_lastSpeedRate == 0)
@@ -156,5 +159,9 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         towerMonoBehaviur.Init();
 
         LevelManager.Instance.SetTower((uint)-_cost, towerMonoBehaviur);
+
+        LevelManager.Instance.TowerTextUpdate();
+
+        copyObj = null;
     }
 }

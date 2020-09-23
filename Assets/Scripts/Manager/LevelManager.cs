@@ -103,6 +103,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         UseCost(0);
 
         _heelCostSlider.maxValue = _interval;
+
+        TowerTextUpdate();
     }
 
     private void Update()
@@ -396,9 +398,14 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         }
         _towerManager.instanceTowers.Remove(tower);
     }
-
+    //タワーが置けるかの判定
     public bool HasTowerCount()
     {
-        return _towerManager.instanceTowers.Count < _maxTowerCount ? true: false ;
+        return _towerManager.instanceTowers.Count <= _maxTowerCount ? true: false ;
+    }
+    //タワーのテキスト更新
+    public void TowerTextUpdate()
+    {
+        _towerCostText.text = $"{_towerManager.instanceTowers.Count} / {_maxTowerCount}";
     }
 }
