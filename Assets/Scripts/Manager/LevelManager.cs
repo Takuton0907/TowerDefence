@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Cinemachine;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
@@ -9,6 +10,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     {
         Init,
         Play,
+        CharaSelect,
         Clear,
         GameOver,
     }
@@ -55,8 +57,12 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     float _interval = 5;
 
-    //回復するスピードを変化させる
+    //スピードを変化させる
     public float _totalRate = 1;
+
+    //キャラを選択しているときのスピード
+    [SerializeField]
+    private float _selectRate = 0.1f;
     private float _time;
 
     //一定時間で回復するCostの量
@@ -108,6 +114,14 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     Sprite _nomalSprite;
 
+    [Header("Camera")]
+    //ゲームシーン全体を見ているカメラ
+    [SerializeField]
+    CinemachineVirtualCamera _maneVcam;
+    //各キャラにフォーカスするためのカメラ
+    [SerializeField]
+    CinemachineVirtualCamera _charaVcam;
+
     private new void Awake()
     {
         _mapDate.MapDateReset();
@@ -157,6 +171,35 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                         _enemyManager.EnemySpawnUpdate(_totalRate);
 
                         _towerManager.TowerUpdate(_totalRate);
+                        break;
+                }
+                break;
+            case LEVEL_STATE.CharaSelect:
+                switch (_poseState)
+                {
+                    case POSE.Pose:
+                        break;
+                    case POSE.InPlay:
+                        //コストの回復
+                        if (_time > _interval)
+                        {
+                            UseCost(_heelCost);
+                            _time = 0;
+                        }
+                        _time += Time.deltaTime * _selectRate;
+                        _heelCostSlider.value = _time;
+                        if (m_life <= 0)
+                        {
+                            GameOver();
+                        }
+                        foreach (var item in _enemyManager.instanceEnemys)
+                        {
+                            item.EnemyUpdate();
+                        }
+
+                        _enemyManager.EnemySpawnUpdate(_selectRate);
+
+                        _towerManager.TowerUpdate(_selectRate);
                         break;
                 }
                 break;
@@ -438,10 +481,36 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     {
         _lifeText.text = $"{m_life} / {_maxLife}";
     }
-    //Removeボタンの操作
-    public void RemoveButoonMove()
+    //キャラクターをクリックしたときの動作
+    public void CahraClick(GameObject target)
     {
-        _removeButton.transform.parent = _backgroundButton.transform;
-        Debug.Log("OKOKOKOKOK");
+        levelState = LEVEL_STATE.CharaSelect;
+
+        _enemyManager.EnemySpeedChange(_selectRate);
+
+        _charaVcam.Priority = _maneVcam.Priority + 1;
+        _charaVcam.Follow = target.transform;
+        _charaVcam.LookAt = target.transform;
+
+        _backgroundButton.gameObject.SetActive(true);
+    }
+    //BackGroundボタンを押したときの動作
+    public void OnClickBackGroundButton()
+    {
+        levelState = LEVEL_STATE.Play;
+        _enemyManager.EnemySpeedChange(_totalRate);
+
+        _charaVcam.Priority = _maneVcam.Priority - 1;
+        _backgroundButton.gameObject.SetActive(false);
+        TowerMonoBehaviur tower = _charaVcam.m_Follow.GetComponent<TowerMonoBehaviur>();
+        tower.CloseCanvas();
+    }
+
+    public void CameraReset()
+    {
+        levelState = LEVEL_STATE.Play;
+        _enemyManager.EnemySpeedChange(_totalRate);
+        _charaVcam.Priority = _maneVcam.Priority - 1;
+        _backgroundButton.gameObject.SetActive(false);
     }
 }

@@ -21,6 +21,28 @@ public enum TILE_STATAS
 
 public static class TileMapCon
 {
+    public static void CreateBackGround(ref Tilemap tilemap, MapDate mapDate)
+    {
+        tilemap.ClearAllTiles();
+
+        Vector2 size = new Vector2(70, 50);
+        for (int x = -(int)size.x / 2; x < (int)size.x / 2; ++x)
+        {
+            for (int y = (int)size.y /2; y >= -(int)size.y / 2; --y)
+            {
+                Vector3Int posi = new Vector3Int(x, y, 0);
+                if (Probability(50))
+                {
+                    tilemap.SetTile(posi, mapDate.wall[0]);
+                }
+                else
+                {
+                    tilemap.SetTile(posi, mapDate.wall[1]);
+                }
+            }
+        }
+    }
+
     public static void OutputPosition(Tilemap tilemap)
     {
         var builder = new StringBuilder();

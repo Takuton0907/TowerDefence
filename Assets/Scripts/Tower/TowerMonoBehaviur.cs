@@ -22,11 +22,13 @@ public abstract class TowerMonoBehaviur : MonoBehaviour
     virtual public void OnClickOpenCanvas()
     {
         _UIObject.SetActive(true);
+        LevelManager.Instance.CahraClick(gameObject);
     }
+    public virtual void CloseCanvas() => _UIObject.SetActive(false); 
     public virtual void OnClickRemoveTower()
     {
         LevelManager.Instance.OnClickRemoveChara(this);
-        LevelManager.Instance.TowerTextUpdate();
+        LevelManager.Instance.CameraReset();
         Destroy(gameObject);
     }
     public virtual void RemoveAnim(TowerAnimBase towerAnimBase) => _anims.Remove(towerAnimBase); 
