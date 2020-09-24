@@ -122,6 +122,18 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     CinemachineVirtualCamera _charaVcam;
 
+    [Header("Clear")]
+    [SerializeField]
+    CanvasGroup _clearCanvasGroup;
+    [SerializeField]
+    GameObject _clearTextObj;
+
+    [Header("GameOver")]
+    [SerializeField]
+    CanvasGroup _gameOverCanvasGroup;
+    [SerializeField]
+    GameObject _gameOverTextObj;
+
     private new void Awake()
     {
         _mapDate.MapDateReset();
@@ -313,6 +325,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         Time.timeScale = 1;
 
         levelState = LEVEL_STATE.GameOver;
+        
+        _gameOverTextObj.SetActive(true);
+
+        _gameOverCanvasGroup.alpha = 1;
+
         Debug.Log("GameOver");
     }
     //ステージクリア後の処理
@@ -321,6 +338,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         Time.timeScale = 1;
 
         levelState = LEVEL_STATE.Clear;
+
+        _clearTextObj.SetActive(true);
+
+        _clearCanvasGroup.alpha = 1;
+
         Debug.Log("GameClear");
     }
     //敵がタワーにたどり着いたときに呼び出す
