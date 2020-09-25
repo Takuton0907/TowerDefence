@@ -13,6 +13,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         CharaSelect,
         Clear,
         GameOver,
+        Result,
     }
 
     public enum POSE
@@ -134,6 +135,17 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     GameObject _gameOverTextObj;
 
+    [Header("ResultsUI")]
+
+    [SerializeField]
+    GameObject[] _results;
+    [SerializeField]
+    Animation _ClearTextAnimation;
+
+    [SerializeField]
+    Animator _gameOverAnimator;
+
+
     private new void Awake()
     {
         _mapDate.MapDateReset();
@@ -216,8 +228,36 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 }
                 break;
             case LEVEL_STATE.Clear:
+                if (!_ClearTextAnimation.isPlaying)
+                {
+                    if (m_life == _maxLife)
+                    {
+                        _results[0].SetActive(true);
+                    }
+                    else if (m_life >= _maxLife / 2)
+                    {
+                        _results[1].SetActive(true);
+                    }
+                    else
+                    {
+                        _results[2].SetActive(true);
+                    }
+
+                    levelState = LEVEL_STATE.Result;
+                }
                 break;
             case LEVEL_STATE.GameOver:
+                if (_gameOverAnimator.IsInTransition(0))
+                {
+                    Debug.Log("animFin");
+                }
+                    break;
+            case LEVEL_STATE.Result:
+
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Debug.Log("ステージクリア");
+                }
                 break;
             default:
                 break;
@@ -328,7 +368,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         
         _gameOverTextObj.SetActive(true);
 
+        _gameOverAnimator = _gameOverTextObj.GetComponent<Animator>();
+
         _gameOverCanvasGroup.alpha = 1;
+
+        _gameOverCanvasGroup.blocksRaycasts = true;
 
         Debug.Log("GameOver");
     }
@@ -341,7 +385,13 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         _clearTextObj.SetActive(true);
 
+        _ClearTextAnimation = _clearTextObj.GetComponent<Animation>();
+
+        _ClearTextAnimation.Play();
+
         _clearCanvasGroup.alpha = 1;
+
+        _clearCanvasGroup.blocksRaycasts = true;
 
         Debug.Log("GameClear");
     }
@@ -527,7 +577,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         TowerMonoBehaviur tower = _charaVcam.m_Follow.GetComponent<TowerMonoBehaviur>();
         tower.CloseCanvas();
     }
-
+    //元のカメラへ戻す
     public void CameraReset()
     {
         levelState = LEVEL_STATE.Play;
