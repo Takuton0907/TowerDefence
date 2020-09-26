@@ -55,6 +55,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public void SetClearValue(string key, int value)
     {
+        Debug.Log(key);
         if (stageResalts.ContainsKey(key))
         {
             if (stageResalts[key] <= value)
@@ -70,6 +71,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public int GetResaltValue(string key)
     {
+        Debug.Log(key);
         if (stageResalts.ContainsKey(key))
         {
             return stageResalts[key];

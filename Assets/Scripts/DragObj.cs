@@ -17,6 +17,11 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
     float _lastSpeedRate;
 
+    private void Awake()
+    {
+        parentTransform = GameObject.FindGameObjectWithTag("Map").transform;
+    }
+
     //オブジェクトを持ち始める
     public void OnBeginDrag(PointerEventData data)
     {

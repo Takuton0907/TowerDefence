@@ -1,6 +1,7 @@
 ﻿using Cinemachine;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
@@ -244,14 +245,17 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     if (m_life == _maxLife)
                     {
+                        GameManager.Instance.SetClearValue(SceneManager.GetActiveScene().name, 3);
                         _results[0].SetActive(true);
                     }
                     else if (m_life >= _maxLife / 2)
                     {
+                        GameManager.Instance.SetClearValue(SceneManager.GetActiveScene().name, 2);
                         _results[1].SetActive(true);
                     }
                     else
                     {
+                        GameManager.Instance.SetClearValue(SceneManager.GetActiveScene().name, 1);
                         _results[2].SetActive(true);
                     }
 

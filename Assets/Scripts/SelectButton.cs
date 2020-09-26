@@ -8,7 +8,7 @@ public class SelectButton : MonoBehaviour
     [SerializeField]
     GameObject _star;
 
-    private void Awake()
+    private void Start()
     {
         int count = GameManager.Instance.GetResaltValue(gameObject.name);
         Text text = GetComponentInChildren<Text>();
