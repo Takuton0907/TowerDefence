@@ -8,29 +8,8 @@ using System.Collections.Generic;
 /// <summary>
 /// シーン遷移時のフェードイン・アウトを制御するためのクラス .
 /// </summary>
-public class FadeManager : MonoBehaviour
+public class FadeManager : SingletonMonoBehaviour<FadeManager>
 {
-
-	#region Singleton
-
-	private static FadeManager instance;
-
-	public static FadeManager Instance {
-		get {
-			if (instance == null) {
-				instance = (FadeManager)FindObjectOfType (typeof(FadeManager));
-
-				if (instance == null) {
-					Debug.LogError (typeof(FadeManager) + "is nothing");
-				}
-			}
-
-			return instance;
-		}
-	}
-
-	#endregion Singleton
-
 	/// <summary>
 	/// デバッグモード .
 	/// </summary>
@@ -39,17 +18,13 @@ public class FadeManager : MonoBehaviour
 	private float fadeAlpha = 0;
 	/// <summary>フェード中かどうか</summary>
 	private bool isFading = false;
-	/// <summary>フェード色</summary>
-	public Color fadeColor = Color.black;
+    /// <summary>フェード色</summary>
+    public Color fadeColor = Color.black;
 
 
-	public void Awake ()
+    public new void Awake()
 	{
-		if (this != Instance) {
-			Destroy (this.gameObject);
-			return;
-		}
-
+		base.Awake();
 		DontDestroyOnLoad (this.gameObject);
 	}
 
@@ -125,10 +100,9 @@ public class FadeManager : MonoBehaviour
 			time += Time.deltaTime;
 			yield return 0;
 		}
-
 		//シーン切替 .
 		SceneManager.LoadScene (scene);
-
+        
 		//だんだん明るく .
 		time = 0;
 		while (time <= interval) {

@@ -26,8 +26,8 @@ public class SelectSceneManager : MonoBehaviour
             name = name.Substring(0, name.Length - 6);
             Button button = Instantiate(_selectButton, _parentTrans);
             button.name = name;
+            name = name.Substring(2);
             button.GetComponentInChildren<Text>().text = name;
-            Debug.Log(name);
         }
     }
 

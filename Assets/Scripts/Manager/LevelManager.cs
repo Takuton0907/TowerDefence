@@ -261,6 +261,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             case LEVEL_STATE.GameOver:
                 if (_gameOverAnimator.IsInTransition(0))
                 {
+                    FadeManager.Instance.LoadScene("SELECT", 1);
                     Debug.Log("animFin");
                 }
                     break;
@@ -268,6 +269,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
                 if (Input.GetMouseButtonDown(0))
                 {
+                    FadeManager.Instance.LoadScene("SELECT", 1);
                     Debug.Log("ステージクリア");
                 }
                 break;

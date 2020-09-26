@@ -9,5 +9,4 @@ public class RuntimeInitializer
         var manager = GameObject.Instantiate(Resources.Load("Manager"));
         GameObject.DontDestroyOnLoad(manager);
     }
-
 } // class RuntimeInitializer
