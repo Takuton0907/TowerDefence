@@ -44,6 +44,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     Text _lifeText;
 
+    //一番初めの敵が出るまでの時間
+    [SerializeField]
+    float _starInterval = 1;
+
     [Header("CostParam")]
 
     //持てるコストの最大値
@@ -52,7 +56,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     //現在使用できるコスト
     [SerializeField]
-    public uint _cost { set; get; } = 50; //Private setにしてインスペクターからいじりたい
+    public uint _cost { set; get; } = 50; 
 
     //costの回復するまでの時間
     [SerializeField]
@@ -158,6 +162,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         TowerTextUpdate();
 
+        _clearCanvasGroup.blocksRaycasts = true;
+
         _maxLife = m_life;
     }
 
@@ -166,8 +172,14 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         switch (levelState)
         {
             case LEVEL_STATE.Init:
-                _enemyManager.EnemyManagerInit();
-                levelState = LEVEL_STATE.Play;
+                if (_time >= _starInterval)
+                {
+                    _clearCanvasGroup.blocksRaycasts = false;
+                    _enemyManager.EnemyManagerInit();
+                    _time = 0;
+                    levelState = LEVEL_STATE.Play;
+                }
+                _time += Time.deltaTime;
                 break;
             case LEVEL_STATE.Play:
                 switch (_poseState)

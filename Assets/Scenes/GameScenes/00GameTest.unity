@@ -1927,6 +1927,11 @@ PrefabInstance:
       propertyPath: _ClearTextAnimation
       value: 
       objectReference: {fileID: 1546250941}
+    - target: {fileID: 5727759106989547825, guid: 6e128681a4274104eacbc2ea3a3c6f45,
+        type: 3}
+      propertyPath: _starInterval
+      value: 1.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5727759108193980218, guid: 6e128681a4274104eacbc2ea3a3c6f45,
         type: 3}
       propertyPath: _enemyParentObj
@@ -3908,7 +3913,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -4005,7 +4010,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4272,7 +4277,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 1
+  m_FillAmount: 0.5
   m_FillClockwise: 1
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
@@ -7336,7 +7341,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 1
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.5
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
