@@ -23,7 +23,9 @@ public class SelectSceneManager : MonoBehaviour
             string name = AssetDatabase.GUIDToAssetPath(item);
 
             if (name == assetsPath + "/MapDates") continue;
-
+#if !UNITY_EDITOR
+            if (name == assetsPath + "/testMap")continue;
+#endif
             name = name.Substring("Assets/Resources/".Length);
 
             Button button = Instantiate(_selectButton, _parentTrans);
@@ -33,6 +35,4 @@ public class SelectSceneManager : MonoBehaviour
             button.GetComponentInChildren<Text>().text = name;
         }
     }
-
-
 }
