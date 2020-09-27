@@ -9,7 +9,7 @@ public class EnemyManager : MonoBehaviour
 
     [SerializeField] Vector3 localSize = Vector3.zero;
 
-    [SerializeField] TextAsset _stageText;
+    public TextAsset _stageText;
 
     public float _speedRateUP = 2;
     public float _speedRateDown = 0.3f;

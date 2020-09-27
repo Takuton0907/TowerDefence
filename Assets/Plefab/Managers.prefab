@@ -47,18 +47,34 @@ MonoBehaviour:
   _mapDate: {fileID: 11400000, guid: fb1def638f29bf949958b26d10f48a9d, type: 2}
   _enemyManager: {fileID: 5727759108193980218}
   _towerManager: {fileID: 0}
+  _lifeText: {fileID: 0}
+  _starInterval: 1
   _maxCost: 100
   _interval: 5
   _totalRate: 1
+  _selectRate: 0.1
   _heelCost: 5
   _costSlider: {fileID: 0}
   _heelCostSlider: {fileID: 0}
+  _maxTowerCount: 5
+  _towerCostText: {fileID: 0}
+  _removeButton: {fileID: 0}
+  _backgroundButton: {fileID: 0}
   _playButton: {fileID: 0}
   _upSpeedButton: {fileID: 0}
   _playSprite: {fileID: 0}
   _stopSprite: {fileID: 0}
   _upSprite: {fileID: 0}
   _nomalSprite: {fileID: 0}
+  _maneVcam: {fileID: 0}
+  _charaVcam: {fileID: 0}
+  _clearCanvasGroup: {fileID: 0}
+  _clearTextObj: {fileID: 0}
+  _gameOverCanvasGroup: {fileID: 0}
+  _gameOverTextObj: {fileID: 0}
+  _results: []
+  _ClearTextAnimation: {fileID: 0}
+  _gameOverAnimator: {fileID: 0}
 --- !u!1 &5727759108193980216
 GameObject:
   m_ObjectHideFlags: 0
@@ -109,7 +125,8 @@ MonoBehaviour:
   _stageText: {fileID: 0}
   _speedRateUP: 2
   _speedRateDown: 0.3
-  instanceEnemys: []
+  instanceEnemys:
+  - {fileID: 6038550826789875924, guid: a9f64b1fa11042e488be4d41e151f753, type: 3}
 --- !u!1 &7410621309226265154
 GameObject:
   m_ObjectHideFlags: 0

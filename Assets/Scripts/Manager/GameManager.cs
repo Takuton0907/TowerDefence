@@ -17,6 +17,8 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     Dictionary<string, int> stageResalts = new Dictionary<string, int>();
 
+    public string nextGameStagePath;
+
     private void Update()
     {
         switch (_gameState)
@@ -71,7 +73,6 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 
     public int GetResaltValue(string key)
     {
-        Debug.Log(key);
         if (stageResalts.ContainsKey(key))
         {
             return stageResalts[key];

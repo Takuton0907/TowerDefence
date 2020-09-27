@@ -55,6 +55,7 @@ public class MapDateCreator : EditorWindow
         Tilemap tilemap = tilemapObj.GetComponent<Tilemap>();
         TileMapCon.SetMap(ref tilemap, date);
         tilemapObj.transform.parent = gameObject.transform;
+        tilemapObj.tag = "Map";
 
         //キャラをDrag中に見せるタイルの作成
         GameObject overTileObj = new GameObject("OverTile");

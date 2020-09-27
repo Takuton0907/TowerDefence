@@ -1,5 +1,6 @@
 ﻿using Cinemachine;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,6 +16,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         Clear,
         GameOver,
         Result,
+        Fin,
     }
 
     public enum POSE
@@ -153,6 +155,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     private new void Awake()
     {
+        GameSetting(GameManager.Instance.nextGameStagePath);
+
         _mapDate.MapDateReset();
 
         _costText = _costSlider.GetComponentInChildren<Text>();
@@ -245,17 +249,17 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     if (m_life == _maxLife)
                     {
-                        GameManager.Instance.SetClearValue(SceneManager.GetActiveScene().name, 3);
+                        GameManager.Instance.SetClearValue(GameManager.Instance.nextGameStagePath, 3);
                         _results[0].SetActive(true);
                     }
                     else if (m_life >= _maxLife / 2)
                     {
-                        GameManager.Instance.SetClearValue(SceneManager.GetActiveScene().name, 2);
+                        GameManager.Instance.SetClearValue(GameManager.Instance.nextGameStagePath, 2);
                         _results[1].SetActive(true);
                     }
                     else
                     {
-                        GameManager.Instance.SetClearValue(SceneManager.GetActiveScene().name, 1);
+                        GameManager.Instance.SetClearValue(GameManager.Instance.nextGameStagePath, 1);
                         _results[2].SetActive(true);
                     }
 
@@ -267,6 +271,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     FadeManager.Instance.LoadScene("SELECT", 1);
                     Debug.Log("animFin");
+                    levelState = LEVEL_STATE.Fin;
                 }
                     break;
             case LEVEL_STATE.Result:
@@ -275,6 +280,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     FadeManager.Instance.LoadScene("SELECT", 1);
                     Debug.Log("ステージクリア");
+                    levelState = LEVEL_STATE.Fin;
                 }
                 break;
             default:
@@ -602,5 +608,29 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _enemyManager.EnemySpeedChange(_totalRate);
         _charaVcam.Priority = _maneVcam.Priority - 1;
         _backgroundButton.gameObject.SetActive(false);
+    }
+    //ゲームスタート時に選択されたステージのアセットを取ってくる
+    private void GameSetting(string datePath)
+    {
+        Debug.Log(datePath);
+
+        Object[] assets = Resources.LoadAll(datePath);
+
+        foreach (var item in assets)
+        {
+            if (item as TextAsset != null)
+            {
+                _enemyManager._stageText = item as TextAsset;
+            }
+            else if (item as MapDate != null)
+            {
+                _mapDate = item as MapDate;
+            }
+            else if (item as GameObject != null)
+            {
+                GameObject map = Instantiate(item as GameObject);
+                map.transform.position = new Vector3();
+            }
+        }
     }
 }

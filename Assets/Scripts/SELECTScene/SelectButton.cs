@@ -20,6 +20,7 @@ public class SelectButton : MonoBehaviour
 
     public void OcClickGameStart()
     {
-        FadeManager.Instance.LoadScene(gameObject.name, 1.5f);
+        GameManager.Instance.nextGameStagePath = gameObject.name;
+        FadeManager.Instance.LoadScene("GAME", 1.5f);
     }
 }
