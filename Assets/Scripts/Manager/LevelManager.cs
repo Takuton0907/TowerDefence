@@ -386,6 +386,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //ゲームオーバー後の処理
     private void GameOver()
     {
+        TowerSoundOFF();
+
         Time.timeScale = 1;
 
         levelState = LEVEL_STATE.GameOver;
@@ -403,6 +405,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //ステージクリア後の処理
     public void StageClear()
     {
+        TowerSoundOFF();
+
         Time.timeScale = 1;
 
         levelState = LEVEL_STATE.Clear;
@@ -631,6 +635,15 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 GameObject map = Instantiate(item as GameObject);
                 map.transform.position = new Vector3();
             }
+        }
+    }
+    //タワーの音をすべて消す
+    private void TowerSoundOFF()
+    {
+        foreach (var item in _towerManager.instanceTowers)
+        {
+            item.SoundOFF();
+            item.StopEffect();
         }
     }
 }

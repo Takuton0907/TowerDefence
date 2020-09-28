@@ -15,6 +15,16 @@ public class BaffTower : TowerMonoBehaviur
         GameObject effect = Instantiate(_effectObj, transform.position, Quaternion.identity, gameObject.transform);
 
         effect.transform.GetChild(0).localScale = new Vector3(_area / 10, _area / 10, _area / 10);
+
+        if (_actionAudio != null)
+        {
+            if (!_actionAudio.isPlaying)
+            {
+                _actionAudio.Play();
+
+                _actionAudio.loop = true;
+            }
+        }
     }
 
 #if UNITY_EDITOR

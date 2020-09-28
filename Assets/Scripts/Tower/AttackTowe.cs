@@ -110,6 +110,14 @@ public class AttackTowe : TowerMonoBehaviur
                 break;
         }
 
+        if (_actionAudio != null)
+        {
+            if (!_actionAudio.isPlaying)
+            {
+                _actionAudio.Play();
+            }
+        }
+
         Vector3 distance = (enemy[count].gameObject.transform.position - transform.position).normalized;
 
         _animator.SetFloat("Hori", distance.x);
