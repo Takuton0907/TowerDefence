@@ -14,7 +14,7 @@ public static class LoadText
     public static string LoadTextDate(string textName)
     {
         TextAsset textasset = new TextAsset(); //テキストファイルのデータを取得するインスタンスを作成
-        textasset = Resources.Load("MapDate/" + textName, typeof(TextAsset)) as TextAsset; //Resourcesフォルダから対象テキストを取得
+        textasset = Resources.Load("Stages/00MapDates/" + textName, typeof(TextAsset)) as TextAsset; //Resourcesフォルダから対象テキストを取得
         return textasset.text;
     }
 

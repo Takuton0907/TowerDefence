@@ -14,7 +14,7 @@ public class StageCreateWindow : ScriptableWizard
 
     [SerializeField]
     TextAsset mapDate;
-    string MAP_DATE_PATH = "Assets/Resources/Stages/MapDates/testMap.csv";
+    string MAP_DATE_PATH = "Assets/Resources/Stages/00MapDates/testMap.csv";
 
     TileBase overTile;
     public TileBase load;
@@ -36,7 +36,7 @@ public class StageCreateWindow : ScriptableWizard
     [Header("Enemys")]
     [SerializeField]
     TextAsset enemyDate;
-    string ENEMY_DATE_PATH = "Assets/Resources/Stages/testMap/Stage1.csv";
+    string ENEMY_DATE_PATH = "Assets/Resources/Stages/01testMap/Stage1.csv";
 
     private void Awake()
     {
@@ -67,6 +67,20 @@ public class StageCreateWindow : ScriptableWizard
 
     private void OnWizardCreate()
     {
+        string[] names = AssetDatabase.FindAssets("t:Folder", new[] { "Assets/Resources/Stages" });
 
+        string folderPath = AssetDatabase.CreateFolder("Assets/Resources/Stages",names.Length.ToString("00") + "TestFolder");
+        
+        string path = AssetDatabase.GUIDToAssetPath(folderPath);
+
+        path += "/";
+
+        MapDate date = MapDateCreator.CreateMapDate(mapDate, path);
+
+        MapDateCreator.CreatePrefab(date, path);
+
+        AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(enemyDate), path + enemyDate.name + ".csv");
+
+        Debug.Log($"以下のフォルダに作成し\n{enemyDate.name}も移動しました\n{path}");
     }
 }

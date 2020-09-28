@@ -155,7 +155,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     private new void Awake()
     {
-        GameSetting(GameManager.Instance.nextGameStagePath);
+        if (GameManager.Instance.nextGameStagePath != string.Empty) GameSetting(GameManager.Instance.nextGameStagePath);
 
         _mapDate.MapDateReset();
 
