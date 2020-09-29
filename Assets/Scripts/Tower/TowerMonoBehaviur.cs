@@ -8,6 +8,8 @@ public abstract class TowerMonoBehaviur : MonoBehaviour
 
     [SerializeField] protected AudioSource _actionAudio;
 
+    public GameObject _buffAnimObj;
+
     protected Animator _animator;
 
     protected List<TowerAnimBase> _anims = new List<TowerAnimBase>();

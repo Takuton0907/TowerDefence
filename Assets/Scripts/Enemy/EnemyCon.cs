@@ -25,6 +25,8 @@ public class EnemyCon : MonoBehaviour
 
     [SerializeField] GameObject _animObj;
 
+    [SerializeField] GameObject _desAnim;
+
     Rigidbody2D _rig2d;
 
     Animator _animator;
@@ -40,7 +42,7 @@ public class EnemyCon : MonoBehaviour
         _rig2d = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
 
-        _root = LevelManager.Instance.Sarch();
+        _root = LevelManager.Instance.Sarch(transform.position);
         Debug.Log(_root.Count);
         _root.Reverse();
         _moveDirection = NextMove(transform.position);
@@ -98,6 +100,7 @@ public class EnemyCon : MonoBehaviour
     private IEnumerator Des()
     {
         yield return null;
+
         LevelManager.Instance._enemyManager.DestroyEnemy(gameObject.GetComponent<EnemyCon>());
 
         Destroy(gameObject);
@@ -110,6 +113,7 @@ public class EnemyCon : MonoBehaviour
         if (HP <= 0)
         {
             LevelManager.Instance.UseCost();
+            Instantiate(_desAnim, transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
     }

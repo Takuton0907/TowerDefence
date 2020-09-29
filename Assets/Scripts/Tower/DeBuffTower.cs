@@ -13,6 +13,8 @@ public class DeBuffTower : TowerMonoBehaviur
 
         GameObject effect = Instantiate(_effectObj, transform.position, Quaternion.identity, gameObject.transform);
         effect.transform.GetChild(0).localScale = new Vector3(_area / 10, _area / 10, _area / 10);
+
+        SoundManager.Instance.SetDeeffectAudio(_actionAudio.clip);
     }
 
 #if UNITY_EDITOR

@@ -27,6 +27,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
 #if UNITY_EDITOR
                 if (SceneManager.GetActiveScene().name == "TITLE")
                 {
+                    StartCoroutine(SoundManager.Instance.SetBgmAudio());
                     _gameState = GAMESTATE.TITLE;
                 }
                 else if (SceneManager.GetActiveScene().name == "SELECT")
@@ -38,6 +39,11 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
                     _gameState = GAMESTATE.GAME;
                 }
 #endif
+                if (_gameState == GAMESTATE.INIT)
+                {
+                    StartCoroutine(SoundManager.Instance.SetBgmAudio());
+                    _gameState = GAMESTATE.TITLE;
+                }
                 break;
             case GAMESTATE.TITLE:
                 if (Input.GetMouseButtonDown(0))

@@ -152,6 +152,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     Animator _gameOverAnimator;
 
+    [Header("Sounds")]
+
+    [SerializeField]
+    AudioClip _bgmClip;
 
     private new void Awake()
     {
@@ -170,6 +174,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _clearCanvasGroup.blocksRaycasts = true;
 
         _maxLife = m_life;
+
+        StartCoroutine(SoundManager.Instance.SetBgmAudio(_bgmClip)); 
     }
 
     private void Update()
@@ -269,6 +275,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             case LEVEL_STATE.GameOver:
                 if (_gameOverAnimator.IsInTransition(0))
                 {
+                    _gameOverAnimator.enabled = false;
                     FadeManager.Instance.LoadScene("SELECT", 1);
                     Debug.Log("animFin");
                     levelState = LEVEL_STATE.Fin;
@@ -282,6 +289,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                     Debug.Log("ステージクリア");
                     levelState = LEVEL_STATE.Fin;
                 }
+                break;
+            case LEVEL_STATE.Fin:
                 break;
             default:
                 break;
@@ -400,6 +409,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         _gameOverCanvasGroup.blocksRaycasts = true;
 
+        TowerSoundOFF();
+
         Debug.Log("GameOver");
     }
     //ステージクリア後の処理
@@ -420,6 +431,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _clearCanvasGroup.alpha = 1;
 
         _clearCanvasGroup.blocksRaycasts = true;
+
+        TowerSoundOFF();
 
         Debug.Log("GameClear");
     }
@@ -469,11 +482,24 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         return vs;
     }
     //敵が進む道を検索
-    public List<MAP_DATE> Sarch()
+    public List<MAP_DATE> Sarch(Vector3 posi)
     {
         TileOpen();
 
-        int dateIndex = _mapDate.GetStartIndex();
+        posi = Vector3Int.FloorToInt(posi);
+        posi = new Vector3(posi.x, posi.y, 0);
+
+        //int dateIndex = _mapDate.GetStartIndex();
+        int dateIndex = 0;
+        for (int i = 0; i < _mapDate.mapDates.Count; i++)
+        {
+            if (_mapDate.mapDates[i].posi == posi)
+            {
+                dateIndex = i;
+                break;
+            }
+        }
+
         var openList = new List<int>();
 
         return Aster(dateIndex, openList);
@@ -481,6 +507,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //A*の実装
     private List<MAP_DATE> Aster(int index, List<int> list)
     {
+        List<int> goalIndexs = _mapDate.GetGoalIndex();
+
+        int startIndex = index;
+
         for (int i = 0; i < 1000; i++)
         {
             if (_mapDate.mapDates[index].tileBaseNum == (int)TILE.GOAL)
@@ -507,8 +537,13 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             //距離の計算
             foreach (var item in mapIndexs)
             {
-                _mapDate.mapDates[item].C = _mapDate.GetCost(index, _mapDate.GetGoalIndex());
-                _mapDate.mapDates[item].H = _mapDate.GetCost(_mapDate.GetStartIndex(), index);
+                int minGoalValue = int.MaxValue;
+                foreach (var ind in goalIndexs) 
+                    if (minGoalValue > _mapDate.GetCost(index, ind))
+                        minGoalValue = _mapDate.GetCost(index, ind);
+
+                _mapDate.mapDates[item].C = _mapDate.GetCost(index, minGoalValue);
+                _mapDate.mapDates[item].H = _mapDate.GetCost(startIndex, index);
                 _mapDate.mapDates[item].S = _mapDate.mapDates[item].C + _mapDate.mapDates[item].H;
                 //Debug.Log("C = " + _mapDate.mapDates[item].C + " H = " + _mapDate.mapDates[item].H);
             }
@@ -644,6 +679,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         {
             item.SoundOFF();
             item.StopEffect();
+            if (item._buffAnimObj)
+            {
+                item._buffAnimObj.SetActive(false);
+            }
         }
     }
 }

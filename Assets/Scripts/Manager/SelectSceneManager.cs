@@ -12,10 +12,16 @@ public class SelectSceneManager : MonoBehaviour
     [SerializeField]
     Transform _parentTrans;
 
+    AudioSource _bgmAudio;
+
     string assetsPath = "Assets/Resources/Stages";
 
     private void Awake()
     {
+        _bgmAudio = GetComponent<AudioSource>();
+
+        StartCoroutine(SoundManager.Instance.SetBgmAudio(_bgmAudio.clip));
+
         string[] names = AssetDatabase.FindAssets("t:Folder", new[] { assetsPath });
 
         foreach (var item in names)

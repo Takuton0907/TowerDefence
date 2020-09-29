@@ -21,8 +21,6 @@ public class AttackTowe : TowerMonoBehaviur
 
     [SerializeField] GameObject _attackaAnimObj;
 
-    [SerializeField] GameObject _buffAnimObj;
-
     float _time = 0;
 
     int count = 0;

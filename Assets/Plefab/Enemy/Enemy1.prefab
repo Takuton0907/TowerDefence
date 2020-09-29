@@ -123,6 +123,7 @@ MonoBehaviour:
   _downSpeed: 0.1
   _speedRate: 1
   _animObj: {fileID: 8640647510719296211}
+  _desAnim: {fileID: 100000, guid: 41caabb81e9bb9f468feae7e763002e2, type: 3}
   _root: []
   count: 0
 --- !u!50 &3132356541746979835

@@ -44,16 +44,18 @@ public class MapDate : ScriptableObject
     }
 
     //マップデータのゴールのIndex獲得
-    public int GetGoalIndex()
+    public List<int> GetGoalIndex()
     {
+        List<int> indexs = new List<int>();
+
         for (int i = 0; i < mapDates.Count; i++)
         {
             if (mapDates[i].tileBaseNum == (int)TILE.GOAL)
             {
-                return i;
+                indexs.Add(i);
             }
         }
-        return 1000;
+        return indexs;
     }
 
     //敵のスタート位置の取得

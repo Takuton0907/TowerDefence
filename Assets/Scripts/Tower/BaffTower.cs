@@ -16,15 +16,7 @@ public class BaffTower : TowerMonoBehaviur
 
         effect.transform.GetChild(0).localScale = new Vector3(_area / 10, _area / 10, _area / 10);
 
-        if (_actionAudio != null)
-        {
-            if (!_actionAudio.isPlaying)
-            {
-                _actionAudio.Play();
-
-                _actionAudio.loop = true;
-            }
-        }
+        SoundManager.Instance.SetEffectAudio(_actionAudio.clip);
     }
 
 #if UNITY_EDITOR
