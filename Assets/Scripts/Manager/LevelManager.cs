@@ -282,7 +282,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 }
                     break;
             case LEVEL_STATE.Result:
-
                 if (Input.GetMouseButtonDown(0))
                 {
                     FadeManager.Instance.LoadScene("SELECT", 1);

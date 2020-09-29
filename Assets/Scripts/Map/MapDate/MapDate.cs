@@ -140,22 +140,34 @@ public class MapDate : ScriptableObject
     {
         List<int> dates = new List<int>();
 
-        if (StartMapDateIndex - (int)mapSize.y > 0)
+        int sizY = 0;
+
+        if (StartMapDateIndex > mapSize.y)
+        {
+            sizY = StartMapDateIndex % (int)mapSize.y;
+        }
+        else
+        {
+            sizY = StartMapDateIndex;
+        }
+
+        //上下左右の判定
+        if (StartMapDateIndex - (int)mapSize.x >= 0)
         {
             //左
             dates.Add(StartMapDateIndex - (int)mapSize.y);
         }
-        if (StartMapDateIndex + (int)mapSize.y < mapDates.Count)
+        if (StartMapDateIndex + (int)mapSize.x <= mapSize.x * mapSize.y)
         {
             //右
             dates.Add(StartMapDateIndex + (int)mapSize.y);
         }
-        if (StartMapDateIndex % mapSize.y - 1 > 0)
+        if (sizY - 1 >= 0)
         {
             //上
             dates.Add(StartMapDateIndex - 1);
         }
-        if (StartMapDateIndex % mapSize.y - 1 < mapSize.y)
+        if (sizY + 1 <= mapSize.y)
         {
             //下
             dates.Add(StartMapDateIndex + 1);
