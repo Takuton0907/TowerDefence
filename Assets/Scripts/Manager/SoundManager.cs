@@ -13,6 +13,14 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
 
     [SerializeField] AudioSource _titleSound;
 
+    private float nomalPitch; 
+
+    private new void Awake()
+    {
+        base.Awake();
+        nomalPitch = _BGMSudio.pitch;
+    }
+
     public void SetEffectAudio(AudioClip clip)
     {
         _buffEffectAudios.clip = clip;
@@ -76,5 +84,15 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
     {
         _buffEffectAudios.clip = null;
         _deBuffEffectAudios.clip = null;
+    }
+
+    public void BGMUpPitch()
+    {
+        _BGMSudio.pitch = 1.3f;
+    }
+
+    public void BGMDownPitch()
+    {
+        _BGMSudio.pitch = nomalPitch;
     }
 }

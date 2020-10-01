@@ -10,7 +10,7 @@ public class StageCreateWindow : ScriptableWizard
     [Header("MapDates")]
     [SerializeField]
     GameObject gameRoot;
-    string GAMEROOT_PATH = "Assets/Plefab/GameRoot.prefab";
+    string GAMEROOT_PATH = "Assets/Plefab/Managers/GameRoot.prefab";
 
     [SerializeField]
     TextAsset mapDate;

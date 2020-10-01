@@ -1,18 +1,17 @@
 ﻿using Cinemachine;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using Debug = UnityEngine.Debug;
 
 public class LevelManager : SingletonMonoBehaviour<LevelManager>
 {
-    private enum LEVEL_STATE
+    public enum LEVEL_STATE
     {
         Init,
         Play,
         CharaSelect,
+        Fever,
         Clear,
         GameOver,
         Result,
@@ -143,7 +142,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     GameObject _gameOverTextObj;
 
     [Header("ResultsUI")]
-
     [SerializeField]
     GameObject[] _results;
     [SerializeField]
@@ -153,9 +151,24 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     Animator _gameOverAnimator;
 
     [Header("Sounds")]
-
     [SerializeField]
     AudioClip _bgmClip;
+
+    [Header("Fever")]
+    [SerializeField]
+    Slider _feverslider;
+    [SerializeField]
+    private float _feverTime = 15;
+    [SerializeField]
+    int _useFeverCost = 15;
+    [SerializeField]
+    private uint _feverFinHeelCost = 30;
+    //[SerializeField]
+    //private AudioClip _feverBgm;
+    [SerializeField]
+    GameObject _feverButtonEffect;
+    [SerializeField]
+    GameObject _feverEffects;
 
     private new void Awake()
     {
@@ -188,7 +201,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                     _clearCanvasGroup.blocksRaycasts = false;
                     _enemyManager.EnemyManagerInit();
                     _time = 0;
-                    levelState = LEVEL_STATE.Play;
+                    ChangeLevelState(LEVEL_STATE.Play);
+                    //levelState = LEVEL_STATE.Play;
                 }
                 _time += Time.deltaTime;
                 break;
@@ -250,6 +264,36 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                         break;
                 }
                 break;
+            case LEVEL_STATE.Fever:
+                switch (_poseState)
+                {
+                    case POSE.Pose:
+                        break;
+                    case POSE.InPlay:
+                        _time += Time.deltaTime * _totalRate;
+
+                        if (m_life <= 0)
+                        {
+                            GameOver();
+                        }
+                        foreach (var item in _enemyManager.instanceEnemys)
+                        {
+                            item.EnemyUpdate();
+                        }
+
+                        _enemyManager.EnemySpawnUpdate(_totalRate);
+
+                        _towerManager.TowerUpdate(_totalRate);
+
+                        _feverslider.value = (_feverTime - _time) / _feverTime;
+
+                        if (_time >= _feverTime)
+                        {
+                            ChangeLevelState(LEVEL_STATE.Play);
+                        }
+                        break;
+                }
+                break;
             case LEVEL_STATE.Clear:
                 if (!_ClearTextAnimation.isPlaying)
                 {
@@ -269,7 +313,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                         _results[2].SetActive(true);
                     }
 
-                    levelState = LEVEL_STATE.Result;
+                    ChangeLevelState(LEVEL_STATE.Result);
+                    //levelState = LEVEL_STATE.Result;
                 }
                 break;
             case LEVEL_STATE.GameOver:
@@ -278,7 +323,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                     _gameOverAnimator.enabled = false;
                     FadeManager.Instance.LoadScene("SELECT", 1);
                     Debug.Log("animFin");
-                    levelState = LEVEL_STATE.Fin;
+
+                    ChangeLevelState(LEVEL_STATE.Fin);
+                    //levelState = LEVEL_STATE.Fin;
                 }
                     break;
             case LEVEL_STATE.Result:
@@ -286,7 +333,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     FadeManager.Instance.LoadScene("SELECT", 1);
                     Debug.Log("ステージクリア");
-                    levelState = LEVEL_STATE.Fin;
+
+                    ChangeLevelState(LEVEL_STATE.Fin);
+                    //levelState = LEVEL_STATE.Fin;
                 }
                 break;
             case LEVEL_STATE.Fin:
@@ -370,6 +419,15 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _cost += _heelCost;
         _costText.text = $"{_cost} / {_maxCost}";
         _costSlider.value = (float)_cost / _maxCost;
+
+        if (_cost <= _useFeverCost)
+        {
+            _feverButtonEffect.SetActive(true);
+        }
+        else
+        {
+            _feverButtonEffect.SetActive(false);
+        }
     }
     void UseCost(uint value)
     {
@@ -380,16 +438,20 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         //}
         _costText.text = $"{_cost} / {_maxCost}";
         _costSlider.value = (float)_cost / _maxCost;
+
+        if (_cost <= _useFeverCost)
+        {
+            _feverButtonEffect.SetActive(true);
+        }
+        else
+        {
+            _feverButtonEffect.SetActive(false);
+        }
     }
     public void SetTower(uint value, TowerMonoBehaviur tower)
     {
         _towerManager.SetTower(tower);
         UseCost(value);
-    }
-    //リトライボタンを押したと時の処理
-    public void ClickToRePlay()
-    {
-        levelState = LEVEL_STATE.Init;
     }
     //ゲームオーバー後の処理
     private void GameOver()
@@ -398,7 +460,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         Time.timeScale = 1;
 
-        levelState = LEVEL_STATE.GameOver;
+        ChangeLevelState(LEVEL_STATE.GameOver);
+        //levelState = LEVEL_STATE.GameOver;
         
         _gameOverTextObj.SetActive(true);
 
@@ -410,6 +473,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         TowerSoundOFF();
 
+        SoundManager.Instance.StageFin();
+
         Debug.Log("GameOver");
     }
     //ステージクリア後の処理
@@ -419,7 +484,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         Time.timeScale = 1;
 
-        levelState = LEVEL_STATE.Clear;
+        ChangeLevelState(LEVEL_STATE.Clear);
+        //levelState = LEVEL_STATE.Clear;
 
         _clearTextObj.SetActive(true);
 
@@ -432,6 +498,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _clearCanvasGroup.blocksRaycasts = true;
 
         TowerSoundOFF();
+
+        SoundManager.Instance.StageFin();
 
         Debug.Log("GameClear");
     }
@@ -618,7 +686,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //キャラクターをクリックしたときの動作
     public void CahraClick(GameObject target)
     {
-        levelState = LEVEL_STATE.CharaSelect;
+        ChangeLevelState(LEVEL_STATE.CharaSelect);
+        //levelState = LEVEL_STATE.CharaSelect;
 
         _enemyManager.EnemySpeedChange(_selectRate);
 
@@ -631,7 +700,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //BackGroundボタンを押したときの動作
     public void OnClickBackGroundButton()
     {
-        levelState = LEVEL_STATE.Play;
+        ChangeLevelState(LEVEL_STATE.Play);
+        //levelState = LEVEL_STATE.Play;
         _enemyManager.EnemySpeedChange(_totalRate);
 
         _charaVcam.Priority = _maneVcam.Priority - 1;
@@ -642,7 +712,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //元のカメラへ戻す
     public void CameraReset()
     {
-        levelState = LEVEL_STATE.Play;
+        ChangeLevelState(LEVEL_STATE.Play);
+        //levelState = LEVEL_STATE.Play;
         _enemyManager.EnemySpeedChange(_totalRate);
         _charaVcam.Priority = _maneVcam.Priority - 1;
         _backgroundButton.gameObject.SetActive(false);
@@ -682,6 +753,95 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             {
                 item._buffAnimObj.SetActive(false);
             }
+        }
+    }
+    //レベル全体のStateを切り替えるに呼ぶ
+    public void ChangeLevelState(LEVEL_STATE nextState)
+    {
+        //今いるStateから別のstateに変更する際の処理
+        switch (levelState)
+        {
+            case LEVEL_STATE.Init:
+                break;
+            case LEVEL_STATE.Play:
+                if (nextState == LEVEL_STATE.Fever)
+                {
+                    _time = 0;
+
+                    int cost = 100;
+                    UseCost((uint)-cost);
+
+                    _feverslider.value = 1;
+
+                    _feverslider.GetComponent<CanvasGroup>().alpha = 1;
+
+                    _feverEffects.SetActive(true);
+
+                    SoundManager.Instance.BGMUpPitch();
+                }
+                break;
+            case LEVEL_STATE.CharaSelect:
+                break;
+            case LEVEL_STATE.Fever:
+                if (nextState == LEVEL_STATE.Play)
+                {
+                    _time = 0;
+
+                    UseCost(_feverFinHeelCost);
+
+                    _feverslider.value = 0;
+
+                    _feverslider.GetComponent<CanvasGroup>().alpha = 0;
+
+                    _feverEffects.SetActive(false);
+
+                    SoundManager.Instance.BGMDownPitch();
+                }
+
+                break;
+            case LEVEL_STATE.Clear:
+                break;
+            case LEVEL_STATE.GameOver:
+                break;
+            case LEVEL_STATE.Result:
+                break;
+            case LEVEL_STATE.Fin:
+                break;
+            default:
+                break;
+        }
+
+        levelState = nextState;
+
+        //切り替え後の処理
+        switch (levelState)
+        {
+            case LEVEL_STATE.Init:
+                break;
+            case LEVEL_STATE.Play:
+                break;
+            case LEVEL_STATE.CharaSelect:
+                break;
+            case LEVEL_STATE.Fever:
+                break;
+            case LEVEL_STATE.Clear:
+                break;
+            case LEVEL_STATE.GameOver:
+                break;
+            case LEVEL_STATE.Result:
+                break;
+            case LEVEL_STATE.Fin:
+                break;
+            default:
+                break;
+        }
+    }
+    
+    public void OnClickFever()
+    {
+        if (_cost <= _useFeverCost)
+        {
+            ChangeLevelState(LEVEL_STATE.Fever);
         }
     }
 }
