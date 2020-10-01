@@ -25,7 +25,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     }
 
     //ゲームのState
-    LEVEL_STATE levelState = LEVEL_STATE.Init;
+    public LEVEL_STATE levelState { private set; get; } = LEVEL_STATE.Init;
 
     //現在pose中かのState
     POSE _poseState = POSE.InPlay;

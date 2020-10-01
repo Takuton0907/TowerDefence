@@ -25,6 +25,9 @@ public class AttackTowe : TowerMonoBehaviur
 
     int count = 0;
 
+    [SerializeField]
+    private int _feverAttackBaff = 2;
+
 #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
@@ -87,6 +90,12 @@ public class AttackTowe : TowerMonoBehaviur
         towerAnimBase.SetAnimDirection(enemy[count].transform.position, this);
         _anims.Add(towerAnimBase);
 
+        int power = _attackPowe;
+        if (LevelManager.Instance.levelState == LevelManager.LEVEL_STATE.Fever)
+        {
+            power += _feverAttackBaff;
+        }
+
         switch (_powerState)
         {
             case PowerState.NOMAL:
@@ -94,17 +103,17 @@ public class AttackTowe : TowerMonoBehaviur
                 {
                     _buffAnimObj.SetActive(false);
                 }
-                enemy[count].Damage(_attackPowe);
+                enemy[count].Damage(power);
                 break;
             case PowerState.UP:
                 if (_buffAnimObj.activeSelf == false)
                 {
                     _buffAnimObj.SetActive(true);
                 }
-                enemy[count].Damage(_attackPowe + _attackBuff);
+                enemy[count].Damage(power + _attackBuff);
                 break;
             case PowerState.DOWN:
-                enemy[count].Damage(_attackPowe + _attackDeBuff);
+                enemy[count].Damage(power + _attackDeBuff);
                 break;
         }
 
