@@ -7,6 +7,8 @@ public class TowerManager : MonoBehaviour
 
     public float _speedRate = 1;
 
+    public DragObj[] _instanseDragObj = new DragObj[4];
+
     //Towerをセット
     public void SetTower(TowerMonoBehaviur tower)
     {

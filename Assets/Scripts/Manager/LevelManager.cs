@@ -1,4 +1,5 @@
 ﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -316,6 +317,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                     ChangeLevelState(LEVEL_STATE.Result);
                     //levelState = LEVEL_STATE.Result;
                 }
+                _time += Time.deltaTime;
                 break;
             case LEVEL_STATE.GameOver:
                 if (_gameOverAnimator.IsInTransition(0))
@@ -351,10 +353,18 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         switch (_poseState)
         {
             case POSE.Pose:
+                foreach (var item in _towerManager._instanseDragObj)
+                {
+                    item.enabled = true;
+                }
                 _playButton.image.sprite = _stopSprite;
                 _poseState = POSE.InPlay;
                 break;
             case POSE.InPlay:
+                foreach (var item in _towerManager._instanseDragObj)
+                {
+                    item.enabled = false;
+                }
                 _playButton.image.sprite = _playSprite;
                 _poseState = POSE.Pose;
                 break;
@@ -480,6 +490,22 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //ステージクリア後の処理
     public void StageClear()
     {
+        levelState = LEVEL_STATE.Fin;
+        _time = 0;
+        StartCoroutine(ClearCoroutine());
+    }
+    //クリアした後すぐにリザルトに行かないように使う
+    IEnumerator ClearCoroutine()
+    {
+        while (true)
+        {
+            if (_time >= 1)
+            {
+                break;
+            }
+            _time += Time.deltaTime;
+            yield return null;
+        }
         TowerSoundOFF();
 
         Time.timeScale = 1;
@@ -500,6 +526,8 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         TowerSoundOFF();
 
         SoundManager.Instance.StageFin();
+
+        yield return null;
 
         Debug.Log("GameClear");
     }
@@ -668,6 +696,20 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _towerManager.instanceTowers.Remove(tower);
         Destroy(tower.gameObject);
     }
+    public void RemoveAllCharas()
+    {
+        TowerMonoBehaviur[] towers = new TowerMonoBehaviur[_towerManager.instanceTowers.Count];
+
+        for (int i = 0; i < towers.Length; i++)
+        {
+            towers[i] = _towerManager.instanceTowers[i];
+        }
+
+        foreach (var item in towers)
+        {
+            OnClickRemoveChara(item);
+        }
+    }
     //タワーが置けるかの判定
     public bool HasTowerCount()
     {
@@ -768,8 +810,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     _time = 0;
 
-                    int cost = 100;
-                    UseCost((uint)-cost);
+                    _heelCostSlider.value = _time;
+
+                    _cost = 0;
 
                     _feverslider.value = 1;
 
@@ -787,13 +830,15 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     _time = 0;
 
-                    UseCost(_feverFinHeelCost);
-
                     _feverslider.value = 0;
+
+                    UseCost(_feverFinHeelCost);
 
                     _feverslider.GetComponent<CanvasGroup>().alpha = 0;
 
                     _feverEffects.SetActive(false);
+
+                    RemoveAllCharas();
 
                     SoundManager.Instance.BGMDownPitch();
                 }
@@ -842,6 +887,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         if (_cost <= _useFeverCost)
         {
             ChangeLevelState(LEVEL_STATE.Fever);
+            _feverButtonEffect.SetActive(false);
         }
     }
 }
