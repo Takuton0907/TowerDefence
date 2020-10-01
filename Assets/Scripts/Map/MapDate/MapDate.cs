@@ -106,34 +106,6 @@ public class MapDate : ScriptableObject
         return count;
     }
 
-    //現在いる位置から上下左右のMapDateを取得
-    public List<MAP_DATE> GetNextTiles(int StartMapDateIndex)
-    {
-        List<MAP_DATE> dates = new List<MAP_DATE>();
-
-        if (StartMapDateIndex - (int)mapSize.x > 0)
-        {
-            //上
-            dates.Add(mapDates[StartMapDateIndex - (int)mapSize.x]);
-        }
-        if (StartMapDateIndex + (int)mapSize.x  < mapDates.Count)
-        {
-            //下
-            dates.Add(mapDates[StartMapDateIndex + (int)mapSize.x]);
-        }
-        if (StartMapDateIndex % mapSize.x - 1 > 0)
-        {
-            //左
-            dates.Add(mapDates[StartMapDateIndex - 1]);
-        }
-        if (StartMapDateIndex % mapSize.x - 1 < mapSize.x)
-        {
-            //右
-            dates.Add(mapDates[StartMapDateIndex + 1]);
-        }
-
-        return dates;
-    }
 
     //次に進めるTileのIndexの取得
     public List<int> GetNextTilesIndex(int StartMapDateIndex)
@@ -142,7 +114,7 @@ public class MapDate : ScriptableObject
 
         int sizY = 0;
 
-        if (StartMapDateIndex > mapSize.y)
+        if (StartMapDateIndex >= mapSize.y)
         {
             sizY = StartMapDateIndex % (int)mapSize.y;
         }

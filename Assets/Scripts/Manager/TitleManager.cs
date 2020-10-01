@@ -12,6 +12,8 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
 
     [SerializeField] Vector3 localSize = Vector3.zero;
 
+    [SerializeField] Transform _parentObj;
+
     string[,] _texts;
 
     int _count = 1;
@@ -32,7 +34,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
 
     private void EnemyInstance(int enemyNum, int spawnNumber)
     {
-        GameObject obj = Instantiate(_enemyObj[enemyNum], _titleMapdate.GetStart()[spawnNumber] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity);
+        GameObject obj = Instantiate(_enemyObj[enemyNum], _titleMapdate.GetStart()[spawnNumber] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, _parentObj);
         obj.transform.localScale = localSize;
     }
 
