@@ -77,6 +77,13 @@ public class StageCreateWindow : ScriptableWizard
 
         MapDate date = MapDateCreator.CreateMapDate(mapDate, path);
 
+        date.load = load;
+        date.wall = wall;
+        date.setTowet = setTower;
+        date.overTile = overTile;
+        date.start = start;
+        date.goal = goal;
+
         MapDateCreator.CreatePrefab(date, path);
 
         AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(enemyDate), path + enemyDate.name + ".csv");
