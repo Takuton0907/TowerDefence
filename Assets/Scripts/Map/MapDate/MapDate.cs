@@ -124,12 +124,12 @@ public class MapDate : ScriptableObject
         }
 
         //上下左右の判定
-        if (StartMapDateIndex - (int)mapSize.x >= 0)
+        if (StartMapDateIndex - (int)mapSize.y >= 0)
         {
             //左
             dates.Add(StartMapDateIndex - (int)mapSize.y);
         }
-        if (StartMapDateIndex + (int)mapSize.x <= mapSize.x * mapSize.y)
+        if (StartMapDateIndex + (int)mapSize.y < mapSize.x * mapSize.y)
         {
             //右
             dates.Add(StartMapDateIndex + (int)mapSize.y);
@@ -139,7 +139,7 @@ public class MapDate : ScriptableObject
             //上
             dates.Add(StartMapDateIndex - 1);
         }
-        if (sizY + 1 <= mapSize.y)
+        if (sizY + 1 < mapSize.y)
         {
             //下
             dates.Add(StartMapDateIndex + 1);

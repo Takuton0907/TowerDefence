@@ -630,7 +630,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 }
             }
             //距離の計算
-            foreach (var item in mapIndexs)
+            foreach (var item in list)
             {
                 int minGoalValue = int.MaxValue;
                 foreach (var ind in goalIndexs) 

@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class TitleChara : MonoBehaviour
 {
-    public int HP = 10;
-
     [SerializeField] float _speed = 1;
 
     [SerializeField] float _downSpeed = 0.1f;
