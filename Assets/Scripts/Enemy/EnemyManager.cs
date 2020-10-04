@@ -18,7 +18,7 @@ public class EnemyManager : MonoBehaviour
 
     int _count;
 
-    string[,] _stageTexts;
+    public string[,] _stageTexts;
 
     float _time;
 

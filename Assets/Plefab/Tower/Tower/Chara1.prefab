@@ -453,16 +453,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _UIObject: {fileID: 4585523539512120301}
   _actionAudio: {fileID: 0}
+  _buffAnimObj: {fileID: 317047763515476011}
   parentTransform: {fileID: 0}
   _area: 2
   _powerState: 0
-  _attackPowe: 4
+  _attackPowe: 10
   _attackBuff: 2
   _attackDeBuff: -2
-  _attackInterval: 2
+  _attackInterval: 1
   _attackaAnimObj: {fileID: 6051630788008503593, guid: bb3728ae600b8a34a93bb7b600fe1206,
     type: 3}
-  _buffAnimObj: {fileID: 317047763515476011}
+  _feverAttackBaff: 2
 --- !u!225 &4159467519294968239
 CanvasGroup:
   m_ObjectHideFlags: 0

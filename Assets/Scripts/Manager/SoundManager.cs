@@ -38,6 +38,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
 
     public IEnumerator SetBgmAudio(AudioClip clip)
     {
+        BGMDownPitch();
         if (_BGMSudio.volume != 0)
         {
             while (_BGMSudio.volume > 0)
@@ -60,6 +61,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
 
     public IEnumerator SetBgmAudio()
     {
+        BGMDownPitch();
         if (_BGMSudio.volume != 0)
         {
             while (_BGMSudio.volume > 0)

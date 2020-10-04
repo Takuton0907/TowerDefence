@@ -490,8 +490,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _UIObject: {fileID: 5931721179371671460}
   _actionAudio: {fileID: 0}
+  _buffAnimObj: {fileID: 0}
   parentTransform: {fileID: 0}
-  _area: 2
+  _area: 3
   _effectObj: {fileID: 3700030413073489953, guid: 2403834c788b538429e81b97e019feab,
     type: 3}
 --- !u!82 &1805735528564461396

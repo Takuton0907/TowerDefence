@@ -67,6 +67,7 @@ public class MapDate : ScriptableObject
             if (item.tileBaseNum == (int)TILE.START)
             {
                 startPositions.Add(item.posi);
+                Debug.Log(item);
             }
         }
         return startPositions;

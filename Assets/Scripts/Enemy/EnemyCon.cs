@@ -27,8 +27,6 @@ public class EnemyCon : MonoBehaviour
 
     [SerializeField] GameObject _desAnim;
 
-    Rigidbody2D _rig2d;
-
     Animator _animator;
 
     public List<MAP_DATE> _root = new List<MAP_DATE>();
@@ -39,7 +37,6 @@ public class EnemyCon : MonoBehaviour
 
     public void EnemyAwake()
     {
-        _rig2d = GetComponent<Rigidbody2D>();
         _animator = GetComponent<Animator>();
 
         _root = LevelManager.Instance.Sarch(transform.position);
@@ -127,6 +124,11 @@ public class EnemyCon : MonoBehaviour
         Vector3 move = _next - nowPosi;
         move.z = 0;
         return move.normalized;
+    }
+
+    private void OnDestroy()
+    {
+        LevelManager.Instance.EnemyCountUpdate();
     }
 }
 

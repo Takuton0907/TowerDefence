@@ -47,6 +47,10 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     Text _lifeText;
 
+    [SerializeField]
+    Text _enemyText;
+    int _enemyCount;
+
     //一番初めの敵が出るまでの時間
     [SerializeField]
     float _starInterval = 1;
@@ -59,7 +63,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     //現在使用できるコスト
     [SerializeField]
-    public uint _cost { set; get; } = 50; 
+    public uint _cost = 50; 
 
     //costの回復するまでの時間
     [SerializeField]
@@ -187,8 +191,6 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         _clearCanvasGroup.blocksRaycasts = true;
 
-        _maxLife = m_life;
-
         StartCoroutine(SoundManager.Instance.SetBgmAudio(_bgmClip)); 
     }
 
@@ -201,6 +203,13 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     _clearCanvasGroup.blocksRaycasts = false;
                     _enemyManager.EnemyManagerInit();
+
+                    _maxLife = m_life;
+
+                    _enemyCount = _enemyManager._stageTexts.GetLength(0);
+
+                    EnemyCountUpdate();
+
                     _time = 0;
                     ChangeLevelState(LEVEL_STATE.Play);
                     //levelState = LEVEL_STATE.Play;
@@ -347,6 +356,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         }
     }
 
+    public void EnemyCountUpdate()
+    {
+        _enemyCount--;
+        _enemyText.text = $"{_enemyCount} / {_enemyManager._stageTexts.GetLength(0) - 1}";
+    }
     //Pose中にするための関数
     public void OnClickStateChange()
     {
@@ -430,7 +444,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _costText.text = $"{_cost} / {_maxCost}";
         _costSlider.value = (float)_cost / _maxCost;
 
-        if (_cost <= _useFeverCost)
+        if (_cost >= _useFeverCost)
         {
             _feverButtonEffect.SetActive(true);
         }
@@ -449,7 +463,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _costText.text = $"{_cost} / {_maxCost}";
         _costSlider.value = (float)_cost / _maxCost;
 
-        if (_cost <= _useFeverCost)
+        if (_cost >= _useFeverCost)
         {
             _feverButtonEffect.SetActive(true);
         }
@@ -884,7 +898,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     
     public void OnClickFever()
     {
-        if (_cost <= _useFeverCost)
+        if (_cost >= _useFeverCost)
         {
             ChangeLevelState(LEVEL_STATE.Fever);
             _feverButtonEffect.SetActive(false);
