@@ -1,4 +1,4 @@
-﻿using System.Xml.Linq;
+﻿#if UNITY_EDITOR
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
@@ -146,3 +146,4 @@ public class MapDateCreator : EditorWindow
 
     }
 }
+#endif

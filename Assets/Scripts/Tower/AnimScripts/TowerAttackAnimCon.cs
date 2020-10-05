@@ -1,8 +1,4 @@
-﻿using Boo.Lang;
-using System.Collections;
-using UnityEngine;
-
-public class TowerAttackAnimCon : TowerAnimBase
+﻿public class TowerAttackAnimCon : TowerAnimBase
 {
     public override void AnimUpdate(float speed)
     {

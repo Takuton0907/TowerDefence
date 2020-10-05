@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+#if UNITY_EDITOR
 using UnityEditor;
 using UnityEditor.SceneManagement;
+#endif
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+#if UNITY_EDITOR
 public static class SceneCreator
 {
     //ビルドに設定するシーンが入ったディレクトリへのパス
@@ -29,3 +32,4 @@ public static class SceneCreator
         return scene;
     }
 }
+#endif

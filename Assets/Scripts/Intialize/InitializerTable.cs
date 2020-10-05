@@ -1,11 +1,12 @@
-﻿using System;
+﻿
+#if UNITY_EDITOR
+using System;
 using UnityEditor;
 using UnityEngine;
 
 public class InitializerTable : ScriptableObject
 {
     public Tobj[] Objects;
-
     [MenuItem("Assets/Create/LocalEffectSetting")]
     static void CreateLocalEffectSetting()
     {
@@ -23,3 +24,5 @@ public class Tobj
     public GameObject obj;
     public bool DontDestroy;
 }
+
+#endif
