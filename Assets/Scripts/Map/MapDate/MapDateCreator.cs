@@ -69,6 +69,7 @@ public class MapDateCreator : EditorWindow
         //最背面に出すMapの作成
         GameObject backGroundTilemap = new GameObject("BackGround");
         backGroundTilemap.transform.SetParent(gameObject.transform);
+        backGroundTilemap.transform.position += new Vector3(0 ,0 ,-1);
         renderer = backGroundTilemap.AddComponent<TilemapRenderer>();
         tilemap = backGroundTilemap.GetComponent<Tilemap>();
         TileMapCon.CreateBackGround(ref tilemap, date);
