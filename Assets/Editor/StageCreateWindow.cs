@@ -13,7 +13,7 @@ public class StageCreateWindow : ScriptableWizard
     string GAMEROOT_PATH = "Assets/Plefab/Managers/GameRoot.prefab";
 
     [SerializeField]
-    TextAsset mapDate;
+    TextAsset mapDate = null;
 
     TileBase overTile;
     public TileBase load;
@@ -34,7 +34,7 @@ public class StageCreateWindow : ScriptableWizard
 
     [Header("Enemys")]
     [SerializeField]
-    TextAsset enemyDate;
+    TextAsset enemyDate = null;
 
     private void Awake()
     {
@@ -81,6 +81,8 @@ public class StageCreateWindow : ScriptableWizard
         date.goal = goal;
 
         date.overTileMaterial = overTileMaterial;
+
+        Debug.Log(date.load);
 
         MapDateCreator.CreatePrefab(date, path);
 
