@@ -243,7 +243,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toDontDestroy: 0
-  _titleMapdate: {fileID: 11400000, guid: 1b86ace9ab0fbe24aa534675bc0b99ec, type: 2}
+  _titleMapdate: {fileID: 11400000, guid: 2aac7ee852cf77c42ad641089b9bb125, type: 2}
   _spawnText: {fileID: 4900000, guid: 6642a10a7d8836f45a18c9cbeb2ca6b9, type: 3}
   _enemyObj:
   - {fileID: 1608304916872212533, guid: 172e39d928994804eb056ed3b38f846e, type: 3}
