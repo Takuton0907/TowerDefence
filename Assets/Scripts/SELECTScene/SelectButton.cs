@@ -10,9 +10,12 @@ public class SelectButton : MonoBehaviour
 
     AudioSource audioSource;
 
+    [SerializeField]
+    StageData stageData = null;
+
     private void Start()
     {
-        int count = GameManager.Instance.GetResaltValue(gameObject.name);
+        int count = GameManager.Instance.GetResaltValue(stageData);
         Text text = GetComponentInChildren<Text>();
         for (int i = 0; i < count; i++)
         {
@@ -25,7 +28,7 @@ public class SelectButton : MonoBehaviour
     public void OcClickGameStart()
     {
         audioSource.Play();
-        GameManager.Instance.nextGameStagePath = gameObject.name;
+        GameManager.Instance.stage = stageData;
         StartCoroutine(CharaMove());
     }
 

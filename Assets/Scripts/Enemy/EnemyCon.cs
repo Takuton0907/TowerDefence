@@ -29,7 +29,7 @@ public class EnemyCon : MonoBehaviour
 
     Animator _animator;
 
-    public List<MAP_DATE> _root = new List<MAP_DATE>();
+    public List<MAP_C_DATE> _root = new List<MAP_C_DATE>();
 
     private Vector3 _next;
     private Vector3 _moveDirection = new Vector3();

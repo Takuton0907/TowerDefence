@@ -32,7 +32,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     POSE _poseState = POSE.InPlay;
 
     //マップのデータ
-    public MapDate _mapDate;
+    public MapDateObject _mapDate;
 
     //そのステージのEnemyManager
     public EnemyManager _enemyManager;
@@ -63,7 +63,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
     //現在使用できるコスト
     [SerializeField]
-    public uint _cost = 50; 
+    public uint _cost = 50;
 
     //costの回復するまでの時間
     [SerializeField]
@@ -91,11 +91,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     Slider _heelCostSlider;
 
     //タワーを置ける最大数
-    [SerializeField] 
+    [SerializeField]
     int _maxTowerCount = 5;
 
     //現在のタワー数を表示するテキスト
-    [SerializeField] 
+    [SerializeField]
     Text _towerCostText;
 
     [Header("Button")]
@@ -175,9 +175,13 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     [SerializeField]
     GameObject _feverEffects;
 
+    StageData stageData = null;
+
     private new void Awake()
     {
-        if (GameManager.Instance.nextGameStagePath != string.Empty) GameSetting(GameManager.Instance.nextGameStagePath);
+        if (GameManager.Instance.stage != null) stageData = GameManager.Instance.stage;
+
+        GameSetting(stageData);
 
         _mapDate.MapDateReset();
 
@@ -191,7 +195,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         _clearCanvasGroup.blocksRaycasts = true;
 
-        StartCoroutine(SoundManager.Instance.SetBgmAudio(_bgmClip)); 
+        StartCoroutine(SoundManager.Instance.SetBgmAudio(_bgmClip));
     }
 
     private void Update()
@@ -309,17 +313,17 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 {
                     if (m_life == _maxLife)
                     {
-                        GameManager.Instance.SetClearValue(GameManager.Instance.nextGameStagePath, 3);
+                        GameManager.Instance.SetClearValue(stageData, 3);
                         _results[0].SetActive(true);
                     }
                     else if (m_life >= _maxLife / 2)
                     {
-                        GameManager.Instance.SetClearValue(GameManager.Instance.nextGameStagePath, 2);
+                        GameManager.Instance.SetClearValue(stageData, 2);
                         _results[1].SetActive(true);
                     }
                     else
                     {
-                        GameManager.Instance.SetClearValue(GameManager.Instance.nextGameStagePath, 1);
+                        GameManager.Instance.SetClearValue(stageData, 1);
                         _results[2].SetActive(true);
                     }
 
@@ -338,7 +342,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                     ChangeLevelState(LEVEL_STATE.Fin);
                     //levelState = LEVEL_STATE.Fin;
                 }
-                    break;
+                break;
             case LEVEL_STATE.Result:
                 if (Input.GetMouseButtonDown(0))
                 {
@@ -486,7 +490,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         ChangeLevelState(LEVEL_STATE.GameOver);
         //levelState = LEVEL_STATE.GameOver;
-        
+
         _gameOverTextObj.SetActive(true);
 
         _gameOverAnimator = _gameOverTextObj.GetComponent<Animator>();
@@ -591,7 +595,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         return vs;
     }
     //敵が進む道を検索
-    public List<MAP_DATE> Sarch(Vector3 posi)
+    public List<MAP_C_DATE> Sarch(Vector3 posi)
     {
         TileOpen();
 
@@ -614,7 +618,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         return Aster(dateIndex, openList);
     }
     //A*の実装
-    private List<MAP_DATE> Aster(int index, List<int> list)
+    private List<MAP_C_DATE> Aster(int index, List<int> list)
     {
         List<int> goalIndexs = _mapDate.GetGoalIndex();
 
@@ -647,7 +651,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             foreach (var item in list)
             {
                 int minGoalValue = int.MaxValue;
-                foreach (var ind in goalIndexs) 
+                foreach (var ind in goalIndexs)
                     if (minGoalValue > _mapDate.GetCost(index, ind))
                         minGoalValue = _mapDate.GetCost(index, ind);
 
@@ -672,9 +676,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             }
         }
 
-        var vs = new List<MAP_DATE>();
+        var vs = new List<MAP_C_DATE>();
         //_mapDate.mapDates[index].GetParh(vs);
-        MAP_DATE date = _mapDate.mapDates[index];
+        MAP_C_DATE date = _mapDate.mapDates[index];
         while (date.tileBaseNum != (int)TILE.START)
         {
             vs.Add(date);
@@ -727,7 +731,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //タワーが置けるかの判定
     public bool HasTowerCount()
     {
-        return _towerManager.instanceTowers.Count <= _maxTowerCount ? true: false ;
+        return _towerManager.instanceTowers.Count <= _maxTowerCount ? true : false;
     }
     //タワーのテキスト更新
     public void TowerTextUpdate()
@@ -775,28 +779,12 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         _backgroundButton.gameObject.SetActive(false);
     }
     //ゲームスタート時に選択されたステージのアセットを取ってくる
-    private void GameSetting(string datePath)
+    private void GameSetting(StageData stage)
     {
-        Debug.Log(datePath);
-
-        Object[] assets = Resources.LoadAll(datePath);
-
-        foreach (var item in assets)
-        {
-            if (item as TextAsset != null)
-            {
-                _enemyManager._stageText = item as TextAsset;
-            }
-            else if (item as MapDate != null)
-            {
-                _mapDate = item as MapDate;
-            }
-            else if (item as GameObject != null)
-            {
-                GameObject map = Instantiate(item as GameObject);
-                map.transform.position = new Vector3();
-            }
-        }
+        _enemyManager._stageText = stage.enemyData;
+        _mapDate = stage.mapData;
+        GameObject map = Instantiate(stage.stage);
+        map.transform.position = new Vector3();
     }
     //タワーの音をすべて消す
     private void TowerSoundOFF()
@@ -895,7 +883,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                 break;
         }
     }
-    
+
     public void OnClickFever()
     {
         if (_cost >= _useFeverCost)

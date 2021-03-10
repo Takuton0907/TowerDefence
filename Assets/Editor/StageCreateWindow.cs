@@ -28,7 +28,7 @@ public class StageCreateWindow : ScriptableWizard
     string START_TILEBASE_PATH = "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_79.asset";
     string GOAL_TILEBASE_PATH = "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_78.asset";
 
-    List<MAP_DATE> mapDates = new List<MAP_DATE>();
+    List<MAP_C_DATE> mapDates = new List<MAP_C_DATE>();
     public Material overTileMaterial;
     string OVERTILE_MATERIAL_PATH = "Assets/Map/Material/OverTileMaterial.mat";
 
@@ -71,7 +71,7 @@ public class StageCreateWindow : ScriptableWizard
 
         path += "/";
 
-        MapDate date = MapDateCreator.CreateMapDate(mapDate, path);
+        MapDateObject date = MapDateCreator.CreateMapDate(mapDate, path);
 
         date.load = load;
         date.wall = wall;

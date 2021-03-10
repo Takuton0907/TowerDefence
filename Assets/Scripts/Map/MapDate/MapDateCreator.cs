@@ -10,7 +10,7 @@ public class MapDateCreator : EditorWindow
     [System.Obsolete]
     private static void CreateMapDate()
     {
-        MapDate mapDate = ScriptableObject.CreateInstance<MapDate>();
+        MapDateObject mapDate = ScriptableObject.CreateInstance<MapDateObject>();
         //プロジェクトウィンドが選択したものを取得
         Object[] selectedAsset = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
 
@@ -27,7 +27,7 @@ public class MapDateCreator : EditorWindow
         {
             for (int y = 0; y < mapStatas.GetLength(0); y++)
             {
-                MAP_DATE mAP_DATE = new MAP_DATE();
+                MAP_C_DATE mAP_DATE = new MAP_C_DATE();
                 mAP_DATE.posi = new Vector3Int(x - mapStatas.GetLength(1) / 2, - 1 + (-(y - mapStatas.GetLength(0) / 2)), 0);
                 mAP_DATE.tileBaseNum = int.Parse(mapStatas[y, x]);
                 mapDate.mapDates.Add(mAP_DATE);
@@ -43,7 +43,7 @@ public class MapDateCreator : EditorWindow
     private static void CreatePrefab() 
     {
         Object[] selectedAsset = Selection.GetFiltered(typeof(Object), SelectionMode.Assets);
-        MapDate date = (MapDate)selectedAsset[0];
+        MapDateObject date = (MapDateObject)selectedAsset[0];
         //GameObjectの作成
         GameObject gameObject = new GameObject(selectedAsset[0].name);
         gameObject.AddComponent<Grid>();
@@ -79,7 +79,7 @@ public class MapDateCreator : EditorWindow
         DestroyImmediate(gameObject);
     }
 
-    public static void CreatePrefab(MapDate date, string path)
+    public static void CreatePrefab(MapDateObject date, string path)
     {
         //GameObjectの作成
         GameObject gameObject = new GameObject(date.name);
@@ -116,9 +116,9 @@ public class MapDateCreator : EditorWindow
         DestroyImmediate(gameObject);
     }
 
-    public static MapDate CreateMapDate(TextAsset text, string path)
+    public static MapDateObject CreateMapDate(TextAsset text, string path)
     {
-        MapDate mapDate = ScriptableObject.CreateInstance<MapDate>();
+        MapDateObject mapDate = ScriptableObject.CreateInstance<MapDateObject>();
         //textを名前から取得
         string date = LoadText.LoadTextDate(text.name);
         Debug.Log(date);
@@ -130,7 +130,7 @@ public class MapDateCreator : EditorWindow
         {
             for (int y = 0; y < mapStatas.GetLength(0); y++)
             {
-                MAP_DATE mAP_DATE = new MAP_DATE();
+                MAP_C_DATE mAP_DATE = new MAP_C_DATE();
                 mAP_DATE.posi = new Vector3Int(x - mapStatas.GetLength(1) / 2, -1 + (-(y - mapStatas.GetLength(0) / 2)), 0);
                 mAP_DATE.tileBaseNum = int.Parse(mapStatas[y, x]);
                 mapDate.mapDates.Add(mAP_DATE);

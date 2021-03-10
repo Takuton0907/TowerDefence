@@ -8,7 +8,7 @@ public class Mapcreate : MonoBehaviour
     [SerializeField] Tilemap _tilemap;
     [SerializeField] TileBase _tileBase;
 
-    [SerializeField] MapDate mapDate;
+    [SerializeField] MapDateObject mapDate;
     // Start is called before the first frame update
     void Start()
     {

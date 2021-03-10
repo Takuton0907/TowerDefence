@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
+using System;
 
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
@@ -15,12 +14,17 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
     }
     GAMESTATE _gameState = GAMESTATE.INIT;
 
-    Dictionary<string, int> stageResalts = new Dictionary<string, int>();
+    Dictionary<StageData, int> stageResalts = new Dictionary<StageData, int>();
 
-    public string nextGameStagePath;
+    public StageData stage;
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            Application.Quit();
+        }
+
         switch (_gameState)
         {
             case GAMESTATE.INIT:
@@ -61,7 +65,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 
-    public void SetClearValue(string key, int value)
+    public void SetClearValue(StageData key, int value)
     {
         Debug.Log(key);
         if (stageResalts.ContainsKey(key))
@@ -77,7 +81,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 
-    public int GetResaltValue(string key)
+    public int GetResaltValue(StageData key)
     {
         if (stageResalts.ContainsKey(key))
         {
@@ -88,4 +92,12 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
             return 0;
         }
     }
+}
+
+[Serializable]
+public class StageData
+{
+   public GameObject stage;
+   public TextAsset enemyData;
+   public MapDateObject mapData;
 }

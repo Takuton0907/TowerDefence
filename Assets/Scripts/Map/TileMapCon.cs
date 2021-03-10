@@ -20,7 +20,7 @@ public enum TILE_STATAS
 
 public static class TileMapCon
 {
-    public static void CreateBackGround(ref Tilemap tilemap, MapDate mapDate)
+    public static void CreateBackGround(ref Tilemap tilemap, MapDateObject mapDate)
     {
         tilemap.ClearAllTiles();
 
@@ -111,7 +111,7 @@ public static class TileMapCon
         return transforms;
     }
 
-    public static void SetMap(ref Tilemap tilemap, MapDate mapDate)
+    public static void SetMap(ref Tilemap tilemap, MapDateObject mapDate)
     {
         tilemap.ClearAllTiles();        
         
@@ -147,7 +147,7 @@ public static class TileMapCon
         }
     }
 
-    public static void SetToerMap(ref Tilemap tilemap, MapDate mapDate, List<int> indexs)
+    public static void SetToerMap(ref Tilemap tilemap, MapDateObject mapDate, List<int> indexs)
     {
         tilemap.ClearAllTiles();        
 
