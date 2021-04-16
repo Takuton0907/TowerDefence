@@ -2,7 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class BaffTower : TowerMonoBehaviur
+/// <summary> baffをかけるタワーの管理 </summary>
+public class BaffTower : TowerBase
 {
     [SerializeField] GameObject _effectObj;
 

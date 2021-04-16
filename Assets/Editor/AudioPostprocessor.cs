@@ -6,31 +6,9 @@ using System.IO;
 using System.Linq;
 using UnityEditor;
 
-public class StagePostoro : AssetPostprocessor
+public class AudioPostprocessor : AssetPostprocessor
 {
 	const string STAGE_PATH = "";
-
-    static void OnPostprocessAllAssets(string[] importedAssets, string[] deletedAssets, string[] movedAssets, string[] movedFromAssetPaths)
-    {
-        foreach (string str in importedAssets)
-        {
-            string ext = Path.GetExtension(str);
-            string folderPath = str.Substring(0, str.Length - AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(str).name.Length - ext.Length - "/".Length);
-            Debug.Log(folderPath);
-
-
-        }
-        foreach (string str in deletedAssets)
-        {
-            Debug.Log("Deleted Asset: " + str);
-        }
-
-        for (int i = 0; i < movedAssets.Length; i++)
-        {
-            Debug.Log("Moved Asset: " + movedAssets[i] + " from: " + movedFromAssetPaths[i]);
-        }
-    }
-
 
 	//オーディオファイルが入ってるディレクトリへのパス
 

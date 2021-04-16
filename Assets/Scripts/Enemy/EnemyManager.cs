@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> 敵の管理 </summary>
 public class EnemyManager : MonoBehaviour
 {
     [SerializeField] Transform _enemyParentObj = null;
@@ -11,35 +12,36 @@ public class EnemyManager : MonoBehaviour
 
     public TextAsset _stageText;
 
-    public float _speedRateUP = 2;
-    public float _speedRateDown = 0.3f;
-
-    public List<EnemyCon> instanceEnemys = new List<EnemyCon>();
+    public float _speedRateUP { private set; get; } = 2;
+    public float _speedRateDown { private set; get; } = 0.3f;
+    public List<EnemyCon> instanceEnemys { private set; get; } = new List<EnemyCon>();
 
     int _count;
 
-    public string[,] _stageTexts;
+    public string[,] _stageTexts { private set; get; }
 
     float _time;
 
-    //敵のインスタンス
+    /// <summary> 敵のインスタンス </summary>
+    /// <param name="enemyNum">敵の種類</param>
+    /// <param name="spawnNumber">出現場所</param>
+    /// <param name="rate">敵の出現時のスピード</param>
     private void EnemyInstance(int enemyNum, int spawnNumber, float rate)
     {
-        GameObject obj = Instantiate(_enemyObj[enemyNum], LevelManager.Instance._mapDate.GetStart()[spawnNumber] + new Vector3(0.5f, 0.5f, 0) ,Quaternion.identity , _enemyParentObj);
+        GameObject obj = Instantiate(_enemyObj[enemyNum], LevelManager.Instance._mapDate.GetStart()[spawnNumber] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, _enemyParentObj);
         EnemyCon enemyCon = obj.GetComponent<EnemyCon>();
         enemyCon.EnemyAwake();
         enemyCon._speedRate = rate;
         instanceEnemys.Add(enemyCon);
         obj.transform.localScale = localSize;
     }
-
     public void EnemyManagerInit()
     {
         _stageTexts = LoadText.SetTexts(_stageText.text);
 
         _count = 1;
     }
-    
+    /// <summary> 敵の動くスピードを変える </summary>
     public void EnemySpeedChange(bool toDrag)
     {
         float speedRate = instanceEnemys[0]._speedRate;
@@ -69,6 +71,8 @@ public class EnemyManager : MonoBehaviour
             }
         }
     }
+    /// <summary> 敵の動くスピードを変える </summary>
+    /// <param name="value">何倍速にするかの数値</param>
     public void EnemySpeedChange(float value)
     {
         foreach (var item in instanceEnemys)
@@ -76,8 +80,8 @@ public class EnemyManager : MonoBehaviour
             item._speedRate = value;
         }
     }
-    //エネミーを出す
-    public void EnemySpawnUpdate(float rate)
+    /// <summary> 敵の出現 </summary>
+    public void EnemySpawn(float rate)
     {
         if (_count >= _stageTexts.GetLength(0))
         {
@@ -90,7 +94,7 @@ public class EnemyManager : MonoBehaviour
         }
 
         if (_time > float.Parse(_stageTexts[_count, 2]))
-        {    
+        {
             if (_enemyObj.Length <= 0 || LevelManager.Instance._mapDate.GetStart().Count <= 0) return;
 
             EnemyInstance(int.Parse(_stageTexts[_count, 0]), int.Parse(_stageTexts[_count, 1]), rate);
@@ -101,13 +105,8 @@ public class EnemyManager : MonoBehaviour
         }
         _time += Time.deltaTime * rate;
     }
-    //今現在インスタンスされている敵の取得
-    public List<EnemyCon> GetEnemys()
-    {
-        return instanceEnemys;
-    }
-    //敵をリストから削除
-    public void DestroyEnemy(EnemyCon desEnemy)
+    /// <summary> リストから敵を削除する </summary>
+    public void RemoveEnemy(EnemyCon desEnemy)
     {
         instanceEnemys.Remove(desEnemy);
     }

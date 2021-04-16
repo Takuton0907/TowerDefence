@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Tilemaps;
 
+/// <summary> タワーの持ち上げた時の処理 </summary>
 public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     public Transform parentTransform;
@@ -41,7 +42,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         towePosiIndexs = LevelManager.Instance.GetIndexs(TILE.SET_TOWER);
         GameObject overTileObj = GameObject.FindGameObjectWithTag("OverTile");
         tilemap = overTileObj.GetComponent<Tilemap>();
-        TileMapCon.SetToerMap(ref tilemap, LevelManager.Instance._mapDate, towePosiIndexs);
+        TileMapController.SetToerMap(ref tilemap, LevelManager.Instance._mapDate, towePosiIndexs);
 
         if (LevelManager.Instance._enemyManager.instanceEnemys.Count != 0)
         {
@@ -52,7 +53,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
         copyObj.transform.GetChild(0).gameObject.SetActive(true);
 
-        float rect = TowerPrefab.GetComponent<TowerMonoBehaviur>()._area * 0.7f;
+        float rect = TowerPrefab.GetComponent<TowerBase>()._area * 0.7f;
 
         copyObj.transform.GetChild(0).GetComponent<RectTransform>().sizeDelta = new Vector2(rect, rect);
     }
@@ -160,7 +161,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         LevelManager.Instance._mapDate.mapDates[setPosiIndex].tower = true;
         copyObj.transform.position = LevelManager.Instance._mapDate.mapDates[setPosiIndex].posi + new Vector3(0.5f, 0.5f, 0);
 
-        TowerMonoBehaviur towerMonoBehaviur = copyObj.GetComponent<TowerMonoBehaviur>();
+        TowerBase towerMonoBehaviur = copyObj.GetComponent<TowerBase>();
         towerMonoBehaviur.Init();
 
         LevelManager.Instance.SetTower((uint)-_cost, towerMonoBehaviur);

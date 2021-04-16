@@ -243,7 +243,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                             item.EnemyUpdate();
                         }
 
-                        _enemyManager.EnemySpawnUpdate(_totalRate);
+                        _enemyManager.EnemySpawn(_totalRate);
 
                         _towerManager.TowerUpdate(_totalRate);
                         break;
@@ -272,7 +272,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                             item.EnemyUpdate();
                         }
 
-                        _enemyManager.EnemySpawnUpdate(_selectRate);
+                        _enemyManager.EnemySpawn(_selectRate);
 
                         _towerManager.TowerUpdate(_selectRate);
                         break;
@@ -295,7 +295,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
                             item.EnemyUpdate();
                         }
 
-                        _enemyManager.EnemySpawnUpdate(_totalRate);
+                        _enemyManager.EnemySpawn(_totalRate);
 
                         _towerManager.TowerUpdate(_totalRate);
 
@@ -476,7 +476,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             _feverButtonEffect.SetActive(false);
         }
     }
-    public void SetTower(uint value, TowerMonoBehaviur tower)
+    public void SetTower(uint value, TowerBase tower)
     {
         _towerManager.SetTower(tower);
         UseCost(value);
@@ -595,7 +595,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         return vs;
     }
     //敵が進む道を検索
-    public List<MAP_C_DATE> Sarch(Vector3 posi)
+    public List<GRID_DATA> Sarch(Vector3 posi)
     {
         TileOpen();
 
@@ -618,7 +618,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         return Aster(dateIndex, openList);
     }
     //A*の実装
-    private List<MAP_C_DATE> Aster(int index, List<int> list)
+    private List<GRID_DATA> Aster(int index, List<int> list)
     {
         List<int> goalIndexs = _mapDate.GetGoalIndex();
 
@@ -676,9 +676,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             }
         }
 
-        var vs = new List<MAP_C_DATE>();
+        var vs = new List<GRID_DATA>();
         //_mapDate.mapDates[index].GetParh(vs);
-        MAP_C_DATE date = _mapDate.mapDates[index];
+        GRID_DATA date = _mapDate.mapDates[index];
         while (date.tileBaseNum != (int)TILE.START)
         {
             vs.Add(date);
@@ -696,7 +696,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
         }
     }
     //タワーの削除
-    public void OnClickRemoveChara(TowerMonoBehaviur tower)
+    public void OnClickRemoveChara(TowerBase tower)
     {
         List<int> indexs = GetIndexs(TILE.SET_TOWER);
         foreach (var item in indexs)
@@ -716,7 +716,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     }
     public void RemoveAllCharas()
     {
-        TowerMonoBehaviur[] towers = new TowerMonoBehaviur[_towerManager.instanceTowers.Count];
+        TowerBase[] towers = new TowerBase[_towerManager.instanceTowers.Count];
 
         for (int i = 0; i < towers.Length; i++)
         {
@@ -766,7 +766,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         _charaVcam.Priority = _maneVcam.Priority - 1;
         _backgroundButton.gameObject.SetActive(false);
-        TowerMonoBehaviur tower = _charaVcam.m_Follow.GetComponent<TowerMonoBehaviur>();
+        TowerBase tower = _charaVcam.m_Follow.GetComponent<TowerBase>();
         tower.CloseCanvas();
     }
     //元のカメラへ戻す

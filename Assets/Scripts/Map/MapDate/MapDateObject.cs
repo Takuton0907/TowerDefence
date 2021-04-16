@@ -12,7 +12,7 @@ public class MapDateObject : ScriptableObject
     public TileBase setTowet;
     public TileBase start;
     public TileBase goal;
-    public List<MAP_C_DATE> mapDates = new List<MAP_C_DATE>();
+    public List<GRID_DATA> mapDates = new List<GRID_DATA>();
     public Material overTileMaterial;
     public Vector2 mapSize;
 
@@ -87,7 +87,7 @@ public class MapDateObject : ScriptableObject
     }
 
     //敵のゴール位置の取得
-    public List<MAP_C_DATE> GetMapDate()
+    public List<GRID_DATA> GetMapDate()
     {
         return mapDates;
     }
@@ -148,7 +148,7 @@ public class MapDateObject : ScriptableObject
 
         return dates;
     }
-
+    /// <summary> goalまでの距離の計算 </summary>
     public int GetCost(int startIndex, int goalIndex)
     {
         int xDistance = startIndex % (int)mapSize.y - goalIndex % (int)mapSize.y;
@@ -159,8 +159,9 @@ public class MapDateObject : ScriptableObject
     }
 }
 
+/// <summary> 1Gridのデータ </summary>
 [Serializable]
-public class MAP_C_DATE
+public class GRID_DATA
 {
     public Vector3Int posi;                         //タイルのPosition
     public int tileBaseNum;                         //このタイルがLoadなどかどうかの判定用
@@ -168,6 +169,6 @@ public class MAP_C_DATE
     public int C;                                   //推定コスト
     public int H;                                   //スタート位置からの移動コスト
     public int S;                                   //合計コスト
-    public MAP_C_DATE parentDate;                     //移動してきた経路
+    public GRID_DATA parentDate;                    //移動してきた経路
     public bool tower = false;                      //towerが設置してあるか
 }

@@ -18,8 +18,10 @@ public enum TILE_STATAS
     Close,
 }
 
-public static class TileMapCon
+/// <summary> タイルマップ設置などをします </summary>
+public static class TileMapController
 {
+    /// <summary> 背景の作成 </summary>
     public static void CreateBackGround(ref Tilemap tilemap, MapDateObject mapDate)
     {
         tilemap.ClearAllTiles();
@@ -41,76 +43,7 @@ public static class TileMapCon
             }
         }
     }
-
-    public static void OutputPosition(Tilemap tilemap)
-    {
-        var builder = new StringBuilder();
-        var bound = tilemap.cellBounds;
-        builder.Append("\n");
-        for (int y = bound.max.y - 1; y >= bound.min.y; --y)
-        {
-            for (int x = bound.min.x; x < bound.max.x; ++x)
-            {
-                builder.Append(tilemap.HasTile(new Vector3Int(x, y, 0)) ? "■" : "□");
-                Debug.Log(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)));
-            }
-            builder.Append("\n");
-        }
-        Debug.Log(builder.ToString());
-    }
-
-    public static List<Vector3> GetTilePositions(Tilemap tilemap)
-    {
-        List<Vector3> transforms = new List<Vector3>();
-
-        var bound = tilemap.cellBounds;
-        for (int x = bound.min.x; x < bound.max.x; ++x)
-        {
-            for (int y = bound.max.y - 1; y >= bound.min.y; --y)
-            {
-                if (tilemap.HasTile(new Vector3Int(x, y, 0)))
-                {
-                    transforms.Add(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)));
-                }
-            }
-        }
-        return transforms;
-    }
-
-    //public static List<Vector3> GetNextPositions(Tilemap tilemap, Vector3 nowPosition)
-    //{
-    //    List<Vector3> transforms = new List<Vector3>();
-
-    //    var bound = tilemap.cellBounds;
-    //    for (int x = bound.min.x; x < bound.max.x; ++x)
-    //    {
-    //        for (int y = bound.max.y - 1; y >= bound.min.y; --y)
-    //        {
-    //            if (tilemap.HasTile(new Vector3Int(x, y, 0)))
-    //            {
-    //                transforms.Add(tilemap.GetCellCenterWorld(new Vector3Int(x, y, 0)));
-    //            }
-    //        }
-    //    }
-    //    return transforms;
-    //}
-
-    public static Vector3[,] SetMap(Tilemap tilemap, Vector2 mapSize, TileBase load, TileBase wall)
-    {
-        Vector3[,] transforms = new Vector3[(int)mapSize.x, (int)mapSize.y];
-
-        for (int y = 0; y < mapSize.y; ++y)
-        {
-            for (int x = 0; x < mapSize.x; ++x)
-            {
-                Vector3Int posi = new Vector3Int(x - (int)mapSize.x / 2, y - (int)mapSize.y / 2, 0);
-                tilemap.SetTile(posi, load);
-                transforms[x, y] = posi;
-            }
-        }
-        return transforms;
-    }
-
+    /// <summary> マップのタイルを設置します </summary>
     public static void SetMap(ref Tilemap tilemap, MapDateObject mapDate)
     {
         tilemap.ClearAllTiles();        
@@ -146,7 +79,7 @@ public static class TileMapCon
             }
         }
     }
-
+    /// <summary> タワーを置ける位置をセットします </summary>
     public static void SetToerMap(ref Tilemap tilemap, MapDateObject mapDate, List<int> indexs)
     {
         tilemap.ClearAllTiles();        
