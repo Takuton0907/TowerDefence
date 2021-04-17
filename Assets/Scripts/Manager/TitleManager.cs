@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary> タイトルシーンの管理 </summary>
 public class TitleManager : SingletonMonoBehaviour<TitleManager>
 {
-    [SerializeField] MapDateObject _titleMapdate;
+    [SerializeField] MapDataObject _titleMapdate;
 
     [SerializeField] TextAsset _spawnText;
 
@@ -60,7 +60,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
     //すべてのタイルのSATASをOpenにする
     private void TileOpen()
     {
-        foreach (var item in _titleMapdate.mapDates)
+        foreach (var item in _titleMapdate.mapDatas)
         {
             item.states = TILE_STATAS.Opne;
         }
@@ -74,9 +74,9 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         posi = new Vector3(posi.x, posi.y, 0);
 
         int dateIndex = 0;
-        for (int i = 0; i < _titleMapdate.mapDates.Count; i++)
+        for (int i = 0; i < _titleMapdate.mapDatas.Count; i++)
         {
-            if (_titleMapdate.mapDates[i].posi == posi)
+            if (_titleMapdate.mapDatas[i].posi == posi)
             {
                 dateIndex = i;
                 break;
@@ -96,7 +96,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
 
         for (int i = 0; i < 1000; i++)
         {
-            if (_titleMapdate.mapDates[index].tileBaseNum == (int)TILE.GOAL)
+            if (_titleMapdate.mapDatas[index].tileBaseNum == (int)TILE.GOAL)
             {
                 break;
             }
@@ -107,11 +107,11 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
             //通れる道以外の削除
             foreach (var item in mapIndexs)
             {
-                if (_titleMapdate.mapDates[item].states == TILE_STATAS.Opne)
+                if (_titleMapdate.mapDatas[item].states == TILE_STATAS.Opne)
                 {
-                    if (_titleMapdate.mapDates[item].tileBaseNum == (int)TILE.LOAD || _titleMapdate.mapDates[item].tileBaseNum == (int)TILE.GOAL || _titleMapdate.mapDates[item].tileBaseNum == (int)TILE.START)
+                    if (_titleMapdate.mapDatas[item].tileBaseNum == (int)TILE.LOAD || _titleMapdate.mapDatas[item].tileBaseNum == (int)TILE.GOAL || _titleMapdate.mapDatas[item].tileBaseNum == (int)TILE.START)
                     {
-                        _titleMapdate.mapDates[item].parentDate = _titleMapdate.mapDates[index];
+                        _titleMapdate.mapDatas[item].parentData = _titleMapdate.mapDatas[index];
                         list.Add(item);
                     }
                 }
@@ -124,32 +124,32 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
                     if (minGoalValue > _titleMapdate.GetCost(index, ind))
                         minGoalValue = _titleMapdate.GetCost(index, ind);
 
-                _titleMapdate.mapDates[item].C = _titleMapdate.GetCost(index, minGoalValue);
-                _titleMapdate.mapDates[item].H = _titleMapdate.GetCost(startIndex, index);
-                _titleMapdate.mapDates[item].S = _titleMapdate.mapDates[item].C + _titleMapdate.mapDates[item].H;
+                _titleMapdate.mapDatas[item].C = _titleMapdate.GetCost(index, minGoalValue);
+                _titleMapdate.mapDatas[item].H = _titleMapdate.GetCost(startIndex, index);
+                _titleMapdate.mapDatas[item].S = _titleMapdate.mapDatas[item].C + _titleMapdate.mapDatas[item].H;
             }
             //スタートした場所は検索済みなのでCloaseに
-            _titleMapdate.mapDates[index].states = TILE_STATAS.Close;
+            _titleMapdate.mapDatas[index].states = TILE_STATAS.Close;
 
             int minValue = int.MaxValue;
 
             foreach (var item in list)
             {
-                if (_titleMapdate.mapDates[item].states == TILE_STATAS.Close) continue;
-                if (_titleMapdate.mapDates[item].S < minValue)
+                if (_titleMapdate.mapDatas[item].states == TILE_STATAS.Close) continue;
+                if (_titleMapdate.mapDatas[item].S < minValue)
                 {
-                    minValue = _titleMapdate.mapDates[item].S;
+                    minValue = _titleMapdate.mapDatas[item].S;
                     index = item;
                 }
             }
         }
 
         var vs = new List<GRID_DATA>();
-        GRID_DATA date = _titleMapdate.mapDates[index];
+        GRID_DATA date = _titleMapdate.mapDatas[index];
         while (date.tileBaseNum != (int)TILE.START)
         {
             vs.Add(date);
-            date = date.parentDate;
+            date = date.parentData;
         }
 
         return vs;

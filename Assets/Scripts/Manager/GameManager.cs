@@ -100,5 +100,5 @@ public class StageData
 {
    public GameObject stage;
    public TextAsset enemyData;
-   public MapDateObject mapData;
+   public MapDataObject mapData;
 }

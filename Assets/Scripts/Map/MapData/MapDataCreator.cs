@@ -3,9 +3,9 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
-public class MapDateCreator : EditorWindow
+public class MapDataCreator : EditorWindow
 {
-    public static void CreatePrefab(MapDateObject date, string path)
+    public static void CreatePrefab(MapDataObject date, string path)
     {
         //GameObjectの作成
         GameObject gameObject = new GameObject(date.name);
@@ -42,11 +42,11 @@ public class MapDateCreator : EditorWindow
         DestroyImmediate(gameObject);
     }
 
-    public static MapDateObject CreateMapDate(TextAsset text, string path)
+    public static MapDataObject CreateMapData(TextAsset text, string path)
     {
-        MapDateObject mapDate = ScriptableObject.CreateInstance<MapDateObject>();
+        MapDataObject mapDate = ScriptableObject.CreateInstance<MapDataObject>();
         //textを名前から取得
-        string date = LoadText.LoadTextDate(text.name);
+        string date = LoadText.LoadTextData(text.name);
         Debug.Log(date);
         string[,] mapStatas = LoadText.SetTexts(date);
 
@@ -59,7 +59,7 @@ public class MapDateCreator : EditorWindow
                 GRID_DATA mAP_DATE = new GRID_DATA();
                 mAP_DATE.posi = new Vector3Int(x - mapStatas.GetLength(1) / 2, -1 + (-(y - mapStatas.GetLength(0) / 2)), 0);
                 mAP_DATE.tileBaseNum = int.Parse(mapStatas[y, x]);
-                mapDate.mapDates.Add(mAP_DATE);
+                mapDate.mapDatas.Add(mAP_DATE);
             }
         }
 

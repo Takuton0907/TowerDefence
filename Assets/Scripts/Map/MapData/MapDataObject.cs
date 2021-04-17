@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System;
 
 [CreateAssetMenu(menuName = "MyGame/Create ParameterTable", fileName = "ParameterTable")]
-public class MapDateObject : ScriptableObject
+public class MapDataObject : ScriptableObject
 {
     public TileBase overTile;
     public TileBase load;
@@ -12,20 +12,20 @@ public class MapDateObject : ScriptableObject
     public TileBase setTowet;
     public TileBase start;
     public TileBase goal;
-    public List<GRID_DATA> mapDates = new List<GRID_DATA>();
+    public List<GRID_DATA> mapDatas = new List<GRID_DATA>();
     public Material overTileMaterial;
     public Vector2 mapSize;
 
     //マップデータの初期化
-    public void MapDateReset()
+    public void MapDataReset()
     {
-        foreach (var item in mapDates)
+        foreach (var item in mapDatas)
         {
             item.states = TILE_STATAS.Opne;
             item.C = 0;
             item.H = 0;
             item.S = 0;
-            item.parentDate = null;
+            item.parentData = null;
             item.tower = false;
         }
     }
@@ -33,7 +33,7 @@ public class MapDateObject : ScriptableObject
     //マップデータのゴールのポジション獲得
     public Vector3 GetGoal()
     {
-        foreach (var item in mapDates)
+        foreach (var item in mapDatas)
         {
             if (item.tileBaseNum == (int)TILE.GOAL)
             {
@@ -48,9 +48,9 @@ public class MapDateObject : ScriptableObject
     {
         List<int> indexs = new List<int>();
 
-        for (int i = 0; i < mapDates.Count; i++)
+        for (int i = 0; i < mapDatas.Count; i++)
         {
-            if (mapDates[i].tileBaseNum == (int)TILE.GOAL)
+            if (mapDatas[i].tileBaseNum == (int)TILE.GOAL)
             {
                 indexs.Add(i);
             }
@@ -62,7 +62,7 @@ public class MapDateObject : ScriptableObject
     public List<Vector3> GetStart()
     {
         List<Vector3> startPositions = new List<Vector3>();
-        foreach (var item in mapDates)
+        foreach (var item in mapDatas)
         {
             if (item.tileBaseNum == (int)TILE.START)
             {
@@ -76,9 +76,9 @@ public class MapDateObject : ScriptableObject
     //マップデータのスタートのIndex獲得
     public int GetStartIndex()
     {
-        for (int i = 0; i < mapDates.Count; i++)
+        for (int i = 0; i < mapDatas.Count; i++)
         {
-            if (mapDates[i].tileBaseNum == (int)TILE.START)
+            if (mapDatas[i].tileBaseNum == (int)TILE.START)
             {
                 return i;
             }
@@ -87,16 +87,16 @@ public class MapDateObject : ScriptableObject
     }
 
     //敵のゴール位置の取得
-    public List<GRID_DATA> GetMapDate()
+    public List<GRID_DATA> GetMapData()
     {
-        return mapDates;
+        return mapDatas;
     }
 
     //現在openなTileの取得
     public int GetOpenCout()
     {
         int count = 0;
-        foreach (var item in mapDates)
+        foreach (var item in mapDatas)
         {
             if (item.states == 0)
             {
@@ -169,6 +169,6 @@ public class GRID_DATA
     public int C;                                   //推定コスト
     public int H;                                   //スタート位置からの移動コスト
     public int S;                                   //合計コスト
-    public GRID_DATA parentDate;                    //移動してきた経路
+    public GRID_DATA parentData;                    //移動してきた経路
     public bool tower = false;                      //towerが設置してあるか
 }

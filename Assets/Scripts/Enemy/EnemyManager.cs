@@ -28,7 +28,7 @@ public class EnemyManager : MonoBehaviour
     /// <param name="rate">敵の出現時のスピード</param>
     private void EnemyInstance(int enemyNum, int spawnNumber, float rate)
     {
-        GameObject obj = Instantiate(_enemyObj[enemyNum], LevelManager.Instance._mapDate.GetStart()[spawnNumber] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, _enemyParentObj);
+        GameObject obj = Instantiate(_enemyObj[enemyNum], LevelManager.Instance._mapData.GetStart()[spawnNumber] + new Vector3(0.5f, 0.5f, 0), Quaternion.identity, _enemyParentObj);
         EnemyCon enemyCon = obj.GetComponent<EnemyCon>();
         enemyCon.EnemyAwake();
         enemyCon._speedRate = rate;
@@ -95,7 +95,7 @@ public class EnemyManager : MonoBehaviour
 
         if (_time > float.Parse(_stageTexts[_count, 2]))
         {
-            if (_enemyObj.Length <= 0 || LevelManager.Instance._mapDate.GetStart().Count <= 0) return;
+            if (_enemyObj.Length <= 0 || LevelManager.Instance._mapData.GetStart().Count <= 0) return;
 
             EnemyInstance(int.Parse(_stageTexts[_count, 0]), int.Parse(_stageTexts[_count, 1]), rate);
 

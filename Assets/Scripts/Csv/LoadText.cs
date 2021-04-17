@@ -11,7 +11,7 @@ public static class LoadText
     private static char splitChara = ',';
 
     //TextAseetの読み込み
-    public static string LoadTextDate(string textName)
+    public static string LoadTextData(string textName)
     {
         TextAsset textasset = new TextAsset(); //テキストファイルのデータを取得するインスタンスを作成
         textasset = Resources.Load("Stages/00MapDates/" + textName, typeof(TextAsset)) as TextAsset; //Resourcesフォルダから対象テキストを取得
