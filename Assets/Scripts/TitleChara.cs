@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> タイトルの背景で動くキャラクター用 </summary>
 public class TitleChara : MonoBehaviour
 {
     [SerializeField] float _speed = 1;
@@ -12,7 +13,7 @@ public class TitleChara : MonoBehaviour
 
     Animator _animator;
 
-    public List<MAP_C_DATE> _root = new List<MAP_C_DATE>();
+    public List<GRID_DATA> _root = new List<GRID_DATA>();
 
     private Vector3 _next;
     private Vector3 _moveDirection = new Vector3();

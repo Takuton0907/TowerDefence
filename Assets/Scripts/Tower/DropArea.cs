@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using UnityEngine.EventSystems;
 
+/// <summary> タワーを置ける場所の管理 </summary>
 public class DropArea : MonoBehaviour, IDropHandler
 {
     public void OnDrop(PointerEventData data)
     {
         Debug.Log(gameObject.name);
 
-        TowerMonoBehaviur dragObj = data.pointerDrag.GetComponent<TowerMonoBehaviur>();
+        TowerBase dragObj = data.pointerDrag.GetComponent<TowerBase>();
         if (dragObj != null)
         {
             dragObj.parentTransform = this.transform;

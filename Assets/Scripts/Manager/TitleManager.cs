@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> タイトルシーンの管理 </summary>
 public class TitleManager : SingletonMonoBehaviour<TitleManager>
 {
     [SerializeField] MapDateObject _titleMapdate;
@@ -20,13 +21,11 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
 
     float _time;
 
-    // Start is called before the first frame update
     void Start()
     {
         _texts = LoadText.SetTexts(_spawnText.text);
     }
 
-    // Update is called once per frame
     void Update()
     {
         EnemySpawnUpdate();
@@ -67,7 +66,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         }
     }
     //敵が進む道を検索
-    public List<MAP_C_DATE> Sarch(Vector3 posi)
+    public List<GRID_DATA> Sarch(Vector3 posi)
     {
         TileOpen();
 
@@ -89,7 +88,7 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
         return Aster(dateIndex, openList);
     }
     //A*の実装
-    private List<MAP_C_DATE> Aster(int index, List<int> list)
+    private List<GRID_DATA> Aster(int index, List<int> list)
     {
         List<int> goalIndexs = _titleMapdate.GetGoalIndex();
 
@@ -145,8 +144,8 @@ public class TitleManager : SingletonMonoBehaviour<TitleManager>
             }
         }
 
-        var vs = new List<MAP_C_DATE>();
-        MAP_C_DATE date = _titleMapdate.mapDates[index];
+        var vs = new List<GRID_DATA>();
+        GRID_DATA date = _titleMapdate.mapDates[index];
         while (date.tileBaseNum != (int)TILE.START)
         {
             vs.Add(date);

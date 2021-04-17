@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class DeBuffTower : TowerMonoBehaviur
+/// <summary> debuffを与えるタワー </summary>
+public class DeBuffTower : TowerBase
 {
     [SerializeField] GameObject _effectObj;
 
@@ -14,7 +15,7 @@ public class DeBuffTower : TowerMonoBehaviur
         GameObject effect = Instantiate(_effectObj, transform.position, Quaternion.identity, gameObject.transform);
         effect.transform.GetChild(0).localScale = new Vector3(_area / 10, _area / 10, _area / 10);
 
-        SoundManager.Instance.SetDeeffectAudio(_actionAudio.clip);
+        SoundManager.Instance.SetDefenseAudio(_actionAudio.clip);
     }
 
 #if UNITY_EDITOR

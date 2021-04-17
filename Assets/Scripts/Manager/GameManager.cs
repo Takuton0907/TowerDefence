@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 
+/// <summary> ゲーム全体の管理 </summary>
 public class GameManager : SingletonMonoBehaviour<GameManager>
 {
     enum GAMESTATE
@@ -93,7 +94,7 @@ public class GameManager : SingletonMonoBehaviour<GameManager>
         }
     }
 }
-
+/// <summary> ステージのデータ </summary>
 [Serializable]
 public class StageData
 {

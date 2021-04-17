@@ -1,10 +1,9 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Tilemaps;
-using UnityEngine.SceneManagement;
 
+/// <summary> stageを生成するEditor拡張 </summary>
 public class StageCreateWindow : ScriptableWizard
 {
     [Header("MapDates")]
@@ -28,7 +27,7 @@ public class StageCreateWindow : ScriptableWizard
     string START_TILEBASE_PATH = "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_79.asset";
     string GOAL_TILEBASE_PATH = "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_78.asset";
 
-    List<MAP_C_DATE> mapDates = new List<MAP_C_DATE>();
+    List<GRID_DATA> mapDates = new List<GRID_DATA>();
     public Material overTileMaterial;
     string OVERTILE_MATERIAL_PATH = "Assets/Map/Material/OverTileMaterial.mat";
 

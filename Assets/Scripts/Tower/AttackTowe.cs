@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public class AttackTowe : TowerMonoBehaviur
+/// <summary> 攻撃をするタワーの管理 </summary>
+public class AttackTowe : TowerBase
 {
     public enum PowerState
     {

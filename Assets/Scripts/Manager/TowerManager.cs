@@ -1,16 +1,17 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary> タワーの管理をする </summary>
 public class TowerManager : MonoBehaviour
 {
-    public List<TowerMonoBehaviur> instanceTowers = new List<TowerMonoBehaviur>();
+    public List<TowerBase> instanceTowers = new List<TowerBase>();
 
     public float _speedRate = 1;
 
     public DragObj[] _instanseDragObj = new DragObj[4];
 
     //Towerをセット
-    public void SetTower(TowerMonoBehaviur tower)
+    public void SetTower(TowerBase tower)
     {
         instanceTowers.Add(tower);
     }
@@ -26,7 +27,7 @@ public class TowerManager : MonoBehaviour
     }
 
     //towerをリストから削除
-    public void DestroyTower(TowerMonoBehaviur tower)
+    public void DestroyTower(TowerBase tower)
     {
         instanceTowers.Remove(tower);
     }

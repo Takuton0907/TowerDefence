@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+/// <summary> ゲーム全体のサウンド管理 </summary>
 public class SoundManager : SingletonMonoBehaviour<SoundManager>
 {
     [SerializeField] AudioSource _buffEffectAudios;
@@ -18,7 +19,7 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         base.Awake();
         nomalPitch = _BGMSudio.pitch;
     }
-
+    /// <summary> effectのサウンドを変えて流す </summary>
     public void SetEffectAudio(AudioClip clip)
     {
         _buffEffectAudios.clip = clip;
@@ -26,14 +27,14 @@ public class SoundManager : SingletonMonoBehaviour<SoundManager>
         _buffEffectAudios.loop = true;
 
     }
-
-    public void SetDeeffectAudio(AudioClip clip)
+    /// <summary> Defenseのサウンドを変えて流す </summary>
+    public void SetDefenseAudio(AudioClip clip)
     {
         _deBuffEffectAudios.clip = clip;
         _deBuffEffectAudios.Play();
         _deBuffEffectAudios.loop = true;
     }
-
+    /// <summary> Bgmのサウンドを変えて流す </summary>
     public IEnumerator SetBgmAudio(AudioClip clip)
     {
         BGMDownPitch();

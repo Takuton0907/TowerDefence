@@ -14,6 +14,6 @@ public class Mapcreate : MonoBehaviour
     {
         Debug.Log(mapDate.mapDates.Count);
         //TileMapCon.SetMap(_tilemap,new Vector2(10, 15), _tileBase, _tileBase);
-        TileMapCon.SetMap(ref _tilemap, mapDate);
+        TileMapController.SetMap(ref _tilemap, mapDate);
     }
 }

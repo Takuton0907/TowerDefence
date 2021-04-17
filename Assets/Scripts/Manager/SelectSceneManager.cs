@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary> ステージ選択画面の管理 </summary>
 public class SelectSceneManager : MonoBehaviour
 {
     [SerializeField]
