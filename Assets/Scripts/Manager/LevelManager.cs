@@ -32,7 +32,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     POSE _poseState = POSE.InPlay;
 
     //マップのデータ
-    public MapDateObject _mapDate;
+    public MapDataObject _mapData;
 
     //そのステージのEnemyManager
     public EnemyManager _enemyManager;
@@ -183,7 +183,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         GameSetting(stageData);
 
-        _mapDate.MapDateReset();
+        _mapData.MapDataReset();
 
         _costText = _costSlider.GetComponentInChildren<Text>();
 
@@ -559,9 +559,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public List<int> GetIndexs(TILE tileStatas)
     {
         List<int> vs = new List<int>();
-        for (int i = 0; i < _mapDate.mapDates.Count; i++)
+        for (int i = 0; i < _mapData.mapDatas.Count; i++)
         {
-            if (_mapDate.mapDates[i].tileBaseNum == (int)tileStatas)
+            if (_mapData.mapDatas[i].tileBaseNum == (int)tileStatas)
             {
                 vs.Add(i);
             }
@@ -571,9 +571,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public List<int> GetIndexs(TILE tileStatas, TILE tileStatas2)
     {
         List<int> vs = new List<int>();
-        for (int i = 0; i < _mapDate.mapDates.Count; i++)
+        for (int i = 0; i < _mapData.mapDatas.Count; i++)
         {
-            int tileBasenum = _mapDate.mapDates[i].tileBaseNum;
+            int tileBasenum = _mapData.mapDatas[i].tileBaseNum;
             if (tileBasenum == (int)tileStatas || tileBasenum == (int)tileStatas2)
             {
                 vs.Add(i);
@@ -584,9 +584,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     public List<int> GetIndexs(TILE tileStatas, TILE tileStatas2, TILE tileStatas3)
     {
         List<int> vs = new List<int>();
-        for (int i = 0; i < _mapDate.mapDates.Count; i++)
+        for (int i = 0; i < _mapData.mapDatas.Count; i++)
         {
-            int tileBasenum = _mapDate.mapDates[i].tileBaseNum;
+            int tileBasenum = _mapData.mapDatas[i].tileBaseNum;
             if (tileBasenum == (int)tileStatas || tileBasenum == (int)tileStatas2 || tileBasenum == (int)tileStatas3)
             {
                 vs.Add(i);
@@ -604,9 +604,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         //int dateIndex = _mapDate.GetStartIndex();
         int dateIndex = 0;
-        for (int i = 0; i < _mapDate.mapDates.Count; i++)
+        for (int i = 0; i < _mapData.mapDatas.Count; i++)
         {
-            if (_mapDate.mapDates[i].posi == posi)
+            if (_mapData.mapDatas[i].posi == posi)
             {
                 dateIndex = i;
                 break;
@@ -620,29 +620,29 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //A*の実装
     private List<GRID_DATA> Aster(int index, List<int> list)
     {
-        List<int> goalIndexs = _mapDate.GetGoalIndex();
+        List<int> goalIndexs = _mapData.GetGoalIndex();
 
         int startIndex = index;
 
         for (int i = 0; i < 1000; i++)
         {
-            if (_mapDate.mapDates[index].tileBaseNum == (int)TILE.GOAL)
+            if (_mapData.mapDatas[index].tileBaseNum == (int)TILE.GOAL)
             {
                 Debug.Log("探索終了");
                 break;
             }
 
             //次に動けるTileの取得
-            var mapIndexs = _mapDate.GetNextTilesIndex(index);
+            var mapIndexs = _mapData.GetNextTilesIndex(index);
 
             //通れる道以外の削除
             foreach (var item in mapIndexs)
             {
-                if (_mapDate.mapDates[item].states == TILE_STATAS.Opne)
+                if (_mapData.mapDatas[item].states == TILE_STATAS.Opne)
                 {
-                    if (_mapDate.mapDates[item].tileBaseNum == (int)TILE.LOAD || _mapDate.mapDates[item].tileBaseNum == (int)TILE.GOAL || _mapDate.mapDates[item].tileBaseNum == (int)TILE.START)
+                    if (_mapData.mapDatas[item].tileBaseNum == (int)TILE.LOAD || _mapData.mapDatas[item].tileBaseNum == (int)TILE.GOAL || _mapData.mapDatas[item].tileBaseNum == (int)TILE.START)
                     {
-                        _mapDate.mapDates[item].parentDate = _mapDate.mapDates[index];
+                        _mapData.mapDatas[item].parentData = _mapData.mapDatas[index];
                         list.Add(item);
                     }
                 }
@@ -652,25 +652,25 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             {
                 int minGoalValue = int.MaxValue;
                 foreach (var ind in goalIndexs)
-                    if (minGoalValue > _mapDate.GetCost(index, ind))
-                        minGoalValue = _mapDate.GetCost(index, ind);
+                    if (minGoalValue > _mapData.GetCost(index, ind))
+                        minGoalValue = _mapData.GetCost(index, ind);
 
-                _mapDate.mapDates[item].C = _mapDate.GetCost(index, minGoalValue);
-                _mapDate.mapDates[item].H = _mapDate.GetCost(startIndex, index);
-                _mapDate.mapDates[item].S = _mapDate.mapDates[item].C + _mapDate.mapDates[item].H;
+                _mapData.mapDatas[item].C = _mapData.GetCost(index, minGoalValue);
+                _mapData.mapDatas[item].H = _mapData.GetCost(startIndex, index);
+                _mapData.mapDatas[item].S = _mapData.mapDatas[item].C + _mapData.mapDatas[item].H;
                 //Debug.Log("C = " + _mapDate.mapDates[item].C + " H = " + _mapDate.mapDates[item].H);
             }
             //スタートした場所は検索済みなのでCloaseに
-            _mapDate.mapDates[index].states = TILE_STATAS.Close;
+            _mapData.mapDatas[index].states = TILE_STATAS.Close;
 
             int minValue = int.MaxValue;
 
             foreach (var item in list)
             {
-                if (_mapDate.mapDates[item].states == TILE_STATAS.Close) continue;
-                if (_mapDate.mapDates[item].S < minValue)
+                if (_mapData.mapDatas[item].states == TILE_STATAS.Close) continue;
+                if (_mapData.mapDatas[item].S < minValue)
                 {
-                    minValue = _mapDate.mapDates[item].S;
+                    minValue = _mapData.mapDatas[item].S;
                     index = item;
                 }
             }
@@ -678,11 +678,11 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
 
         var vs = new List<GRID_DATA>();
         //_mapDate.mapDates[index].GetParh(vs);
-        GRID_DATA date = _mapDate.mapDates[index];
+        GRID_DATA date = _mapData.mapDatas[index];
         while (date.tileBaseNum != (int)TILE.START)
         {
             vs.Add(date);
-            date = date.parentDate;
+            date = date.parentData;
         }
 
         return vs;
@@ -690,7 +690,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     //すべてのタイルのSATASをOpenにする
     private void TileOpen()
     {
-        foreach (var item in _mapDate.mapDates)
+        foreach (var item in _mapData.mapDatas)
         {
             item.states = TILE_STATAS.Opne;
         }
@@ -704,9 +704,9 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
             Vector3 posi = tower.transform.position;
             posi -= new Vector3(0.5f, 0.5f, 0);
             //Debug.Log($"_mapDate.mapDates[item].posi = {_mapDate.mapDates[item].posi} towerPosi = {posi}");
-            if (_mapDate.mapDates[item].posi == posi)
+            if (_mapData.mapDatas[item].posi == posi)
             {
-                _mapDate.mapDates[item].tower = false;
+                _mapData.mapDatas[item].tower = false;
                 break;
             }
         }
@@ -782,7 +782,7 @@ public class LevelManager : SingletonMonoBehaviour<LevelManager>
     private void GameSetting(StageData stage)
     {
         _enemyManager._stageText = stage.enemyData;
-        _mapDate = stage.mapData;
+        _mapData = stage.mapData;
         GameObject map = Instantiate(stage.stage);
         map.transform.position = new Vector3();
     }

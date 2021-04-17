@@ -22,7 +22,7 @@ public enum TILE_STATAS
 public static class TileMapController
 {
     /// <summary> 背景の作成 </summary>
-    public static void CreateBackGround(ref Tilemap tilemap, MapDateObject mapDate)
+    public static void CreateBackGround(ref Tilemap tilemap, MapDataObject mapDate)
     {
         tilemap.ClearAllTiles();
 
@@ -44,52 +44,52 @@ public static class TileMapController
         }
     }
     /// <summary> マップのタイルを設置します </summary>
-    public static void SetMap(ref Tilemap tilemap, MapDateObject mapDate)
+    public static void SetMap(ref Tilemap tilemap, MapDataObject mapDate)
     {
         tilemap.ClearAllTiles();        
         
-        for (int i = 0; i < mapDate.mapDates.Count; i++)
+        for (int i = 0; i < mapDate.mapDatas.Count; i++)
         {
-            if (mapDate.mapDates[i].tileBaseNum == (int)TILE.WALL)
+            if (mapDate.mapDatas[i].tileBaseNum == (int)TILE.WALL)
             {
                 if (Probability(50))
                 {
-                    tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.wall[0]);
+                    tilemap.SetTile(mapDate.mapDatas[i].posi, mapDate.wall[0]);
                 }
                 else
                 {
-                    tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.wall[1]);
+                    tilemap.SetTile(mapDate.mapDatas[i].posi, mapDate.wall[1]);
                 }
             }
-            else if (mapDate.mapDates[i].tileBaseNum == (int)TILE.LOAD)
+            else if (mapDate.mapDatas[i].tileBaseNum == (int)TILE.LOAD)
             {
-                tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.load);
+                tilemap.SetTile(mapDate.mapDatas[i].posi, mapDate.load);
             }
-            else if (mapDate.mapDates[i].tileBaseNum == (int)TILE.SET_TOWER)
+            else if (mapDate.mapDatas[i].tileBaseNum == (int)TILE.SET_TOWER)
             {
-                tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.setTowet);
+                tilemap.SetTile(mapDate.mapDatas[i].posi, mapDate.setTowet);
             }
-            else if (mapDate.mapDates[i].tileBaseNum == (int)TILE.START)
+            else if (mapDate.mapDatas[i].tileBaseNum == (int)TILE.START)
             {
-                tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.start);
+                tilemap.SetTile(mapDate.mapDatas[i].posi, mapDate.start);
             }
-            else if (mapDate.mapDates[i].tileBaseNum == (int)TILE.GOAL)
+            else if (mapDate.mapDatas[i].tileBaseNum == (int)TILE.GOAL)
             {
-                tilemap.SetTile(mapDate.mapDates[i].posi, mapDate.goal);
+                tilemap.SetTile(mapDate.mapDatas[i].posi, mapDate.goal);
             }
         }
     }
     /// <summary> タワーを置ける位置をセットします </summary>
-    public static void SetToerMap(ref Tilemap tilemap, MapDateObject mapDate, List<int> indexs)
+    public static void SetToerMap(ref Tilemap tilemap, MapDataObject mapDate, List<int> indexs)
     {
         tilemap.ClearAllTiles();        
 
         foreach (var item in indexs)
         {
             //Debug.Log(mapDate.mapDates[item].tower);
-            if (mapDate.mapDates[item].tower == false)
+            if (mapDate.mapDatas[item].tower == false)
             {
-                tilemap.SetTile(mapDate.mapDates[item].posi, mapDate.overTile);
+                tilemap.SetTile(mapDate.mapDatas[item].posi, mapDate.overTile);
             }
         }
     }

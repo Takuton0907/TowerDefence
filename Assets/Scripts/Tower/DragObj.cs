@@ -42,7 +42,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         towePosiIndexs = LevelManager.Instance.GetIndexs(TILE.SET_TOWER);
         GameObject overTileObj = GameObject.FindGameObjectWithTag("OverTile");
         tilemap = overTileObj.GetComponent<Tilemap>();
-        TileMapController.SetToerMap(ref tilemap, LevelManager.Instance._mapDate, towePosiIndexs);
+        TileMapController.SetToerMap(ref tilemap, LevelManager.Instance._mapData, towePosiIndexs);
 
         if (LevelManager.Instance._enemyManager.instanceEnemys.Count != 0)
         {
@@ -107,7 +107,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         Vector3 posi = Vector3Int.FloorToInt(copyObj.transform.position);
         posi = new Vector3(posi.x + 0.5f, posi.y + 0.5f, 0);
 
-        foreach (var item in LevelManager.Instance._mapDate.mapDates)
+        foreach (var item in LevelManager.Instance._mapData.mapDatas)
         {
             //Debug.Log($"item.posi = {item.posi} posi = {posi}");
             if (item.posi == posi - new Vector3(0.5f, 0.5f, 0))
@@ -142,7 +142,7 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
         int setPosiIndex = int.MaxValue;
         foreach (var item in towePosiIndexs)
         {
-            if (LevelManager.Instance._mapDate.mapDates[item].posi + new Vector3(0.5f, 0.5f, 0) == posi)
+            if (LevelManager.Instance._mapData.mapDatas[item].posi + new Vector3(0.5f, 0.5f, 0) == posi)
             {
                 Debug.Log("一致しました");
                 setPosiIndex = item;
@@ -158,8 +158,8 @@ public class DragObj : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragH
 
         copyObj.transform.SetParent(parentTransform);
         copyObj.GetComponent<CanvasGroup>().blocksRaycasts = true;
-        LevelManager.Instance._mapDate.mapDates[setPosiIndex].tower = true;
-        copyObj.transform.position = LevelManager.Instance._mapDate.mapDates[setPosiIndex].posi + new Vector3(0.5f, 0.5f, 0);
+        LevelManager.Instance._mapData.mapDatas[setPosiIndex].tower = true;
+        copyObj.transform.position = LevelManager.Instance._mapData.mapDatas[setPosiIndex].posi + new Vector3(0.5f, 0.5f, 0);
 
         TowerBase towerMonoBehaviur = copyObj.GetComponent<TowerBase>();
         towerMonoBehaviur.Init();

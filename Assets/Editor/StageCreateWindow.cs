@@ -12,7 +12,7 @@ public class StageCreateWindow : ScriptableWizard
     string GAMEROOT_PATH = "Assets/Plefab/Managers/GameRoot.prefab";
 
     [SerializeField]
-    TextAsset mapDate = null;
+    TextAsset mapData = null;
 
     TileBase overTile;
     public TileBase load;
@@ -27,13 +27,13 @@ public class StageCreateWindow : ScriptableWizard
     string START_TILEBASE_PATH = "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_79.asset";
     string GOAL_TILEBASE_PATH = "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_78.asset";
 
-    List<GRID_DATA> mapDates = new List<GRID_DATA>();
+    List<GRID_DATA> mapDatas = new List<GRID_DATA>();
     public Material overTileMaterial;
     string OVERTILE_MATERIAL_PATH = "Assets/Map/Material/OverTileMaterial.mat";
 
     [Header("Enemys")]
     [SerializeField]
-    TextAsset enemyDate = null;
+    TextAsset enemyData = null;
 
     private void Awake()
     {
@@ -64,13 +64,13 @@ public class StageCreateWindow : ScriptableWizard
     {
         string[] names = AssetDatabase.FindAssets("t:Folder", new[] { "Assets/Resources/Stages" });
 
-        string folderPath = AssetDatabase.CreateFolder("Assets/Resources/Stages",names.Length.ToString("00") + mapDate.name);
+        string folderPath = AssetDatabase.CreateFolder("Assets/Resources/Stages",names.Length.ToString("00") + mapData.name);
         
         string path = AssetDatabase.GUIDToAssetPath(folderPath);
 
         path += "/";
 
-        MapDateObject date = MapDateCreator.CreateMapDate(mapDate, path);
+        MapDataObject date = MapDataCreator.CreateMapData(mapData, path);
 
         date.load = load;
         date.wall = wall;
@@ -83,10 +83,10 @@ public class StageCreateWindow : ScriptableWizard
 
         Debug.Log(date.load);
 
-        MapDateCreator.CreatePrefab(date, path);
+        MapDataCreator.CreatePrefab(date, path);
 
-        AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(enemyDate), path + enemyDate.name + ".csv");
+        AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(enemyData), path + enemyData.name + ".csv");
 
-        Debug.Log($"以下のフォルダに作成し\n{enemyDate.name}も移動しました\n{path}");
+        Debug.Log($"以下のフォルダに作成し\n{enemyData.name}も移動しました\n{path}");
     }
 }
