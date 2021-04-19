@@ -64,12 +64,15 @@ public class TileNode : Node
         // Boxを生成
         var box = new Box();
 
+        var button = new Button();
+        button.clickable.clicked += () => {
+            var tileFiels = new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
+            int index = extensionContainer.IndexOf(box);
+            extensionContainer.Insert(index, tileFiels);
+        };
+        button.text = "Add";
         // Boxの子としてボタンを追加
-        box.Add(new Button()
-        {
-            text = "Add"
-        });
-
+        box.Add(button);
         // ルートの子としてBoxを追加
         extensionContainer.Add(box);
     }

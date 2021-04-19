@@ -25,9 +25,7 @@ public class SearchMenuWindowProvider : ScriptableObject, ISearchWindowProvider
         entries.Add(new SearchTreeGroupEntry(new GUIContent("Example")) { level = 1 });
 
         // Exampleグループの下に各ノードを作るためのメニューを追加
-        entries.Add(new SearchTreeEntry(new GUIContent(nameof(ValueNode))) { level = 2, userData = typeof(ValueNode) });
-        entries.Add(new SearchTreeEntry(new GUIContent(nameof(AddNode))) { level = 2, userData = typeof(AddNode) });
-        entries.Add(new SearchTreeEntry(new GUIContent(nameof(OutputNode))) { level = 2, userData = typeof(OutputNode) });
+        entries.Add(new SearchTreeEntry(new GUIContent(nameof(ValueNode))) { level = 2, userData = typeof(TileField) });
 
         return entries;
     }
