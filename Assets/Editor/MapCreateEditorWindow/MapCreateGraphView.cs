@@ -10,10 +10,11 @@ public class MapCreateGraphView : GraphView
     public MapCreateGraphView(EditorWindow editorWindow)
     {
         // ノードを追加
-        AddElement(new MapNode());
-        AddElement(new OutputNode());
-        AddElement(new ValueNode());
-        AddElement(new AddNode());
+        //AddElement(new MapNode());
+        //AddElement(new OutputNode());
+        //AddElement(new ValueNode());
+        //AddElement(new AddNode());
+        AddElement(new TileNode());
 
         // 親のサイズに合わせてGraphViewのサイズを設定
         this.StretchToParentSize();

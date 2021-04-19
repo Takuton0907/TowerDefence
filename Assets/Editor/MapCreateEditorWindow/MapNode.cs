@@ -2,6 +2,7 @@
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class MapNode : Node
 {
@@ -53,15 +54,25 @@ public class TileNode : Node
     {
         title = "TileArray";
 
-        var port = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(Tile));
+        var port = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(Sprite));
         port.portName = "Value";
         outputContainer.Add(port);
 
-        extensionContainer.Add(new FloatField());
+        extensionContainer.Add(new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset"));
         RefreshExpandedState();
+
+        // Boxを生成
+        var box = new Box();
+
+        // Boxの子としてボタンを追加
+        box.Add(new Button()
+        {
+            text = "Add"
+        });
+
+        // ルートの子としてBoxを追加
+        extensionContainer.Add(box);
     }
-
-
 }
 public class OutputNode : Node
 {
