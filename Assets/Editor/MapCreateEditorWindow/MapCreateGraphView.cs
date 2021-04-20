@@ -6,15 +6,14 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
 public class MapCreateGraphView : GraphView
-{ 
+{
+    public MapNode _mapNode { private set; get; }
+
     public MapCreateGraphView(EditorWindow editorWindow)
     {
+        _mapNode = new MapNode();
         // ノードを追加
-        //AddElement(new MapNode());
-        //AddElement(new OutputNode());
-        //AddElement(new ValueNode());
-        //AddElement(new AddNode());
-        AddElement(new TileNode());
+        AddElement(_mapNode);
 
         // 親のサイズに合わせてGraphViewのサイズを設定
         this.StretchToParentSize();
