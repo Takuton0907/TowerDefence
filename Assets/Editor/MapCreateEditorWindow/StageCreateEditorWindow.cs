@@ -69,7 +69,7 @@ public class RunElement : VisualElement
     {
         style.backgroundColor = new StyleColor(color);
         style.position = Position.Absolute;
-        style.height = 20;
+        style.height = 50;
         style.width = 100;
         transform.position = pos;
 

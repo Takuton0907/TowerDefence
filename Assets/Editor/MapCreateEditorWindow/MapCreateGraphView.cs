@@ -9,7 +9,7 @@ public class MapCreateGraphView : GraphView
 {
     public MapNode _mapNode { private set; get; }
 
-    public MapCreateGraphView(EditorWindow editorWindow)
+    public MapCreateGraphView(EditorWindow editorWindow) : base()
     {
         _mapNode = new MapNode();
         // ノードを追加
@@ -35,6 +35,7 @@ public class MapCreateGraphView : GraphView
             SearchWindow.Open(new SearchWindowContext(context.screenMousePosition), menuWindowProvider);
         };
     }
+
     // GetCompatiblePortsをオーバーライドする
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
     {
