@@ -1,21 +1,23 @@
 ﻿using UnityEditor.Experimental.GraphView;
-using UnityEditor.UIElements;
 using UnityEngine;
-using System.Linq;
 using System;
 using UnityEngine.UIElements;
-using UnityEditor;
 using System.Collections.Generic;
 
 public class PortBase : Port
 {
+    // dragを始めた時のイベント
     public delegate void OnStartEdgeDrag();
     event OnStartEdgeDrag _onStartEdgeDragEvent;
     public event OnStartEdgeDrag OnStartEdgeDragEvent { add { _onStartEdgeDragEvent += value; } remove { _onStartEdgeDragEvent -= value; } }
-    
+
+    // dragが終わった時のイベント
     public delegate void OnStopEdgeDrag();
     event OnStopEdgeDrag _onStopEdgeDragEvent;
     public event OnStopEdgeDrag OnStopEdgeDragEvent { add { _onStopEdgeDragEvent += value; } remove { _onStopEdgeDragEvent -= value; } }
+
+    // 自分からdragが始まったかを示すフラグ
+    private bool _toDrag = false;
 
     public PortBase(Orientation portOrientation, Direction portDirection, Capacity portCapacity, Type type) : base(portOrientation, portDirection, portCapacity, type)
     {
@@ -35,16 +37,25 @@ public class PortBase : Port
 
     public override void OnStartEdgeDragging()
     {
-        Debug.Log("OnStart");
-        base.OnStartEdgeDragging();
-        _onStartEdgeDragEvent?.Invoke();
+        // 自分のノードから始まった時にのみ実行する
+        if (node.worldBound.Overlaps(new Rect(Event.current.mousePosition, new Vector2(1, 1))))
+        {
+            base.OnStartEdgeDragging();
+            _onStartEdgeDragEvent?.Invoke();
+            _toDrag = true;
+        }
     }
     public override void OnStopEdgeDragging()
     {
-        Debug.Log("OnStop");
-        base.OnStopEdgeDragging();
-        _onStopEdgeDragEvent?.Invoke();
+        if (_toDrag)
+        {
+            base.OnStopEdgeDragging();
+            _onStopEdgeDragEvent?.Invoke();
+
+            _toDrag = false;   
+        }
     }
+
     private class DefaultEdgeConnectorListener : IEdgeConnectorListener
     {
         private GraphViewChange m_GraphViewChange;

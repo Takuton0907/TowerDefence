@@ -60,7 +60,7 @@ public class MapNode : Node
         _inputPorts.Add(inputPortGoal);
         inputContainer.Add(inputPortGoal);
 
-        var inputPortOverMaterial = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
+        var inputPortOverMaterial = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(Material));
         inputPortOverMaterial.portName = "OverTileMaterial";
         inputPortOverMaterial.userData = _mapData._overTileMaterial;
         _inputPorts.Add(inputPortOverMaterial);
