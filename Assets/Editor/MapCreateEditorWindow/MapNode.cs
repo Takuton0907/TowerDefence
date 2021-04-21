@@ -18,55 +18,55 @@ public class MapNode : Node
     {
         title = "Map Data";
         // 入力用のポートを作成
-        var inputPortGameRoot = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(GameObject));
+        var inputPortGameRoot = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(GameObject));
         inputPortGameRoot.portName = "GameRoot";
         inputPortGameRoot.userData = _mapData._gameRoot;
         _inputPorts.Add(inputPortGameRoot);
         inputContainer.Add(inputPortGameRoot);
 
-        var inputPortMapData = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TextAsset));
+        var inputPortMapData = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TextAsset));
         inputPortMapData.portName = "MapData";
         inputPortMapData.userData = _mapData._mapData;
         _inputPorts.Add(inputPortMapData);
         inputContainer.Add(inputPortMapData);
 
-        var inputPortLoad = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
+        var inputPortLoad = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortLoad.portName = "LoadTile";
         inputPortLoad.userData = _mapData._load;
         _inputPorts.Add(inputPortLoad);
         inputContainer.Add(inputPortLoad);
 
-        var inputPortWall = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(TileBase[]));
+        var inputPortWall = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(TileBase[]));
         inputPortWall.portName = "WallTile";
         inputPortWall.userData = _mapData._wall;
         _inputPorts.Add(inputPortWall);
         inputContainer.Add(inputPortWall);
 
-        var inputPortSetTower = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
+        var inputPortSetTower = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortSetTower.portName = "SetTowerTile";
         inputPortSetTower.userData = _mapData._setTower;
         _inputPorts.Add(inputPortSetTower);
         inputContainer.Add(inputPortSetTower);
 
-        var inputPortStart = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
+        var inputPortStart = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortStart.portName = "StartTile";
         inputPortStart.userData = _mapData._start;
         _inputPorts.Add(inputPortStart);
         inputContainer.Add(inputPortStart);
 
-        var inputPortGoal = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
+        var inputPortGoal = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortGoal.portName = "GoalTile";
         inputPortGoal.userData = _mapData._goal;
         _inputPorts.Add(inputPortGoal);
         inputContainer.Add(inputPortGoal);
 
-        var inputPortOverMaterial = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
+        var inputPortOverMaterial = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortOverMaterial.portName = "OverTileMaterial";
         inputPortOverMaterial.userData = _mapData._overTileMaterial;
         _inputPorts.Add(inputPortOverMaterial);
         inputContainer.Add(inputPortOverMaterial);
 
-        var inputPortEnemyData = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TextAsset));
+        var inputPortEnemyData = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TextAsset));
         inputPortEnemyData.portName = "MapData";
         inputPortEnemyData.userData = _mapData._enemyData;
         _inputPorts.Add(inputPortEnemyData);
@@ -112,7 +112,6 @@ public class TileNode : Node
         port.portName = "Value";
         port.userData = _tileField;
         outputContainer.Add(port);
-        Debug.Log(port.edgeConnector.edgeDragHelper.draggedPort.source);
         
         var tileField = new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
         extensionContainer.Add(tileField);
@@ -152,7 +151,7 @@ public class TileArrayNode : Node
     {
         title = "TileArray";
         //portの作成
-        var port = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(TileBase[]));
+        var port = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(TileBase[]));
         port.portName = "Value";
         port.userData = _tileBases;
         Debug.Log(port.edgeConnector);
@@ -205,7 +204,7 @@ public class OutputNode : Node
     public OutputNode()
     {
         title = "Output";
-        var port = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(float));
+        var port = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(float));
         port.portName = "Value";
         inputContainer.Add(port);
     }
@@ -217,15 +216,15 @@ public class AddNode : Node
     {
         title = "Add";
 
-        var inputPort1 = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(float[]));
+        var inputPort1 = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(float[]));
         inputPort1.portName = "A";
         inputContainer.Add(inputPort1);
 
-        var inputPort2 = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(float));
+        var inputPort2 = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(float));
         inputPort2.portName = "B";
         inputContainer.Add(inputPort2);
 
-        var outputPort = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(float));
+        var outputPort = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(float));
         outputPort.portName = "Out";
         outputContainer.Add(outputPort);
     }
@@ -237,7 +236,7 @@ public class ValueNode : Node
     {
         title = "Value";
 
-        var port = Port.Create<EdgeBase>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(float));
+        var port = PortBase.Create<EdgeBase>(Orientation.Horizontal, Direction.Output, Port.Capacity.Multi, typeof(float));
         port.portName = "Value";
         outputContainer.Add(port);
 
