@@ -23,7 +23,6 @@ public class PortBase : Port
     {
       
     }
-
     public static new PortBase Create<TEdge>(Orientation orientation, Direction direction, Capacity capacity, Type type) where TEdge : Edge, new()
     {
         var connectorListener = new DefaultEdgeConnectorListener();
@@ -34,28 +33,27 @@ public class PortBase : Port
         port.AddManipulator(port.m_EdgeConnector);
         return port;
     }
-
     public override void OnStartEdgeDragging()
     {
+        base.OnStartEdgeDragging();
         // 自分のノードから始まった時にのみ実行する
         if (node.worldBound.Overlaps(new Rect(Event.current.mousePosition, new Vector2(1, 1))))
         {
-            base.OnStartEdgeDragging();
             _onStartEdgeDragEvent?.Invoke();
             _toDrag = true;
         }
     }
     public override void OnStopEdgeDragging()
     {
+
+        base.OnStopEdgeDragging();
         if (_toDrag)
         {
-            base.OnStopEdgeDragging();
             _onStopEdgeDragEvent?.Invoke();
 
             _toDrag = false;   
         }
     }
-
     private class DefaultEdgeConnectorListener : IEdgeConnectorListener
     {
         private GraphViewChange m_GraphViewChange;
@@ -76,10 +74,6 @@ public class PortBase : Port
             m_EdgesToCreate.Clear();
             m_EdgesToCreate.Add(edge);
 
-            // We can't just add these edges to delete to the m_GraphViewChange
-            // because we want the proper deletion code in GraphView to also
-            // be called. Of course, that code (in DeleteElements) also
-            // sends a GraphViewChange.
             m_EdgesToDelete.Clear();
             if (edge.input.capacity == Capacity.Single)
                 foreach (Edge edgeToDelete in edge.input.connections)
