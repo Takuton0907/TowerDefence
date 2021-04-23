@@ -23,7 +23,7 @@ public class StageCreateEditorWindow : EditorWindow
 
         rootVisualElement.Add(new RunElement("Save", new Color(0.29f, 0.29f, 0.29f), new Vector2(0, 10), OnClickRun));
     }
-
+    //saveの実行
     private void OnClickRun()
     {
         MapNode mapNode = graphView._mapNode;
@@ -31,16 +31,19 @@ public class StageCreateEditorWindow : EditorWindow
        
         foreach (var input in mapNode._inputPorts)
         {
-            var conect = input.connections.Select(connect => connect.input?.source);
+            //extensionContainerに設定してある値の参照の取得
+            var extensionChildren = input.connections.Select(connect => connect.output?.node.extensionContainer.Children());
 
-            foreach (var item in conect)
+            foreach (var child in extensionChildren)
             {
-                if (item is TileBase tileBase)
+                foreach (var item in child)
                 {
-                    Debug.Log(tileBase);
+                    if (item is TileField field)
+                    {
+                        //値の使用
+                        Debug.Log(field.value);
+                    }
                 }
-
-                Debug.Log(item);
             }
         }
         
