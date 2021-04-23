@@ -8,11 +8,16 @@ using System.Linq;
 using System.Collections;
 using static UnityEditor.Experimental.GraphView.Port;
 using System;
+using System.Threading.Tasks;
 
 public class NodeBase : Node
 {
-    protected List<Port> _outputPorts = new List<Port>();
-    protected List<Port> _inputPorts = new List<Port>();
+    public List<Port> _outputPorts { private set; get; } = new List<Port>();
+    public List<Port> _inputPorts { private set; get; } = new List<Port>();
+
+    public delegate void DataActioin<T>(T nextNode);
+    public DataActioin<object> InputDataActioin { set; get; }
+    public DataActioin<Node> OutputDataActioin { set; get; }
 
     public NodeBase() : base()
     {
@@ -31,55 +36,75 @@ public class NodeBase : Node
                 _outputPorts.Add(port);
                 break;
         }
-        port.OnStopEdgeDragEvent += Execute;
+        port.OnStopEdgeDragEvent += InputExecute;
+        port.OnStopEdgeDragEvent += OutputExecute;
         return port;
     }
-
-    // 出力した先のノードを編集
-    public virtual void Execute()
+    /// <summary> portの削除 </summary>
+    /// <param name="port">消すport</param>
+    /// <param name="direction">inputかoutputの判断</param>
+    /// <returns>portが削除されたかを返します</returns>
+    public bool RemovePort(PortBase port, Direction direction)
     {
-        Debug.Log("output接続");
-        foreach (var outputPort in _outputPorts)
+        bool removed = false;
+        switch (direction)
         {
-            if (outputPort?.connections != null || outputPort?.connections.Any() != false)
-            {
-                continue;
-            }
+            case Direction.Input:
+                removed = _inputPorts.Remove(port);
+                break;
+            case Direction.Output:
+                removed = _outputPorts.Remove(port);
+                break;
+        }
 
-            IEnumerable nextNodes = outputPort.connections.Select(connect => connect.input?.node);
+        return removed;
+    }
 
-            if (nextNodes == null)
+    private async void InputExecute()
+    {
+        await Stay();
+        //現在inputに存在する値を渡す処理
+        Debug.Log($"input接続 {_inputPorts.Count}");
+        foreach (var inputPort in _inputPorts)
+        {
+            var nextNodes = inputPort.connections.Select(connect => connect.output?.source);
+
+            if (nextNodes == null || nextNodes.Any() == false)
             {
+                Debug.Log($"{nextNodes}");
                 break;
             }
 
             foreach (var nextNode in nextNodes)
             {
-                // 出力側に繋がっているノードに対する処理
-                Debug.Log("output接続");
+                InputDataActioin?.Invoke(nextNode);
             }
         }
-
-        Debug.Log("input接続");
-        foreach (var inputPort in _inputPorts)
+    }
+    private async void OutputExecute()
+    {
+        await Stay();
+        //現在outputに存在する値を渡す処理
+        Debug.Log($"output接続 {_outputPorts.Count}");
+        foreach (var outputPort in _outputPorts)
         {
-            if (inputPort?.connections != null || inputPort?.connections.Any() != false)
-            {
-                continue;
-            }
+            var nextNodes = outputPort.connections.Select(connect => connect.input?.node);
 
-            var prevNodeParameters = inputPort.connections.Select(connect => connect.output?.source);
-
-            if (prevNodeParameters == null || prevNodeParameters.Any() == false)
+            if (nextNodes == null || nextNodes.Any() == false)
             {
+                Debug.Log($"{nextNodes}");
                 break;
             }
 
-            foreach (var parameter in prevNodeParameters)
+            foreach (var nextNode in nextNodes)
             {
-                // 各パラメータごとの処理
-                Debug.Log("input接続");
+                OutputDataActioin?.Invoke(nextNode);
             }
         }
+    }
+
+    private async Task Stay()
+    {
+        await Task.Delay(10);
     }
 }

@@ -80,6 +80,13 @@ public class TileNode : NodeBase
         extensionContainer.Add(tileField);
         _tileField = tileField;
         RefreshExpandedState();
+
+        OutputDataActioin += (nextNode) => {
+            if (nextNode is NodeBase node)
+            {
+                Debug.Log(nextNode);
+            }
+        };
     }
 }
 /// <summary> tilebaseの配列を処理するノード </summary>
@@ -94,7 +101,6 @@ public class TileArrayNode : NodeBase
         var port = CreatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(TileBase[]));
         port.portName = "Value";
         port.userData = _tileBases;
-        Debug.Log(port.edgeConnector);
 
         outputContainer.Add(port);
 

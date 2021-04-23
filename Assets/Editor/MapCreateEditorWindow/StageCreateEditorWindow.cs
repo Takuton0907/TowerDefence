@@ -1,7 +1,9 @@
 ﻿using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.Tilemaps;
 using UnityEditor;
 using System;
+using System.Linq;
 
 public class StageCreateEditorWindow : EditorWindow
 {
@@ -25,11 +27,21 @@ public class StageCreateEditorWindow : EditorWindow
     private void OnClickRun()
     {
         MapNode mapNode = graphView._mapNode;
-        Debug.Log(mapNode.inputContainer.childCount);
-        var inputChilds = mapNode.inputContainer.Children();
-        foreach (var item in inputChilds)
+        var inputChilds = mapNode.inputContainer.contentContainer.Children();
+       
+        foreach (var input in mapNode._inputPorts)
         {
-            Debug.Log(item.userData);
+            var conect = input.connections.Select(connect => connect.input?.source);
+
+            foreach (var item in conect)
+            {
+                if (item is TileBase tileBase)
+                {
+                    Debug.Log(tileBase);
+                }
+
+                Debug.Log(item);
+            }
         }
         
 

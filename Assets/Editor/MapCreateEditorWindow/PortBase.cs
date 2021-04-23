@@ -3,6 +3,7 @@ using UnityEngine;
 using System;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
+using System.Collections;
 
 public class PortBase : Port
 {
@@ -45,12 +46,10 @@ public class PortBase : Port
     }
     public override void OnStopEdgeDragging()
     {
-
         base.OnStopEdgeDragging();
         if (_toDrag)
         {
             _onStopEdgeDragEvent?.Invoke();
-
             _toDrag = false;   
         }
     }
