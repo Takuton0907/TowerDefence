@@ -10,8 +10,6 @@ using System.Collections;
 /// <summary> マップデータのノード </summary>
 public class MapNode : Node
 {
-    MapData _mapData = new MapData();
-
     public List<Port> _inputPorts = new List<Port>();
 
     public MapNode()
@@ -21,55 +19,46 @@ public class MapNode : Node
 
         var inputPortGameRoot = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(GameObject));
         inputPortGameRoot.portName = "GameRoot";
-        inputPortGameRoot.userData = _mapData._gameRoot;
         inputContainer.Add(inputPortGameRoot);
         _inputPorts.Add(inputPortGameRoot);
 
         var inputPortMapData = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortMapData.portName = "MapData";
-        inputPortMapData.userData = _mapData._mapData;
         inputContainer.Add(inputPortMapData);
         _inputPorts.Add(inputPortMapData);
 
         var inputPortLoad = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortLoad.portName = "LoadTile";
-        inputPortLoad.userData = _mapData._load;
         inputContainer.Add(inputPortLoad);
         _inputPorts.Add(inputPortLoad);
 
         var inputPortWall = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase[]));
         inputPortWall.portName = "WallTile";
-        inputPortWall.userData = _mapData._wall;
         inputContainer.Add(inputPortWall);
         _inputPorts.Add(inputPortWall);
 
         var inputPortSetTower = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortSetTower.portName = "SetTowerTile";
-        inputPortSetTower.userData = _mapData._setTower;
         inputContainer.Add(inputPortSetTower);
         _inputPorts.Add(inputPortSetTower);
 
         var inputPortStart = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortStart.portName = "StartTile";
-        inputPortStart.userData = _mapData._start;
         inputContainer.Add(inputPortStart);
         _inputPorts.Add(inputPortStart);
 
         var inputPortGoal = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
         inputPortGoal.portName = "GoalTile";
-        inputPortGoal.userData = _mapData._goal;
         inputContainer.Add(inputPortGoal);
         _inputPorts.Add(inputPortGoal);
 
         var inputPortOverMaterial = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(Material));
         inputPortOverMaterial.portName = "OverTileMaterial";
-        inputPortOverMaterial.userData = _mapData._overTileMaterial;
         inputContainer.Add(inputPortOverMaterial);
         _inputPorts.Add(inputPortOverMaterial);
 
         var inputPortEnemyData = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TextAsset));
         inputPortEnemyData.portName = "MapData";
-        inputPortEnemyData.userData = _mapData._enemyData;
         inputContainer.Add(inputPortEnemyData);
         _inputPorts.Add(inputPortEnemyData);
     }
@@ -84,7 +73,7 @@ public class TileNode : Node
         port.portName = "Value";
         outputContainer.Add(port);
 
-        var tileField = new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
+        var tileField = new TileField("Tile", inputContainer, defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
         port.userData = tileField.value;
         extensionContainer.Add(tileField);
         RefreshExpandedState();
@@ -106,7 +95,7 @@ public class TileArrayNode : Node
         outputContainer.Add(port);
 
         //dataの設定とリストへの追加
-        var tileField = new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
+        var tileField = new TileField("Tile", inputContainer, defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
         extensionContainer.Add(tileField);
         _tileBases.Add(tileField);
         RefreshExpandedState();
@@ -117,7 +106,7 @@ public class TileArrayNode : Node
         var addbutton = new Button();
         addbutton.clickable.clicked += () => {
             //新たなTileFieldを作成
-            tileField = new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
+            tileField = new TileField("Tile", inputContainer, defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
             int index = extensionContainer.IndexOf(box);
             extensionContainer.Insert(index, tileField);
             _tileBases.Add(tileField);
@@ -144,6 +133,38 @@ public class TileArrayNode : Node
         box.Add(removeButton);
         // ルートの子としてBoxを追加
         extensionContainer.Add(box);
+    }
+}
+/// <summary> Material処理するノード </summary>
+public class MaterialNode : Node
+{
+    public MaterialNode()
+    {
+        title = "Material";
+        var port = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(Material));
+        port.portName = "Value";
+        outputContainer.Add(port);
+
+        var field = new MaterialField("Material", inputContainer, defaultPath: "Assets/Map/Material/OverTileMaterial.mat");
+        port.userData = field.value;
+        extensionContainer.Add(field);
+        RefreshExpandedState();
+    }
+}
+
+public class TextAssetNode : Node
+{
+    public TextAssetNode()
+    {
+        title = "TextAsset";
+        var port = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(Material));
+        port.portName = "Value";
+        outputContainer.Add(port);
+
+        var field = new TextAssetField("TextAsset", inputContainer);
+        port.userData = field.value;
+        extensionContainer.Add(field);
+        RefreshExpandedState();
     }
 }
 public class OutputNode : Node
