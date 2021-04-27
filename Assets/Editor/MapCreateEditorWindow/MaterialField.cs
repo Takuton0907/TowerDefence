@@ -1,15 +1,14 @@
 ﻿using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.UIElements;
 
-public class MaterialField : BaseField<Material>
+public class MaterialField : ObjectField
 {
-    public MaterialField(string label, VisualElement visualInput, string tooltip = "", string defaultPath = "") : base(label, visualInput)
+    public MaterialField(string label, string tooltip = "", string defaultPath = "") : base()
     {
+        objectType = typeof(Material);
         base.label = label;
-        base.labelElement.style.color = Color.white;
         base.tooltip = tooltip;
-        base.style.backgroundColor = new Color(0.294f, 0.294f, 0.294f);
         base.value = AssetDatabase.LoadAssetAtPath(defaultPath, typeof(Material)) as Material;
     }
 }
