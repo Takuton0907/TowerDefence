@@ -22,7 +22,7 @@ public class MapNode : Node
         inputContainer.Add(inputPortGameRoot);
         _inputPorts.Add(inputPortGameRoot);
 
-        var inputPortMapData = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TileBase));
+        var inputPortMapData = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TextAsset));
         inputPortMapData.portName = "MapData";
         inputContainer.Add(inputPortMapData);
         _inputPorts.Add(inputPortMapData);
@@ -58,7 +58,7 @@ public class MapNode : Node
         _inputPorts.Add(inputPortOverMaterial);
 
         var inputPortEnemyData = Port.Create<Edge>(Orientation.Horizontal, Direction.Input, Port.Capacity.Single, typeof(TextAsset));
-        inputPortEnemyData.portName = "MapData";
+        inputPortEnemyData.portName = "EnemyData";
         inputContainer.Add(inputPortEnemyData);
         _inputPorts.Add(inputPortEnemyData);
     }
@@ -73,7 +73,7 @@ public class TileNode : Node
         port.portName = "Value";
         outputContainer.Add(port);
 
-        var tileField = new TileField("Tile", inputContainer, defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
+        var tileField = new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
         port.userData = tileField.value;
         extensionContainer.Add(tileField);
         RefreshExpandedState();
@@ -95,7 +95,7 @@ public class TileArrayNode : Node
         outputContainer.Add(port);
 
         //dataの設定とリストへの追加
-        var tileField = new TileField("Tile", inputContainer, defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
+        var tileField = new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
         extensionContainer.Add(tileField);
         _tileBases.Add(tileField);
         RefreshExpandedState();
@@ -106,7 +106,7 @@ public class TileArrayNode : Node
         var addbutton = new Button();
         addbutton.clickable.clicked += () => {
             //新たなTileFieldを作成
-            tileField = new TileField("Tile", inputContainer, defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
+            tileField = new TileField("Tile", defaultPath: "Assets/AssetStore/Texture/Backyard - Free/Separate Tiles/backyard_00.asset");
             int index = extensionContainer.IndexOf(box);
             extensionContainer.Insert(index, tileField);
             _tileBases.Add(tileField);
@@ -145,7 +145,7 @@ public class MaterialNode : Node
         port.portName = "Value";
         outputContainer.Add(port);
 
-        var field = new MaterialField("Material", inputContainer, defaultPath: "Assets/Map/Material/OverTileMaterial.mat");
+        var field = new MaterialField("Material", defaultPath: "Assets/Map/Material/OverTileMaterial.mat");
         port.userData = field.value;
         extensionContainer.Add(field);
         RefreshExpandedState();
@@ -157,16 +157,34 @@ public class TextAssetNode : Node
     public TextAssetNode()
     {
         title = "TextAsset";
-        var port = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(Material));
+        var port = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(TextAsset));
         port.portName = "Value";
         outputContainer.Add(port);
 
-        var field = new TextAssetField("TextAsset", inputContainer);
+        var field = new TextAssetField("TextAsset");
         port.userData = field.value;
         extensionContainer.Add(field);
         RefreshExpandedState();
     }
 }
+
+public class GameObjectNode : Node
+{
+    public GameObjectNode()
+    {
+        title = "Object";
+        var port = Port.Create<Edge>(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(GameObject));
+        port.portName = "Value";
+        outputContainer.Add(port);
+
+        var field = new ObjectField("GameObject");
+        field.objectType = typeof(GameObject);
+        port.userData = field.value;
+        extensionContainer.Add(field);
+        RefreshExpandedState();
+    }
+}
+
 public class OutputNode : Node
 {
     public OutputNode()
