@@ -21,14 +21,23 @@ public class SearchMenuWindowProvider : ScriptableObject, ISearchWindowProvider
         var entries = new List<SearchTreeEntry>();
         entries.Add(new SearchTreeGroupEntry(new GUIContent("Create Node")));
 
-        // Exampleというグループを追加
+        // Tileグループを追加
         entries.Add(new SearchTreeGroupEntry(new GUIContent("Tile")) { level = 1 });
-
-        // Exampleグループの下に各ノードを作るためのメニューを追加
+        // Tileグループの下に各ノードを作るためのメニューを追加
         entries.Add(new SearchTreeEntry(new GUIContent(nameof(TileNode))) { level = 2, userData = typeof(TileNode) });
         entries.Add(new SearchTreeEntry(new GUIContent(nameof(TileArrayNode))) { level = 2, userData = typeof(TileArrayNode) });
+
+        // Materialグループを追加
+        entries.Add(new SearchTreeGroupEntry(new GUIContent("Material")) { level = 1 });
         entries.Add(new SearchTreeEntry(new GUIContent(nameof(MaterialNode))) { level = 2, userData = typeof(MaterialNode) });
+
+        // Textグループを追加
+        entries.Add(new SearchTreeGroupEntry(new GUIContent("Text")) { level = 1 });
         entries.Add(new SearchTreeEntry(new GUIContent(nameof(TextAssetNode))) { level = 2, userData = typeof(TextAssetNode) });
+
+        // GameObjectグループを追加
+        entries.Add(new SearchTreeGroupEntry(new GUIContent("GameObject")) { level = 1 });
+        entries.Add(new SearchTreeEntry(new GUIContent(nameof(GameObjectNode))) { level = 2, userData = typeof(GameObjectNode) });
         
         return entries;
     }
