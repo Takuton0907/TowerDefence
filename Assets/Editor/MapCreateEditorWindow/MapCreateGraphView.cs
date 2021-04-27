@@ -12,6 +12,17 @@ public class MapCreateGraphView : GraphView
     public MapCreateGraphView(EditorWindow editorWindow) : base()
     {
         _mapNode = new MapNode();
+        AddElement(new GameObjectNode());
+        AddElement(new TileArrayNode());
+        AddElement(new TextAssetNode());
+        AddElement(new TextAssetNode());
+        AddElement(new MaterialNode());
+
+        for (int i = 0; i < 4; i++)
+        {
+            AddElement(new TileNode());
+        }
+
         // ノードを追加
         AddElement(_mapNode);
 
