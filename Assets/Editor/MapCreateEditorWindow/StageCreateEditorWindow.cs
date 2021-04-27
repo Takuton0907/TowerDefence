@@ -4,6 +4,7 @@ using UnityEngine.Tilemaps;
 using UnityEditor;
 using System;
 using System.Linq;
+using UnityEditor.UIElements;
 
 public class StageCreateEditorWindow : EditorWindow
 {
@@ -47,70 +48,77 @@ public class StageCreateEditorWindow : EditorWindow
             {
                 foreach (var item in child)
                 {
+                    if (item == null)
+                    {
+                        continue;
+                    }
                     //データの格納
                     switch (dataType)
                     {
                         case DataType.GameRoot:
-                            if (item is BaseField<GameObject> rootField)
+                            if (item is ObjectField rootField)
                             {
                                 Debug.Log(rootField.value);
-                                mapData._gameRoot = rootField.value;
+                                mapData._gameRoot = rootField.value as GameObject;
                             }
                             break;
                         case DataType.MapDataText:
-                            if (item is BaseField<TextAsset> mapTextField)
+                            if (item is TextAssetField mapTextField)
                             {
                                 Debug.Log(mapTextField.value);
-                                mapData._mapData = mapTextField.value;
+                                mapData._mapData = mapTextField.value as TextAsset;
                             }
                             break;
                         case DataType.LoadTile:
                             if (item is TileField loadField)
                             {
                                 Debug.Log(loadField.value);
-                                mapData._load = loadField.value;
+                                mapData._load = loadField.value as TileBase;
                             }
                             break;
                         case DataType.WallTile:
                             if (item is TileField wallField)
                             {
                                 Debug.Log(wallField.value);
-                                mapData._wall.Add(wallField.value);
+                                if (wallField.value is TileBase tile)
+                                {
+                                    mapData._wall.Add(tile);
+                                }
                             }
                             break;
                         case DataType.SetTowerTile:
                             if (item is TileField towerField)
                             {
                                 Debug.Log(towerField.value);
-                                mapData._setTower = towerField.value;
+                                mapData._setTower = towerField.value as TileBase;
                             }
                             break;
                         case DataType.StartTile:
                             if (item is TileField startField)
                             {
                                 Debug.Log(startField.value);
-                                mapData._start = startField.value;
+                                mapData._start = startField.value as TileBase;
                             }
                             break;
                         case DataType.GoalTile:
                             if (item is TileField goalField)
                             {
                                 Debug.Log(goalField.value);
-                                mapData._goal = goalField.value;
+                                mapData._goal = goalField.value as TileBase;
                             }
                             break;
                         case DataType.Material:
-                            if (item is BaseField<Material> materialField)
+                            if (item is MaterialField materialField)
                             {
                                 Debug.Log(materialField.value);
-                                mapData._overTileMaterial = materialField.value;
+                                mapData._overTileMaterial = materialField.value as Material;
                             }
                             break;
                         case DataType.EnemyDataText:
-                            if (item is BaseField<TextAsset> menemyTextField)
+                            if (item is TextAssetField enemyTextField)
                             {
-                                Debug.Log(menemyTextField.value);
-                                mapData._mapData = menemyTextField.value;
+                                Debug.Log(enemyTextField.value);
+                                mapData._enemyData = enemyTextField.value as TextAsset;
                             }
                             break;
                     }
@@ -121,7 +129,7 @@ public class StageCreateEditorWindow : EditorWindow
 
         string[] names = AssetDatabase.FindAssets("t:Folder", new[] { "Assets/Resources/Stages" });
 
-        string folderPath = AssetDatabase.CreateFolder("Assets/Resources/Stages", names.Length.ToString("00") + mapData.name);
+        string folderPath = AssetDatabase.CreateFolder("Assets/Resources/Stages", names.Length.ToString("00") + mapData._mapData.name);
 
         string path = AssetDatabase.GUIDToAssetPath(folderPath);
 
