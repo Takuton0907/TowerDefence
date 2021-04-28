@@ -7,6 +7,7 @@ using UnityEngine;
 
 public class MapCreateGraphView : GraphView
 {
+    /// <summary> データを作るのに必要なMapNodeの参照 </summary>
     public MapNode _mapNode { private set; get; }
 
     public MapCreateGraphView(EditorWindow editorWindow) : base()
@@ -47,7 +48,6 @@ public class MapCreateGraphView : GraphView
         };
     }
 
-    // GetCompatiblePortsをオーバーライドする
     public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
     {
         var compatiblePorts = new List<Port>();
