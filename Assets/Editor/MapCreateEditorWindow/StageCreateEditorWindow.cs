@@ -5,9 +5,11 @@ using UnityEditor;
 using System;
 using System.Linq;
 using UnityEditor.UIElements;
+using System.Collections.Generic;
 
 public class StageCreateEditorWindow : EditorWindow
 {
+    /// <summary> 作成したMapCreateGraphViewの参照 </summary>
     MapCreateGraphView graphView;
 
     [MenuItem("Window/StageEditor")]
@@ -28,10 +30,22 @@ public class StageCreateEditorWindow : EditorWindow
     private void OnClickRun()
     {
         MapNode mapNode = graphView._mapNode;
-        var inputChilds = mapNode.inputContainer.contentContainer.Children();
 
-        MapData mapData = new MapData();
+        var mapData = MapDataSet(mapNode);
+
+        if (mapData == null)
+        {
+            Debug.LogError("マップの作成に失敗しました");
+            return;
+        }
+        MapDataCreator.MapCreate(mapData);
+    }
+
+    /// <summary> マップを作るのに必要なデータクラスにまとめる </summary>
+    private MapData MapDataSet(MapNode mapNode)
+    {
         DataType dataType = DataType.GameRoot;
+        MapData mapData = new MapData();
 
         foreach (var input in mapNode._inputPorts)
         {
@@ -41,7 +55,7 @@ public class StageCreateEditorWindow : EditorWindow
             if (extensionChildren.Count() <= 0)
             {
                 Debug.LogError($"{input.portName}の値が設定されていないです");
-                return;
+                return null;
             }
 
             foreach (var child in extensionChildren)
@@ -59,21 +73,21 @@ public class StageCreateEditorWindow : EditorWindow
                             if (item is ObjectField rootField)
                             {
                                 Debug.Log(rootField.value);
-                                mapData._gameRoot = rootField.value as GameObject;
+                                mapData.gameRoot = rootField.value as GameObject;
                             }
                             break;
                         case DataType.MapDataText:
                             if (item is TextAssetField mapTextField)
                             {
                                 Debug.Log(mapTextField.value);
-                                mapData._mapData = mapTextField.value as TextAsset;
+                                mapData.mapData = mapTextField.value as TextAsset;
                             }
                             break;
                         case DataType.LoadTile:
                             if (item is TileField loadField)
                             {
                                 Debug.Log(loadField.value);
-                                mapData._load = loadField.value as TileBase;
+                                mapData.load = loadField.value as TileBase;
                             }
                             break;
                         case DataType.WallTile:
@@ -82,7 +96,7 @@ public class StageCreateEditorWindow : EditorWindow
                                 Debug.Log(wallField.value);
                                 if (wallField.value is TileBase tile)
                                 {
-                                    mapData._wall.Add(tile);
+                                    mapData.wall.Add(tile);
                                 }
                             }
                             break;
@@ -90,35 +104,35 @@ public class StageCreateEditorWindow : EditorWindow
                             if (item is TileField towerField)
                             {
                                 Debug.Log(towerField.value);
-                                mapData._setTower = towerField.value as TileBase;
+                                mapData.setTower = towerField.value as TileBase;
                             }
                             break;
                         case DataType.StartTile:
                             if (item is TileField startField)
                             {
                                 Debug.Log(startField.value);
-                                mapData._start = startField.value as TileBase;
+                                mapData.start = startField.value as TileBase;
                             }
                             break;
                         case DataType.GoalTile:
                             if (item is TileField goalField)
                             {
                                 Debug.Log(goalField.value);
-                                mapData._goal = goalField.value as TileBase;
+                                mapData.goal = goalField.value as TileBase;
                             }
                             break;
                         case DataType.Material:
                             if (item is MaterialField materialField)
                             {
                                 Debug.Log(materialField.value);
-                                mapData._overTileMaterial = materialField.value as Material;
+                                mapData.overTileMaterial = materialField.value as Material;
                             }
                             break;
                         case DataType.EnemyDataText:
                             if (item is TextAssetField enemyTextField)
                             {
                                 Debug.Log(enemyTextField.value);
-                                mapData._enemyData = enemyTextField.value as TextAsset;
+                                mapData.enemyData = enemyTextField.value as TextAsset;
                             }
                             break;
                     }
@@ -126,37 +140,10 @@ public class StageCreateEditorWindow : EditorWindow
                 dataType += 1;
             }
         }
-
-        string[] names = AssetDatabase.FindAssets("t:Folder", new[] { "Assets/Resources/Stages" });
-
-        string folderPath = AssetDatabase.CreateFolder("Assets/Resources/Stages", names.Length.ToString("00") + mapData._mapData.name);
-
-        string path = AssetDatabase.GUIDToAssetPath(folderPath);
-
-        path += "/";
-
-        MapDataObject date = MapDataCreator.CreateMapData(mapData._mapData, path);
-
-        date.load = mapData._load;
-        date.wall = mapData._wall.ToArray();
-        date.setTowet = mapData._setTower;
-        date.overTile = mapData._setTower;
-        date.start = mapData._start;
-        date.goal = mapData._goal;
-
-        date.overTileMaterial = mapData._overTileMaterial;
-
-        Debug.Log(date.load);
-
-        MapDataCreator.CreatePrefab(date, path);
-
-        AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(mapData._enemyData), path + mapData._enemyData.name + ".csv");
-
-        Debug.Log($"以下のフォルダに作成し\n{mapData._enemyData.name}も移動しました\n{path}");
+        return mapData;
     }
 }
-
-
+/// <summary> 保存するためのボタンの作成 </summary>
 public class RunElement : VisualElement
 {
     public RunElement(string name, Color color, Vector2 pos, Action clickAction)

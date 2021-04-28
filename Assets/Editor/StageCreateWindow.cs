@@ -12,7 +12,7 @@ public class StageCreateWindow : ScriptableWizard
     string GAMEROOT_PATH = "Assets/Plefab/Managers/GameRoot.prefab";
 
     [SerializeField]
-    TextAsset mapData = null;
+    TextAsset mapTextData = null;
 
     TileBase overTile;
     public TileBase load;
@@ -62,31 +62,18 @@ public class StageCreateWindow : ScriptableWizard
 
     private void OnWizardCreate()
     {
-        string[] names = AssetDatabase.FindAssets("t:Folder", new[] { "Assets/Resources/Stages" });
-
-        string folderPath = AssetDatabase.CreateFolder("Assets/Resources/Stages",names.Length.ToString("00") + mapData.name);
-        
-        string path = AssetDatabase.GUIDToAssetPath(folderPath);
-
-        path += "/";
-
-        MapDataObject date = MapDataCreator.CreateMapData(mapData, path);
-
-        date.load = load;
-        date.wall = wall;
-        date.setTowet = setTower;
-        date.overTile = overTile;
-        date.start = start;
-        date.goal = goal;
-
-        date.overTileMaterial = overTileMaterial;
-
-        Debug.Log(date.load);
-
-        MapDataCreator.CreatePrefab(date, path);
-
-        AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(enemyData), path + enemyData.name + ".csv");
-
-        Debug.Log($"以下のフォルダに作成し\n{enemyData.name}も移動しました\n{path}");
+        //データの受け渡し
+        MapData mapData = new MapData();
+        mapData.gameRoot = gameRoot;
+        mapData.mapData = mapTextData;
+        mapData.load = load;
+        mapData.wall = (List<TileBase>)wall.GetEnumerator();
+        mapData.setTower = setTower;
+        mapData.start = start;
+        mapData.goal = goal;
+        mapData.enemyData = enemyData;
+        mapData.overTileMaterial = overTileMaterial;
+        //マップ生成
+        MapDataCreator.MapCreate(mapData);
     }
 }

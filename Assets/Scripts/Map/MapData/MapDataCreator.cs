@@ -5,7 +5,7 @@ using UnityEngine.Tilemaps;
 
 public class MapDataCreator : EditorWindow
 {
-    public static void CreatePrefab(MapDataObject date, string path)
+    private static void CreatePrefab(MapDataObject date, string path)
     {
         //GameObjectの作成
         GameObject gameObject = new GameObject(date.name);
@@ -42,7 +42,7 @@ public class MapDataCreator : EditorWindow
         DestroyImmediate(gameObject);
     }
 
-    public static MapDataObject CreateMapData(TextAsset text, string path)
+    private static MapDataObject CreateMapData(TextAsset text, string path)
     {
         MapDataObject mapDate = ScriptableObject.CreateInstance<MapDataObject>();
         //textを名前から取得
@@ -66,6 +66,36 @@ public class MapDataCreator : EditorWindow
         //スクリタブルObjectとしてファイル書き出し
         AssetDatabase.CreateAsset(mapDate, path + text.name + ".asset");
         return mapDate;
+    }
+
+    public static void MapCreate(MapData mapData)
+    {
+        string[] names = AssetDatabase.FindAssets("t:Folder", new[] { "Assets/Resources/Stages" });
+
+        string folderPath = AssetDatabase.CreateFolder("Assets/Resources/Stages", names.Length.ToString("00") + mapData.mapData.name);
+
+        string path = AssetDatabase.GUIDToAssetPath(folderPath);
+
+        path += "/";
+
+        MapDataObject date = CreateMapData(mapData.mapData, path);
+
+        date.load = mapData.load;
+        date.wall = mapData.wall.ToArray();
+        date.setTowet = mapData.setTower;
+        date.overTile = mapData.setTower;
+        date.start = mapData.start;
+        date.goal = mapData.goal;
+
+        date.overTileMaterial = mapData.overTileMaterial;
+
+        Debug.Log(date.load);
+
+        CreatePrefab(date, path);
+
+        AssetDatabase.MoveAsset(AssetDatabase.GetAssetPath(mapData.enemyData), path + mapData.enemyData.name + ".csv");
+
+        Debug.Log($"以下のフォルダに作成し\n{mapData.enemyData.name}も移動しました\n{path}");
     }
 }
 #endif
