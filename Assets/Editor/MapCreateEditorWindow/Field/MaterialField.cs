@@ -2,6 +2,7 @@
 using UnityEditor.UIElements;
 using UnityEngine;
 
+/// <summary>  Materialを管理するField </summary>
 public class MaterialField : ObjectField
 {
     public MaterialField(string label, string tooltip = "", string defaultPath = "") : base()

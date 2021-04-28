@@ -3,6 +3,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.Tilemaps;
 
+/// <summary>  TileBaseを管理するField </summary>
 public class TileField : ObjectField
 {
     public TileField(string label, string tooltip = "", string defaultPath = "") : base()
